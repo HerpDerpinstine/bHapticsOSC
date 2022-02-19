@@ -11,19 +11,28 @@ namespace bHapticsOSC_VRC.Managers
         internal static int OnParse(LaunchOptions instance)
         {
             _instance = instance;
-
             return 0;
         }
 
         internal static int OnError(IEnumerable<Error> errors)
         {
-            var result = -2;
-            if (errors.Any(x => x is HelpRequestedError || x is VersionRequestedError))
+            int result = -2;
+            if (errors.Any(x => (x is HelpRequestedError || x is VersionRequestedError)))
                 result = -1;
+
+            // To-Do: Print and Log each error.
+
             return result;
         }
 
-        [Option('v', "verbose", Required = false, HelpText = "Set output to verbose messages.")]
-        public bool Verbose { get; set; }
+        [Option("receiver.address", Required = false, HelpText = "Set the Address for the OSC Receiver.")]
+        internal string Receiver_Address { get; set; }
+        [Option("receiver.port", Required = false, HelpText = "Set the Port for the OSC Receiver.")]
+        internal int Receiver_Port { get; set; }
+
+        [Option("sender.address", Required = false, HelpText = "Set the Address for the OSC Sender.")]
+        internal string Sender_Address { get; set; }
+        [Option("sender.port", Required = false, HelpText = "Set the Port for the OSC Sender.")]
+        internal int Sender_Port { get; set; }
     }
 }
