@@ -1,5 +1,5 @@
 # bHapticsOSC_VRC
-Application to allow the bHaptics Player to interface with OSC for VRChat.
+Application to allow the bHaptics Player to interface with OSC for VRChat.  
 Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics Gear as well as supporting me and this application wherever needed! :D
 
 - 
