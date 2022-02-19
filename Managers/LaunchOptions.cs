@@ -25,14 +25,9 @@ namespace bHapticsOSC_VRC.Managers
             return result;
         }
 
-        [Option("receiver.address", Required = false, HelpText = "Set the Address for the OSC Receiver.")]
-        internal string Receiver_Address { get; set; }
-        [Option("receiver.port", Required = false, HelpText = "Set the Port for the OSC Receiver.")]
-        internal int Receiver_Port { get; set; }
-
-        [Option("sender.address", Required = false, HelpText = "Set the Address for the OSC Sender.")]
-        internal string Sender_Address { get; set; }
-        [Option("sender.port", Required = false, HelpText = "Set the Port for the OSC Sender.")]
-        internal int Sender_Port { get; set; }
+        [Option("osc.address", Required = false, HelpText = "Set the Address for the OSC Connection.")]
+        internal string Address { get; set; } = "127.0.0.1";
+        [Option("osc.port", Required = false, HelpText = "Set the Port for the OSC Connection.")]
+        internal int Port { get; set; } = 9000;
     }
 }
