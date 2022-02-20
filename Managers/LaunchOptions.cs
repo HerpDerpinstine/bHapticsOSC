@@ -28,6 +28,6 @@ namespace bHapticsOSC_VRC.Managers
         [Option("osc.address", Required = false, HelpText = "Set the Address for the OSC Connection.")]
         internal string Address { get; set; } = "127.0.0.1";
         [Option("osc.port", Required = false, HelpText = "Set the Port for the OSC Connection.")]
-        internal int Port { get; set; } = 9000;
+        internal int Port { get; set; } = 9001;
     }
 }
