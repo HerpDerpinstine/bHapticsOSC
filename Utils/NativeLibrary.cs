@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace bHapticsOSC_VRC.Utils
+namespace bHapticsOSC.Utils
 {
     public class NativeLibrary
     {

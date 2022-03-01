@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace bHapticsOSC_VRC.Utils
+namespace bHapticsOSC.Utils
 {
     internal static class bHaptics
     {
@@ -26,7 +26,7 @@ namespace bHapticsOSC_VRC.Utils
                 && !SteamLibraryCheck())
                 throw new Exception("bHaptics Player is Not Installed!");
 
-            NativeLib?.Initialise(Marshal.StringToHGlobalAnsi("bHapticsOSC_VRC"), Marshal.StringToHGlobalAnsi("VRChat"));
+            NativeLib?.Initialise(Marshal.StringToHGlobalAnsi("bHapticsOSC"), Marshal.StringToHGlobalAnsi("VRChat"));
         }
 
         private static bool ExePathCheck()

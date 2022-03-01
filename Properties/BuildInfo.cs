@@ -1,4 +1,4 @@
-﻿namespace bHapticsOSC_VRC
+﻿namespace bHapticsOSC
 {
     internal static class BuildInfo
     {

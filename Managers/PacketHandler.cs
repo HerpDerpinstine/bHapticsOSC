@@ -1,49 +1,115 @@
 ﻿using Rug.Osc;
 using System.Collections.Generic;
-using bHapticsOSC_VRC.Utils;
+using bHapticsOSC.Utils;
+using bHapticsOSC.OscParsers;
+using System;
 
-namespace bHapticsOSC_VRC.Managers
+namespace bHapticsOSC.Managers
 {
     internal static class PacketHandler
-    {
-		internal static RTParser Vest_Front = new RTParser(bHaptics.PositionType.VestFront);
-		internal static RTParser Vest_Back = new RTParser(bHaptics.PositionType.VestBack);
+	{
+		private static string bHapticsOscHeader = "/bhaptics";
+		private static Dictionary<string, List<OscParserBase>> Parsers = new Dictionary<string, List<OscParserBase>>();
 
 		internal static void Setup()
-        {
-			// Avatar Change
+		{
+			// VRChat Avatar Change
 			OpenSoundControl.OnMessageReceived["/avatar/change"] = (OscMessage msg) => ResetParsers();
 
+			// Head
+			AddPositionRTParser(bHaptics.PositionType.Head);
+
 			// Vest
-			OpenSoundControl.OnMessageReceived["/bhaptics/vest/front"] = (OscMessage msg) => ProcessMessage(msg, Vest_Front);
-			OpenSoundControl.OnMessageReceived["/bhaptics/vest/back"] = (OscMessage msg) => ProcessMessage(msg, Vest_Back);
+			AddPositionRTParser(bHaptics.PositionType.VestFront);
+			AddPositionRTParser(bHaptics.PositionType.VestBack);
+
+			// Arms
+			AddPositionRTParser(bHaptics.PositionType.ForearmL);
+			AddPositionRTParser(bHaptics.PositionType.ForearmR);
+
+			// Hands
+			AddPositionRTParser(bHaptics.PositionType.HandL);
+			AddPositionRTParser(bHaptics.PositionType.HandR);
+
+			// Feet
+			AddPositionRTParser(bHaptics.PositionType.FootL);
+			AddPositionRTParser(bHaptics.PositionType.FootR);
+		}
+
+		private static void AddParser<T>(string address, T parser) where T : OscParserBase
+		{
+			if (!Parsers.TryGetValue(address, out List<OscParserBase> parsertbl))
+				lock (Parsers)
+					Parsers[address] = parsertbl = new List<OscParserBase>();
+			parsertbl.Add(parser);
+			OpenSoundControl.OnMessageReceived[address] = (OscMessage msg) => parser.Process(msg);
+		}
+
+		private static PositionRTParser AddPositionRTParser(bHaptics.PositionType positionType)
+		{
+			PositionRTParser parser = new PositionRTParser(positionType);
+			AddParser(ParserToOscAddress(positionType, parser), parser);
+			return parser;
 		}
 
 		private static void ResetParsers()
         {
-			Vest_Front.Reset();
-			Vest_Back.Reset();
-        }
-
-		private static void ProcessMessage(OscMessage oscMessage, RTParser parser)
-        {
-			byte[] blob = (byte[])oscMessage[0];
-
-			int width = blob[0];
-			int height = blob[1];
-
-			List<byte> pixels = new List<byte>(blob);
-			pixels.RemoveAt(0);
-			pixels.RemoveAt(0);
-			parser.ParsePixels(RawDataToColorArray(pixels.ToArray(), pixels.Count), width, height);
+			foreach (List<OscParserBase> parserList in Parsers.Values)
+				foreach (OscParserBase parser in parserList)
+					parser.Reset();
 		}
 
-		private static unsafe RTParser.Pixel[] RawDataToColorArray(byte[] rawdata, int rawdata_length)
-		{
-			RTParser.Pixel[] colors = new RTParser.Pixel[rawdata_length / 4];
-			for (int i = 0; i < rawdata_length; i += 4)
-				colors[i / 4] = new RTParser.Pixel(rawdata[i] / 255f, rawdata[i + 1] / 255f, rawdata[i + 2] / 255f, rawdata[i + 3] / 255f);
-			return colors;
+		private static string ParserToOscAddress(bHaptics.PositionType positionType, OscParserBase oscParser)
+        {
+			string positionStr = "/unknown";
+			switch (positionType)
+            {
+				// Head
+				case bHaptics.PositionType.Head:
+					positionStr = "/head";
+					goto default;
+
+				// Vest
+				case bHaptics.PositionType.Vest:
+					positionStr = "/vest";
+					goto default;
+				case bHaptics.PositionType.VestFront:
+					positionStr = "/vest/front";
+					goto default;
+				case bHaptics.PositionType.VestBack:
+					positionStr = "/vest/back";
+					goto default;
+
+				// Arms
+				case bHaptics.PositionType.ForearmL:
+					positionStr = "/arm/left";
+					goto default;
+				case bHaptics.PositionType.ForearmR:
+					positionStr = "/arm/right";
+					goto default;
+
+				// Hands
+				case bHaptics.PositionType.HandL:
+					positionStr = "/hand/left";
+					goto default;
+				case bHaptics.PositionType.HandR:
+					positionStr = "/hand/right";
+					goto default;
+
+				// Feet
+				case bHaptics.PositionType.FootL:
+					positionStr = "/foot/left";
+					goto default;
+				case bHaptics.PositionType.FootR:
+					positionStr = "/foot/right";
+					goto default;
+
+				// Unknown
+				default:
+					break;
+            }
+
+			return $"{bHapticsOscHeader}{oscParser.GetAddress()}{positionStr}";
 		}
 	}
 }

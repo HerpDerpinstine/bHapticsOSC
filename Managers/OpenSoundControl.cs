@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 
-namespace bHapticsOSC_VRC.Managers
+namespace bHapticsOSC.Managers
 {
     internal static class OpenSoundControl
     {

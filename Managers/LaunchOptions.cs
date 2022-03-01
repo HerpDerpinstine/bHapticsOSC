@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace bHapticsOSC_VRC.Managers
+namespace bHapticsOSC.Managers
 {
     internal class LaunchOptions
     {

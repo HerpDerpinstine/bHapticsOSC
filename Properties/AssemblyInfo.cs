@@ -1,7 +1,7 @@
 ﻿using System.Resources;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using bHapticsOSC_VRC;
+using bHapticsOSC;
 
 [assembly: AssemblyTitle(BuildInfo.Name)]
 [assembly: AssemblyCompany(BuildInfo.Company)]

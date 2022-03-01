@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace bHapticsOSC_VRC.Utils
+namespace bHapticsOSC.Utils
 {
     internal static class Extensions
     {

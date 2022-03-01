@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace bHapticsOSC_VRC.Utils
+namespace bHapticsOSC.Utils
 {
     public static class SteamManifestReader
     {

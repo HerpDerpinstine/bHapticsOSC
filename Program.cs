@@ -1,10 +1,10 @@
 ﻿using CommandLine;
-using bHapticsOSC_VRC.Utils;
-using bHapticsOSC_VRC.Managers;
+using bHapticsOSC.Utils;
+using bHapticsOSC.Managers;
 using System;
 using Rug.Osc;
 
-namespace bHapticsOSC_VRC
+namespace bHapticsOSC
 {
     internal static class Program
     {
