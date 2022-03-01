@@ -14,13 +14,9 @@ namespace bHapticsOSC.Managers
         internal static void Run()
         {
             Console.WriteLine("Connecting OSC Receiver...");
-
             Receiver = new OscReceiver(IPAddress.Parse(LaunchOptions._instance.Address), LaunchOptions._instance.Port);
             Receiver.Connect();
-
-            Console.WriteLine("Awaiting Packets...");
-            Console.WriteLine();
-
+            
             ReceivePackets();
 
             Receiver.Close();
@@ -36,6 +32,8 @@ namespace bHapticsOSC.Managers
 
         private static void ReceivePackets()
         {
+            Console.WriteLine("Awaiting Packets...");
+            Console.WriteLine();
             while (Receiver.State != OscSocketState.Closed)
             {
                 try
