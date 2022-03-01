@@ -1,5 +1,5 @@
-# bHapticsOSC_VRC
-Application to allow the bHaptics Player to interface with VRChat over OSC.  
+# bHapticsOSC
+Application to allow the bHaptics Player to interface over OSC.  
 Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics Gear as well as supporting me wherever needed! :D
 
 - Coming Soon...
@@ -26,7 +26,7 @@ Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics G
 
 ### LICENSING & CREDITS:
 
-bHapticsOSC_VRC is licensed under the GPL-3.0 License. See [LICENSE](https://github.com/HerpDerpinstine/bHapticsOSC_VRC/blob/master/LICENSE.md) for the full License.
+bHapticsOSC is licensed under the GPL-3.0 License. See [LICENSE](https://github.com/HerpDerpinstine/bHapticsOSC/blob/master/LICENSE.md) for the full License.
 
 Third-party Libraries used as Source Code and/or bundled in Binary Form:
 - [CommandLineParser](https://github.com/commandlineparser/commandline) is licensed under the MIT License. See [LICENSE](https://github.com/commandlineparser/commandline/blob/master/License.md) for the full License.

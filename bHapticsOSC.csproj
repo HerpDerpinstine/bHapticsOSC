@@ -41,11 +41,6 @@
 	  <Folder Include="Properties\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Compile Update="Utils\bHaptics.cs">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	  </Compile>
-	</ItemGroup>
-	<ItemGroup>
 	  <None Update="NativeLibs\bHaptics.x64.dll">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
