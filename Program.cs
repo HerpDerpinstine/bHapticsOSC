@@ -21,7 +21,7 @@ namespace bHapticsOSC_VRC
 
             bHaptics.Load();
 
-            OpenSoundControl.OnPacketReceived += (OscPacket packet) => Console.WriteLine(packet);
+            PacketHandler.Setup();
             OpenSoundControl.Run();
 
             return 0;
