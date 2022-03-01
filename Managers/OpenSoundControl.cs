@@ -21,31 +21,34 @@ namespace bHapticsOSC.Managers
             Console.WriteLine("Awaiting Packets...");
             Console.WriteLine();
 
-            ReceiverThread();
+            ReceivePackets();
 
             Receiver.Close();
             Console.WriteLine("Disconnected!");
         }
 
-        private static void ParseMessageThread(OscMessage oscMessage)
+        private static void ParseMessage(OscMessage oscMessage)
         {
             if (!OnMessageReceived.TryGetValue(oscMessage.Address, out Action<OscMessage> method))
                 return;
             method?.Invoke(oscMessage);
         }
 
-        private static void ReceiverThread()
+        private static void ReceivePackets()
         {
             while (Receiver.State != OscSocketState.Closed)
             {
                 try
                 {
-                    if (Receiver.State == OscSocketState.Connected)
-                    {
-                        OscPacket packet = Receiver.Receive();
-                        if ((packet != null) && (packet is OscMessage))
-                            new Thread(() => ParseMessageThread((OscMessage)packet)).Start();
-                    }
+                    if (Receiver.State != OscSocketState.Connected)
+                        return;
+
+                    OscPacket packet = Receiver.Receive();
+                    if (packet == null)
+                        return;
+
+                    if (packet is OscMessage)
+                        new Thread(() => ParseMessage((OscMessage)packet)).Start();
                 }
                 catch (Exception ex)
                 {
