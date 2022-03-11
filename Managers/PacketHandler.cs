@@ -12,15 +12,15 @@ namespace bHapticsOSC.Managers
 		{
 			OpenSoundControl.AddressManager.Attach($"{Addresses.VRChat_Avatar.Prefix}{Addresses.VRChat_Avatar.OnChange}", (OscMessage msg) => HapticsHandler.ResetAllDevices());
 
-			AttachVRCAPNodes(bHaptics.PositionType.Head, LaunchOptions._instance.Intensity_Head, 6);
-			AttachVRCAPNodes(bHaptics.PositionType.VestFront, LaunchOptions._instance.Intensity_Vest_Front, 20);
-			AttachVRCAPNodes(bHaptics.PositionType.VestBack, LaunchOptions._instance.Intensity_Vest_Back, 20);
-			AttachVRCAPNodes(bHaptics.PositionType.ForearmL, LaunchOptions._instance.Intensity_Arm_Left, 3);
-			AttachVRCAPNodes(bHaptics.PositionType.ForearmR, LaunchOptions._instance.Intensity_Arm_Right, 3);
-			AttachVRCAPNodes(bHaptics.PositionType.HandL, LaunchOptions._instance.Intensity_Hand_Left, 3);
-			AttachVRCAPNodes(bHaptics.PositionType.HandR, LaunchOptions._instance.Intensity_Hand_Right, 3);
-			AttachVRCAPNodes(bHaptics.PositionType.FootL, LaunchOptions._instance.Intensity_Foot_Left, 3);
-			AttachVRCAPNodes(bHaptics.PositionType.FootR, LaunchOptions._instance.Intensity_Foot_Right, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.Head, ConfigManager.Devices.Head.Intensity, 6);
+			AttachVRCAPNodes(bHaptics.PositionType.VestFront, ConfigManager.Devices.VestFront.Intensity, 20);
+			AttachVRCAPNodes(bHaptics.PositionType.VestBack, ConfigManager.Devices.VestBack.Intensity, 20);
+			AttachVRCAPNodes(bHaptics.PositionType.ForearmL, ConfigManager.Devices.ArmLeft.Intensity, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.ForearmR, ConfigManager.Devices.ArmRight.Intensity, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.HandL, ConfigManager.Devices.HandLeft.Intensity, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.HandR, ConfigManager.Devices.HandRight.Intensity, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.FootL, ConfigManager.Devices.FootLeft.Intensity, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.FootR, ConfigManager.Devices.FootRight.Intensity, 3);
 		}
 
 		private static void AttachVRCAPNodes(bHaptics.PositionType positionType, int intensity, int nodeCount)

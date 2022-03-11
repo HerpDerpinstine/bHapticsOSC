@@ -1,8 +1,6 @@
-﻿using CommandLine;
-using bHapticsOSC.Utils;
+﻿using bHapticsOSC.Utils;
 using bHapticsOSC.Managers;
 using System;
-using Rug.Osc;
 
 namespace bHapticsOSC
 {
@@ -12,10 +10,7 @@ namespace bHapticsOSC
         {
             WelcomeMessage();
 
-            int result = Parser.Default.ParseArguments<LaunchOptions>(args).MapResult(o => LaunchOptions.OnParse(o), errors => LaunchOptions.OnError(errors));
-            if (result != 0)
-                return result;
-
+            ConfigManager.Setup();
             PrintConfig();
 
             bHaptics.Load();
@@ -41,27 +36,41 @@ namespace bHapticsOSC
 
         private static void PrintConfig()
         {
-            Console.WriteLine($"===== OSC =====");
+            Console.WriteLine($"===== Connection =====");
             Console.WriteLine();
-            Console.WriteLine($"[Address] = {LaunchOptions._instance.Address}:{LaunchOptions._instance.Port}");
-            Console.WriteLine($"[Update Rate] = {LaunchOptions._instance.UpdateRate}ms");
+            Console.WriteLine($"[Address] = {ConfigManager.Connection.Address}");
+            Console.WriteLine($"[Port] = {ConfigManager.Connection.Port}");
+            Console.WriteLine();
+
+            Console.WriteLine($"===== Threading =====");
+            Console.WriteLine();
+            Console.WriteLine($"[Update Rate] = {ConfigManager.Connection.UpdateRate}ms");
+            Console.WriteLine();
+
+            Console.WriteLine($"===== Devices =====");
+            Console.WriteLine();
+            Console.WriteLine($"[Head] = {ConfigManager.Devices.Head.Enabled}");
+            Console.WriteLine($"[Vest | Front] = {ConfigManager.Devices.VestFront.Enabled}");
+            Console.WriteLine($"[Vest | Back] = {ConfigManager.Devices.VestBack.Enabled}");
+            Console.WriteLine($"[Arm | Left] = {ConfigManager.Devices.ArmLeft.Enabled}");
+            Console.WriteLine($"[Arm | Right] = {ConfigManager.Devices.ArmRight.Enabled}");
+            Console.WriteLine($"[Hand | Left] = {ConfigManager.Devices.HandLeft.Enabled}");
+            Console.WriteLine($"[Hand | Right] = {ConfigManager.Devices.HandRight.Enabled}");
+            Console.WriteLine($"[Foot | Left] = {ConfigManager.Devices.FootLeft.Enabled}");
+            Console.WriteLine($"[Foot | Right] = {ConfigManager.Devices.FootRight.Enabled}");
             Console.WriteLine();
 
             Console.WriteLine($"===== Intensity =====");
             Console.WriteLine();
-            Console.WriteLine($"[Head] = {LaunchOptions._instance.Intensity_Head}");
-            Console.WriteLine();
-            Console.WriteLine($"[Vest | Front] = {LaunchOptions._instance.Intensity_Vest_Front}");
-            Console.WriteLine($"[Vest | Back] = {LaunchOptions._instance.Intensity_Vest_Back}");
-            Console.WriteLine();
-            Console.WriteLine($"[Arm | Left] = {LaunchOptions._instance.Intensity_Arm_Left}");
-            Console.WriteLine($"[Arm | Right] = {LaunchOptions._instance.Intensity_Arm_Right}");
-            Console.WriteLine();
-            Console.WriteLine($"[Hand | Left] = {LaunchOptions._instance.Intensity_Hand_Left}");
-            Console.WriteLine($"[Hand | Right] = {LaunchOptions._instance.Intensity_Hand_Right}");
-            Console.WriteLine();
-            Console.WriteLine($"[Foot | Left] = {LaunchOptions._instance.Intensity_Foot_Left}");
-            Console.WriteLine($"[Foot | Right] = {LaunchOptions._instance.Intensity_Foot_Right}");
+            Console.WriteLine($"[Head] = {ConfigManager.Devices.Head.Intensity}");
+            Console.WriteLine($"[Vest | Front] = {ConfigManager.Devices.VestFront.Intensity}");
+            Console.WriteLine($"[Vest | Back] = {ConfigManager.Devices.VestBack.Intensity}");
+            Console.WriteLine($"[Arm | Left] = {ConfigManager.Devices.ArmLeft.Intensity}");
+            Console.WriteLine($"[Arm | Right] = {ConfigManager.Devices.ArmRight.Intensity}");
+            Console.WriteLine($"[Hand | Left] = {ConfigManager.Devices.HandLeft.Intensity}");
+            Console.WriteLine($"[Hand | Right] = {ConfigManager.Devices.HandRight.Intensity}");
+            Console.WriteLine($"[Foot | Left] = {ConfigManager.Devices.FootLeft.Intensity}");
+            Console.WriteLine($"[Foot | Right] = {ConfigManager.Devices.FootRight.Intensity}");
             Console.WriteLine();
             Console.WriteLine($"===============");
             Console.WriteLine();

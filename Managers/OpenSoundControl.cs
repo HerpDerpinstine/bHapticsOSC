@@ -13,7 +13,7 @@ namespace bHapticsOSC.Managers
         internal static void Run()
         {
             Console.WriteLine("Creating OSC Connection...");
-            Receiver = new OscReceiver(IPAddress.Parse(LaunchOptions._instance.Address), LaunchOptions._instance.Port);
+            Receiver = new OscReceiver(IPAddress.Parse(ConfigManager.Connection.Address), ConfigManager.Connection.Port);
             Receiver.Connect();
         }
 
@@ -56,7 +56,7 @@ namespace bHapticsOSC.Managers
                 {
                     Console.WriteLine($"Exception in ReceiverThread: {ex}");
                 }
-                Thread.Sleep(LaunchOptions._instance.UpdateRate);
+                Thread.Sleep(ConfigManager.Connection.UpdateRate);
             }
         }
     }
