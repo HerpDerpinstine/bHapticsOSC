@@ -31,7 +31,6 @@ namespace bHapticsOSC.Managers
             Console.WriteLine();
             while (Receiver.State != OscSocketState.Closed)
             {
-                Thread.Sleep(Config.OscUpdateRate);
                 try
                 {
                     while (Receiver.TryReceive(out OscPacket packet) && (packet != null))
@@ -57,6 +56,7 @@ namespace bHapticsOSC.Managers
                 {
                     Console.WriteLine($"Exception in ReceiverThread: {ex}");
                 }
+                Thread.Sleep(LaunchOptions._instance.OscUpdateRate);
             }
         }
     }

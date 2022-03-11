@@ -12,36 +12,36 @@ namespace bHapticsOSC.Managers
 		{
 			OpenSoundControl.AddressManager.Attach($"{Addresses.VRChat_Avatar.Prefix}{Addresses.VRChat_Avatar.OnChange}", (OscMessage msg) => HapticsHandler.ResetAllDevices());
 
-			AttachVRCAPNodes(bHaptics.PositionType.Head, 6);
-			AttachVRCAPNodes(bHaptics.PositionType.VestFront, 20);
-			AttachVRCAPNodes(bHaptics.PositionType.VestBack, 20);
-			AttachVRCAPNodes(bHaptics.PositionType.ForearmL, 3);
-			AttachVRCAPNodes(bHaptics.PositionType.ForearmR, 3);
-			AttachVRCAPNodes(bHaptics.PositionType.HandL, 3);
-			AttachVRCAPNodes(bHaptics.PositionType.HandR, 3);
-			AttachVRCAPNodes(bHaptics.PositionType.FootL, 3);
-			AttachVRCAPNodes(bHaptics.PositionType.FootR, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.Head, LaunchOptions._instance.Intensity_Head, 6);
+			AttachVRCAPNodes(bHaptics.PositionType.VestFront, LaunchOptions._instance.Intensity_Vest_Front, 20);
+			AttachVRCAPNodes(bHaptics.PositionType.VestBack, LaunchOptions._instance.Intensity_Vest_Back, 20);
+			AttachVRCAPNodes(bHaptics.PositionType.ForearmL, LaunchOptions._instance.Intensity_Arm_Left, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.ForearmR, LaunchOptions._instance.Intensity_Arm_Right, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.HandL, LaunchOptions._instance.Intensity_Hand_Left, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.HandR, LaunchOptions._instance.Intensity_Hand_Right, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.FootL, LaunchOptions._instance.Intensity_Foot_Left, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.FootR, LaunchOptions._instance.Intensity_Foot_Right, 3);
 		}
 
-		private static void AttachVRCAPNodes(bHaptics.PositionType positionType, int nodeCount)
+		private static void AttachVRCAPNodes(bHaptics.PositionType positionType, int intensity, int nodeCount)
 		{
 			for (int i = 1; i < nodeCount + 1; i++)
-				AttachVRCAPAddress(positionType, i);
+				AttachVRCAPAddress(positionType, i, intensity);
 		}
 
-		private static void AttachVRCAPAddress(bHaptics.PositionType positionType, int node)
+		private static void AttachVRCAPAddress(bHaptics.PositionType positionType, int node, int intensity)
 		{
 			string address = Addresses.PositionToVRCAPAddress(positionType, node);
-			OpenSoundControl.AddressManager.Attach(address, (OscMessage msg) => PlayHaptics(msg, positionType, node));
+			OpenSoundControl.AddressManager.Attach(address, (OscMessage msg) => PlayHaptics(msg, positionType, node, intensity));
 		}
 
-		private static void PlayHaptics(OscMessage msg, bHaptics.PositionType positionType, int node)
+		private static void PlayHaptics(OscMessage msg, bHaptics.PositionType positionType, int node, int intensity)
 		{
 			if (!(msg[0] is bool))
 				return;
 
 			if ((bool)msg[0])
-				HapticsHandler.SetDeviceNodeIntensity(positionType, node, Config.Intensity);
+				HapticsHandler.SetDeviceNodeIntensity(positionType, node, intensity);
 			else
 				HapticsHandler.SetDeviceNodeIntensity(positionType, node, 0);
 		}
