@@ -56,7 +56,7 @@ namespace bHapticsOSC.Managers
                 {
                     Console.WriteLine($"Exception in ReceiverThread: {ex}");
                 }
-                Thread.Sleep(LaunchOptions._instance.OscUpdateRate);
+                Thread.Sleep(LaunchOptions._instance.UpdateRate);
             }
         }
     }
