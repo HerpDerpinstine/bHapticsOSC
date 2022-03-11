@@ -9,5 +9,7 @@ namespace bHapticsOSC.Managers
     internal static class Config
     {
         internal static int Intensity = 100;
+
+        internal static int OscUpdateRate = 100; // ms
     }
 }

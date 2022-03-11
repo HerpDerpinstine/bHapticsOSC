@@ -1,6 +1,5 @@
 ﻿using Rug.Osc;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 
@@ -8,50 +7,56 @@ namespace bHapticsOSC.Managers
 {
     internal static class OpenSoundControl
     {
+        internal static OscAddressManager AddressManager = new OscAddressManager();
         internal static OscReceiver Receiver;
-        internal static Dictionary<string, Action<OscMessage>> OnMessageReceived = new Dictionary<string, Action<OscMessage>>();
 
         internal static void Run()
         {
-            Console.WriteLine("Connecting OSC Receiver...");
+            Console.WriteLine("Creating OSC Connection...");
             Receiver = new OscReceiver(IPAddress.Parse(LaunchOptions._instance.Address), LaunchOptions._instance.Port);
             Receiver.Connect();
-            
-            ReceivePackets();
 
+
+        }
+
+        internal static void Disconnect()
+        {
+            if (Receiver.State == OscSocketState.Closed)
+                return;
             Receiver.Close();
             Console.WriteLine("Disconnected!");
         }
 
-        private static void ParseMessage(OscMessage oscMessage)
-        {
-            if (!OnMessageReceived.TryGetValue(oscMessage.Address, out Action<OscMessage> method))
-                return;
-            method?.Invoke(oscMessage);
-        }
-
-        private static void ReceivePackets()
+        internal static void ReceivePackets()
         {
             Console.WriteLine("Awaiting Packets...");
             Console.WriteLine();
             while (Receiver.State != OscSocketState.Closed)
             {
+                Thread.Sleep(Config.OscUpdateRate);
                 try
                 {
-                    if (Receiver.State != OscSocketState.Connected)
-                        return;
+                    while (Receiver.TryReceive(out OscPacket packet) && (packet != null))
+                    {
+                        switch (AddressManager.ShouldInvoke(packet))
+                        {
+                            case OscPacketInvokeAction.Pospone:
+                            case OscPacketInvokeAction.Invoke:
+                                if (AddressManager.Invoke(packet) && packet is OscMessage)
+                                    Console.WriteLine(((OscMessage)packet).Address);
+                                goto default;
+                            case OscPacketInvokeAction.HasError:
+                                throw new Exception($"Error while reading OscPacket: {packet.Error}");
+                            case OscPacketInvokeAction.DontInvoke:
+                            default:
+                                break;
+                        }
+                    }
 
-                    OscPacket packet = Receiver.Receive();
-                    if (packet == null)
-                        return;
-
-                    if (packet is OscMessage)
-                        new Thread(() => ParseMessage((OscMessage)packet)).Start();
+                    HapticsHandler.RunThread();
                 }
                 catch (Exception ex)
                 {
-                    if (Receiver.State != OscSocketState.Connected)
-                        return;
                     Console.WriteLine($"Exception in ReceiverThread: {ex}");
                 }
             }

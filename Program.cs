@@ -23,7 +23,13 @@ namespace bHapticsOSC
 
             PacketHandler.Setup();
             OpenSoundControl.Run();
+            OpenSoundControl.ReceivePackets();
 
+            OpenSoundControl.Disconnect();
+            bHaptics.Quit();
+            Console.WriteLine();
+            Console.WriteLine("Press any key to exit.");
+            while (Console.ReadKey(true) == null) { }
             return 0;
         }
 

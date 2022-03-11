@@ -9,7 +9,7 @@ namespace bHapticsOSC.Utils
     internal static class bHaptics
     {
         private static NativeExports NativeLib = null;
-        private static readonly int MaxBufferSize = 20;
+        internal const int MaxBufferSize = 20;
 
         internal static void Load()
         {
@@ -26,7 +26,7 @@ namespace bHapticsOSC.Utils
                 && !SteamLibraryCheck())
                 throw new Exception("bHaptics Player is Not Installed!");
 
-            NativeLib?.Initialise(Marshal.StringToHGlobalAnsi("bHapticsOSC"), Marshal.StringToHGlobalAnsi("VRChat"));
+            NativeLib?.Initialise(Marshal.StringToHGlobalAnsi("bHapticsOSC"), Marshal.StringToHGlobalAnsi("bHapticsOSC"));
         }
 
         private static bool ExePathCheck()

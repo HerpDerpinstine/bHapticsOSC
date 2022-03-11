@@ -1,115 +1,139 @@
 ﻿using Rug.Osc;
-using System.Collections.Generic;
 using bHapticsOSC.Utils;
-using bHapticsOSC.OscParsers;
+using System.IO;
+using System.Text;
 using System;
 
 namespace bHapticsOSC.Managers
 {
     internal static class PacketHandler
 	{
-		private static string bHapticsOscHeader = "/bhaptics";
-		private static Dictionary<string, List<OscParserBase>> Parsers = new Dictionary<string, List<OscParserBase>>();
-
 		internal static void Setup()
 		{
-			// VRChat Avatar Change
-			OpenSoundControl.OnMessageReceived["/avatar/change"] = (OscMessage msg) => ResetParsers();
+			OpenSoundControl.AddressManager.Attach($"{Addresses.VRChat_Avatar.Prefix}{Addresses.VRChat_Avatar.OnChange}", (OscMessage msg) => HapticsHandler.ResetAllDevices());
 
-			// Head
-			AddPositionRTParser(bHaptics.PositionType.Head);
-
-			// Vest
-			AddPositionRTParser(bHaptics.PositionType.VestFront);
-			AddPositionRTParser(bHaptics.PositionType.VestBack);
-
-			// Arms
-			AddPositionRTParser(bHaptics.PositionType.ForearmL);
-			AddPositionRTParser(bHaptics.PositionType.ForearmR);
-
-			// Hands
-			AddPositionRTParser(bHaptics.PositionType.HandL);
-			AddPositionRTParser(bHaptics.PositionType.HandR);
-
-			// Feet
-			AddPositionRTParser(bHaptics.PositionType.FootL);
-			AddPositionRTParser(bHaptics.PositionType.FootR);
+			AttachVRCAPNodes(bHaptics.PositionType.Head, 6);
+			AttachVRCAPNodes(bHaptics.PositionType.VestFront, 20);
+			AttachVRCAPNodes(bHaptics.PositionType.VestBack, 20);
+			AttachVRCAPNodes(bHaptics.PositionType.ForearmL, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.ForearmR, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.HandL, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.HandR, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.FootL, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.FootR, 3);
 		}
 
-		private static void AddParser<T>(string address, T parser) where T : OscParserBase
+		private static void AttachVRCAPNodes(bHaptics.PositionType positionType, int nodeCount)
 		{
-			if (!Parsers.TryGetValue(address, out List<OscParserBase> parsertbl))
-				lock (Parsers)
-					Parsers[address] = parsertbl = new List<OscParserBase>();
-			parsertbl.Add(parser);
-			OpenSoundControl.OnMessageReceived[address] = (OscMessage msg) => parser.Process(msg);
+			for (int i = 1; i < nodeCount + 1; i++)
+				AttachVRCAPAddress(positionType, i);
 		}
 
-		private static PositionRTParser AddPositionRTParser(bHaptics.PositionType positionType)
+		private static void AttachVRCAPAddress(bHaptics.PositionType positionType, int node)
 		{
-			PositionRTParser parser = new PositionRTParser(positionType);
-			AddParser(ParserToOscAddress(positionType, parser), parser);
-			return parser;
+			string address = Addresses.PositionToVRCAPAddress(positionType, node);
+			OpenSoundControl.AddressManager.Attach(address, (OscMessage msg) => PlayHaptics(msg, positionType, node));
 		}
 
-		private static void ResetParsers()
-        {
-			foreach (List<OscParserBase> parserList in Parsers.Values)
-				foreach (OscParserBase parser in parserList)
-					parser.Reset();
+		private static void PlayHaptics(OscMessage msg, bHaptics.PositionType positionType, int node)
+		{
+			if (!(msg[0] is bool))
+				return;
+
+			if ((bool)msg[0])
+				HapticsHandler.SetDeviceNodeIntensity(positionType, node, Config.Intensity);
+			else
+				HapticsHandler.SetDeviceNodeIntensity(positionType, node, 0);
 		}
 
-		private static string ParserToOscAddress(bHaptics.PositionType positionType, OscParserBase oscParser)
-        {
-			string positionStr = "/unknown";
-			switch (positionType)
-            {
-				// Head
-				case bHaptics.PositionType.Head:
-					positionStr = "/head";
-					goto default;
+		internal static class Addresses
+		{
+			internal static string Unknown = "/unknown";
 
-				// Vest
-				case bHaptics.PositionType.Vest:
-					positionStr = "/vest";
-					goto default;
-				case bHaptics.PositionType.VestFront:
-					positionStr = "/vest/front";
-					goto default;
-				case bHaptics.PositionType.VestBack:
-					positionStr = "/vest/back";
-					goto default;
+			internal static class VRChat_Avatar
+			{
+				internal static string Prefix = "/avatar";
+				internal static string OnChange = "/change";
+				internal static string Parameters = "/parameters";
+			}
 
-				// Arms
-				case bHaptics.PositionType.ForearmL:
-					positionStr = "/arm/left";
-					goto default;
-				case bHaptics.PositionType.ForearmR:
-					positionStr = "/arm/right";
-					goto default;
+			internal static string PositionToAddress(bHaptics.PositionType positionType)
+			{
+				switch (positionType)
+				{
+					// Head
+					case bHaptics.PositionType.Head:
+						return "/head";
 
-				// Hands
-				case bHaptics.PositionType.HandL:
-					positionStr = "/hand/left";
-					goto default;
-				case bHaptics.PositionType.HandR:
-					positionStr = "/hand/right";
-					goto default;
+					// Vest
+					case bHaptics.PositionType.Vest:
+						return "/vest";
+					case bHaptics.PositionType.VestFront:
+						return "/vest/front";
+					case bHaptics.PositionType.VestBack:
+						return "/vest/back";
 
-				// Feet
-				case bHaptics.PositionType.FootL:
-					positionStr = "/foot/left";
-					goto default;
-				case bHaptics.PositionType.FootR:
-					positionStr = "/foot/right";
-					goto default;
+					// Arms
+					case bHaptics.PositionType.ForearmL:
+						return "/arm/left";
+					case bHaptics.PositionType.ForearmR:
+						return "/arm/right";
 
-				// Unknown
-				default:
-					break;
-            }
+					// Hands
+					case bHaptics.PositionType.HandL:
+						return "/hand/left";
+					case bHaptics.PositionType.HandR:
+						return "/hand/right";
 
-			return $"{bHapticsOscHeader}{oscParser.GetAddress()}{positionStr}";
+					// Feet
+					case bHaptics.PositionType.FootL:
+						return "/foot/left";
+					case bHaptics.PositionType.FootR:
+						return "/foot/right";
+
+					// Unknown
+					default:
+						return Unknown;
+				}
+			}
+
+			internal static string PositionToVRCAPAddress(bHaptics.PositionType positionType, int node)
+			{
+				switch (positionType)
+				{
+					// Head
+					case bHaptics.PositionType.Head:
+						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Head_{node}_bool";
+
+					// Vest
+					case bHaptics.PositionType.VestFront:
+						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Vest_Front_{node}_bool";
+					case bHaptics.PositionType.VestBack:
+						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Vest_Back_{node}_bool";
+
+					// Arms
+					case bHaptics.PositionType.ForearmL:
+						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Arm_Left_{node}_bool";
+					case bHaptics.PositionType.ForearmR:
+						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Arm_Right_{node}_bool";
+
+					// Hands
+					case bHaptics.PositionType.HandL:
+						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Hand_Left_{node}_bool";
+					case bHaptics.PositionType.HandR:
+						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Hand_Right_{node}_bool";
+
+					// Feet
+					case bHaptics.PositionType.FootL:
+						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Foot_Left_{node}_bool";
+					case bHaptics.PositionType.FootR:
+						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Foot_Right_{node}_bool";
+
+					// Unknown
+					default:
+						return Unknown;
+				}
+			}
 		}
 	}
 }
