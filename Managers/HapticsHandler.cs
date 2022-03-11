@@ -11,8 +11,19 @@ namespace bHapticsOSC.Managers
     {
         internal static Dictionary<bHaptics.PositionType, Device> Devices = new Dictionary<bHaptics.PositionType, Device>()
         {
+            { bHaptics.PositionType.Head, new Device() { Position = bHaptics.PositionType.Head } },
+
             { bHaptics.PositionType.VestFront, new Device() { Position = bHaptics.PositionType.VestFront } },
             { bHaptics.PositionType.VestBack, new Device() { Position = bHaptics.PositionType.VestBack } },
+
+            { bHaptics.PositionType.ForearmL, new Device() { Position = bHaptics.PositionType.ForearmL } },
+            { bHaptics.PositionType.ForearmR, new Device() { Position = bHaptics.PositionType.ForearmR } },
+
+            { bHaptics.PositionType.HandL, new Device() { Position = bHaptics.PositionType.HandL } },
+            { bHaptics.PositionType.HandR, new Device() { Position = bHaptics.PositionType.HandR } },
+
+            { bHaptics.PositionType.FootL, new Device() { Position = bHaptics.PositionType.FootL } },
+            { bHaptics.PositionType.FootR, new Device() { Position = bHaptics.PositionType.FootR } },
         };
 
         internal static void RunThread()

@@ -15,8 +15,6 @@ namespace bHapticsOSC.Managers
             Console.WriteLine("Creating OSC Connection...");
             Receiver = new OscReceiver(IPAddress.Parse(LaunchOptions._instance.Address), LaunchOptions._instance.Port);
             Receiver.Connect();
-
-
         }
 
         internal static void Disconnect()
