@@ -1,5 +1,4 @@
 ﻿using bHapticsOSC.Config;
-using System;
 using System.IO;
 
 namespace bHapticsOSC.Managers

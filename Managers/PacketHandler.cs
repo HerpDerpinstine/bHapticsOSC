@@ -1,8 +1,5 @@
 ﻿using Rug.Osc;
 using bHapticsOSC.Utils;
-using System.IO;
-using System.Text;
-using System;
 
 namespace bHapticsOSC.Managers
 {

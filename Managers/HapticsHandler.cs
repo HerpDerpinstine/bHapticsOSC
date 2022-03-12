@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using bHapticsOSC.Utils;
-using Rug.Osc;
 
 namespace bHapticsOSC.Managers
 {
     internal static class HapticsHandler
     {
+        private static int DurationOffset = 50; // ms
+
         internal static Dictionary<bHaptics.PositionType, Device> Devices = new Dictionary<bHaptics.PositionType, Device>()
         {
             { bHaptics.PositionType.Head, new Device() { Position = bHaptics.PositionType.Head } },
@@ -80,7 +80,7 @@ namespace bHapticsOSC.Managers
                         break;
                 }
 
-                bHaptics.Submit($"{BuildInfo.Name}_{Position}", Position, Value, ConfigManager.Connection.UpdateRate + 50);
+                bHaptics.Submit($"{BuildInfo.Name}_{Position}", Position, Value, ConfigManager.Connection.UpdateRate + DurationOffset);
             }
 
             internal void SetNodeIntensity(int node, int intensity)
