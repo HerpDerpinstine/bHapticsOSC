@@ -38,13 +38,14 @@ namespace bHapticsOSC
         {
             Console.WriteLine($"===== Connection =====");
             Console.WriteLine();
-            Console.WriteLine($"[Address] = {ConfigManager.Connection.Address}");
             Console.WriteLine($"[Port] = {ConfigManager.Connection.Port}");
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine($"===== Threading =====");
             Console.WriteLine();
             Console.WriteLine($"[Update Rate] = {ConfigManager.Connection.UpdateRate}ms");
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine($"===== Devices =====");
@@ -59,6 +60,7 @@ namespace bHapticsOSC
             Console.WriteLine($"[Foot | Left] = {ConfigManager.Devices.FootLeft.Enabled}");
             Console.WriteLine($"[Foot | Right] = {ConfigManager.Devices.FootRight.Enabled}");
             Console.WriteLine();
+            Console.WriteLine();
 
             Console.WriteLine($"===== Intensity =====");
             Console.WriteLine();
@@ -72,7 +74,9 @@ namespace bHapticsOSC
             Console.WriteLine($"[Foot | Left] = {ConfigManager.Devices.FootLeft.Intensity}");
             Console.WriteLine($"[Foot | Right] = {ConfigManager.Devices.FootRight.Intensity}");
             Console.WriteLine();
+            Console.WriteLine();
             Console.WriteLine($"===============");
+            Console.WriteLine();
             Console.WriteLine();
         }
     }

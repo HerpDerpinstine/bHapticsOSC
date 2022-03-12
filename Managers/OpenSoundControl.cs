@@ -1,6 +1,5 @@
 ﻿using Rug.Osc;
 using System;
-using System.Net;
 using System.Threading;
 
 namespace bHapticsOSC.Managers
@@ -12,8 +11,8 @@ namespace bHapticsOSC.Managers
 
         internal static void Run()
         {
-            Console.WriteLine("Creating OSC Connection...");
-            Receiver = new OscReceiver(IPAddress.Parse(ConfigManager.Connection.Address), ConfigManager.Connection.Port);
+            Console.WriteLine("Creating OSC Receiver...");
+            Receiver = new OscReceiver(ConfigManager.Connection.Port);
             Receiver.Connect();
         }
 
