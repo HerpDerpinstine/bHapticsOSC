@@ -20,13 +20,18 @@
 		<DefineConstants>NET48</DefineConstants>
 	</PropertyGroup>
 	<ItemGroup>
+	  <Compile Remove="Assets\**" />
 	  <Compile Remove="Output\**" />
+	  <EmbeddedResource Remove="Assets\**" />
 	  <EmbeddedResource Remove="Output\**" />
+	  <None Remove="Assets\**" />
 	  <None Remove="Output\**" />
 	</ItemGroup>
 	<ItemGroup>
 	  <None Remove=".gitattributes" />
 	  <None Remove=".gitignore" />
+	  <None Remove="bHapticsOSC.ico" />
+	  <None Remove="bHapticsOSC_v1.0.0_VRCSDK.unitypackage" />
 	  <None Remove="LICENSE.md" />
 	  <None Remove="NOTICE.txt" />
 	  <None Remove="README.md" />
