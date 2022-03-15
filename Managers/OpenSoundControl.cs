@@ -38,8 +38,7 @@ namespace bHapticsOSC.Managers
                         {
                             case OscPacketInvokeAction.Pospone:
                             case OscPacketInvokeAction.Invoke:
-                                if (AddressManager.Invoke(packet) && packet is OscMessage)
-                                    Console.WriteLine(((OscMessage)packet).Address);
+                                AddressManager.Invoke(packet);
                                 goto default;
                             case OscPacketInvokeAction.HasError:
                                 throw new Exception($"Error while reading OscPacket: {packet.Error}");

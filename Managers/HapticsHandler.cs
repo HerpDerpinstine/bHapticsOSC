@@ -36,7 +36,6 @@ namespace bHapticsOSC.Managers
 
         internal static void SetDeviceNodeIntensity(bHaptics.PositionType positionType, int node, int intensity)
         {
-            Console.WriteLine($"SetDeviceNodeIntensity: {positionType} [{node}]");
             if (Devices.Count <= 0)
                 return;
             if (!Devices.TryGetValue(positionType, out Device device))
@@ -46,7 +45,6 @@ namespace bHapticsOSC.Managers
 
         internal static void ResetAllDevices()
         {
-            Console.WriteLine("ResetAllDevices");
             if (Devices.Count <= 0)
                 return;
             foreach (Device device in Devices.Values)
@@ -88,7 +86,7 @@ namespace bHapticsOSC.Managers
 
             internal void Reset()
             {
-                for (int i = 0; i < Packet.Length; i++)
+                for (int i = 1; i < Packet.Length + 1; i++)
                     SetNodeIntensity(i, 0);
             }
         }
