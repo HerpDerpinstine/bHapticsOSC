@@ -15,6 +15,15 @@ Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics G
 
 ### USAGE:
 
+1) Download [bHapticsOSC](https://github.com/HerpDerpinstine/bHapticsOSC/releases) from Releases
+2) Extract the application from the ZIP Archive.
+3) Run ``bHapticsOSC.exe``
+4) Start the bHaptics Player and connect your Devices.
+
+---
+
+### VRCHAT AVATAR CREATION:
+
 - Coming Soon...
 
 ---
