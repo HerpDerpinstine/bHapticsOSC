@@ -3,7 +3,10 @@ Application to allow the bHaptics Player to interface over OSC.
 Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics Gear as well as supporting me wherever needed! :D
 
 - All Connection based Settings are located in ``Connection.ini``
+
 - All Device based Settings are located in ``Devices.ini``
+
+- Discord: https://discord.gg/JDw423Wskf
 
 ---
 
