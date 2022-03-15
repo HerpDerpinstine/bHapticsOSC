@@ -326,7 +326,10 @@ namespace bHapticsOSC
 			AssetDatabase.DeleteAsset(newPath);
 			if (!AssetDatabase.CopyAsset(asset_path, newPath))
 				return null;
-			return AssetDatabase.LoadAssetAtPath<T>(newPath);
+
+			T obj = AssetDatabase.LoadAssetAtPath<T>(newPath);
+			AssetDatabase.ForceReserializeAssets(new[] { AssetDatabase.GetAssetPath(obj) });
+			return obj;
 		}
 
 		private void CreateNodes(AacFlBase aac, VRCExpressionParameters expressionParameters, GameObject obj, string name, int numberOfNodes)
@@ -399,8 +402,8 @@ namespace bHapticsOSC
 					if (deviceName.StartsWith("Hand"))
 						node = 1;
 
-					AacFlClip falseClip = CreateAnimationClip($"{name}_False").Animating(clip => clip.Animates(renderer, $"material._Node{node}").WithOneFrame(0f));
-					AacFlClip trueClip = CreateAnimationClip($"{name}_True").Animating(clip => clip.Animates(renderer, $"material._Node{node}").WithOneFrame(1f));
+					AacFlClip falseClip = aac.NewClip().Animating(clip => clip.Animates(renderer, $"material._Node{node}").WithOneFrame(0f));
+					AacFlClip trueClip = aac.NewClip().Animating(clip => clip.Animates(renderer, $"material._Node{node}").WithOneFrame(1f));
 
 					falseState = falseState.WithAnimation(falseClip);
 					trueState = trueState.WithAnimation(trueClip);
@@ -409,25 +412,6 @@ namespace bHapticsOSC
 
 			falseState.TransitionsTo(trueState).When(inputParam.IsGreaterThan(0));
 			trueState.TransitionsTo(falseState).When(inputParam.IsLessThan(1));
-		}
-
-		private AacFlClip CreateAnimationClip(string suffix)
-		{
-			bHapticsOSCIntegration editorComp = (bHapticsOSCIntegration)target;
-			string assetsFolderPath = $"bHapticsOSC/Generated/{editorComp.assetKey}";
-
-			string fullFolderPath = Path.Combine(Application.dataPath, assetsFolderPath);
-			if (!Directory.Exists(fullFolderPath))
-				Directory.CreateDirectory(fullFolderPath);
-
-			AnimationClip clip = new AnimationClip();
-			clip.name = suffix;
-			clip.hideFlags = HideFlags.None;
-
-			string assetPath = Path.Combine($"Assets/{assetsFolderPath}", $"{suffix}.anim");
-			AssetDatabase.DeleteAsset(assetPath);
-			AssetDatabase.CreateAsset(clip, assetPath);
-			return new AacFlClip(aacConfiguration, clip);
 		}
 
 		private Renderer FindRendererFromShaderDeviceIndex(float index, GameObject obj)
@@ -484,11 +468,10 @@ namespace bHapticsOSC
 			avatarParametersObj.ApplyModifiedProperties();
 		}
 
-		private AacConfiguration aacConfiguration;
 		private AacFlBase CreateAnimatorAsCode(AnimatorController animatorController)
 		{
 			bHapticsOSCIntegration editorComp = (bHapticsOSCIntegration)target;
-			aacConfiguration = new AacConfiguration
+			var aac = AacV0.Create(new AacConfiguration
 			{
 				SystemName = SystemName,
 				AvatarDescriptor = editorComp.avatar,
@@ -497,8 +480,7 @@ namespace bHapticsOSC
 				AssetContainer = animatorController,
 				AssetKey = editorComp.assetKey,
 				DefaultsProvider = new AacDefaultsProvider(true)
-			};
-			var aac = AacV0.Create(aacConfiguration);
+			});
 			aac.ClearPreviousAssets();
 			return aac;
 		}
