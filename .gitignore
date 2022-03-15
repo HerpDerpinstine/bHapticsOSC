@@ -374,5 +374,6 @@ MigrationBackup/
 
 # End of https://www.toptal.com/developers/gitignore/api/git,visualstudio
 
-Libs/*.dll
-Libs/*.xml
+Example
+Output
+*.unitypackage
