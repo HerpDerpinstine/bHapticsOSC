@@ -10,12 +10,16 @@ namespace bHapticsOSC.Managers
 			OpenSoundControl.AddressManager.Attach($"{Addresses.VRChat_Avatar.Prefix}{Addresses.VRChat_Avatar.OnChange}", (OscMessage msg) => HapticsHandler.ResetAllDevices());
 
 			AttachVRCAPNodes(bHaptics.PositionType.Head, ConfigManager.Devices.Head.Intensity, 6);
-			AttachVRCAPNodes(bHaptics.PositionType.VestFront, ConfigManager.Devices.VestFront.Intensity, 20);
-			AttachVRCAPNodes(bHaptics.PositionType.VestBack, ConfigManager.Devices.VestBack.Intensity, 20);
+
+			AttachVRCAPNodes(bHaptics.PositionType.VestFront, ConfigManager.Devices.Vest.Intensity, 20);
+			AttachVRCAPNodes(bHaptics.PositionType.VestBack, ConfigManager.Devices.Vest.Intensity, 20);
+
 			AttachVRCAPNodes(bHaptics.PositionType.ForearmL, ConfigManager.Devices.ArmLeft.Intensity, 6);
 			AttachVRCAPNodes(bHaptics.PositionType.ForearmR, ConfigManager.Devices.ArmRight.Intensity, 6);
+
 			AttachVRCAPNodes(bHaptics.PositionType.HandL, ConfigManager.Devices.HandLeft.Intensity, 3);
 			AttachVRCAPNodes(bHaptics.PositionType.HandR, ConfigManager.Devices.HandRight.Intensity, 3);
+
 			AttachVRCAPNodes(bHaptics.PositionType.FootL, ConfigManager.Devices.FootLeft.Intensity, 3);
 			AttachVRCAPNodes(bHaptics.PositionType.FootR, ConfigManager.Devices.FootRight.Intensity, 3);
 		}

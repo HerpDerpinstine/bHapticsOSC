@@ -4,8 +4,7 @@
     {
         internal Device Head;
 
-        internal Device VestFront;
-        internal Device VestBack;
+        internal Device Vest;
 
         internal Device ArmLeft;
         internal Device ArmRight;
@@ -24,13 +23,9 @@
                 Head = new Device() { Category = "Head", Parent = this };
             Head.Load();
 
-            if (VestFront == null)
-                VestFront = VestFront = new Device() { Category = "Vest Front", Parent = this };
-            VestFront.Load();
-
-            if (VestBack == null)
-                VestBack = new Device() { Category = "Vest Back", Parent = this };
-            VestBack.Load();
+            if (Vest == null)
+                Vest = new Device() { Category = "Vest", Parent = this };
+            Vest.Load();
 
             if (ArmLeft == null)
                 ArmLeft = new Device() { Category = "Arm Left", Parent = this };

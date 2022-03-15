@@ -51,8 +51,7 @@ namespace bHapticsOSC
             Console.WriteLine($"===== Devices =====");
             Console.WriteLine();
             Console.WriteLine($"[Head] = {ConfigManager.Devices.Head.Enabled}");
-            Console.WriteLine($"[Vest | Front] = {ConfigManager.Devices.VestFront.Enabled}");
-            Console.WriteLine($"[Vest | Back] = {ConfigManager.Devices.VestBack.Enabled}");
+            Console.WriteLine($"[Vest] = {ConfigManager.Devices.Vest.Enabled}");
             Console.WriteLine($"[Arm | Left] = {ConfigManager.Devices.ArmLeft.Enabled}");
             Console.WriteLine($"[Arm | Right] = {ConfigManager.Devices.ArmRight.Enabled}");
             Console.WriteLine($"[Hand | Left] = {ConfigManager.Devices.HandLeft.Enabled}");
@@ -65,8 +64,7 @@ namespace bHapticsOSC
             Console.WriteLine($"===== Intensity =====");
             Console.WriteLine();
             Console.WriteLine($"[Head] = {ConfigManager.Devices.Head.Intensity}");
-            Console.WriteLine($"[Vest | Front] = {ConfigManager.Devices.VestFront.Intensity}");
-            Console.WriteLine($"[Vest | Back] = {ConfigManager.Devices.VestBack.Intensity}");
+            Console.WriteLine($"[Vest] = {ConfigManager.Devices.Vest.Intensity}");
             Console.WriteLine($"[Arm | Left] = {ConfigManager.Devices.ArmLeft.Intensity}");
             Console.WriteLine($"[Arm | Right] = {ConfigManager.Devices.ArmRight.Intensity}");
             Console.WriteLine($"[Hand | Left] = {ConfigManager.Devices.HandLeft.Intensity}");
