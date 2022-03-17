@@ -7,7 +7,7 @@
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<OutputPath>$(SolutionDir)Output\$(Configuration)\</OutputPath>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<ApplicationIcon>bHapticsOSC.ico</ApplicationIcon>
+		<ApplicationIcon>bhaptics_icon.ico</ApplicationIcon>
 		<OutputType>Exe</OutputType>
 		<StartupObject />
 	</PropertyGroup>
@@ -31,7 +31,9 @@
 	  <None Remove=".gitattributes" />
 	  <None Remove=".gitignore" />
 	  <None Remove="bHapticsOSC.ico" />
+	  <None Remove="bHapticsOSC_v1.0.0.zip" />
 	  <None Remove="bHapticsOSC_v1.0.0_VRCSDK.unitypackage" />
+	  <None Remove="ILRepack.targets" />
 	  <None Remove="LICENSE.md" />
 	  <None Remove="NOTICE.txt" />
 	  <None Remove="README.md" />
