@@ -51,7 +51,10 @@ Below is a handy chart for how much memory each Device takes up.
 3) Download the [bHapticsOSC](https://github.com/HerpDerpinstine/bHapticsOSC/releases) VRCSDK Unity Package from [Releases](https://github.com/HerpDerpinstine/bHapticsOSC/releases).
 4) Import the [bHapticsOSC](https://github.com/HerpDerpinstine/bHapticsOSC/releases) VRCSDK Unity Package to your Project.
 5) Navigate to ``Assets/bHapticsOSC/VRChat/Prefabs``.
-6) Inside there you will see 2 sets of Prefabs. One set is for just the Contacts, One set is for using the included Meshs. Pick a set.
+
+6) Pick a set. Inside the Prefabs folder you will see 2 sets of Prefabs.  
+One set is for just the Contacts, One set is for using the included Meshs.  
+
 7) Drag, Position, and Attach the Prefabs from that set's folder onto the Avatar's Armature.
 8) Add the ``bHapticsOSC Integration`` component to the Avatar next to it's Avatar Descriptor.
 
