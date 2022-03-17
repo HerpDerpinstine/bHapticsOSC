@@ -16,9 +16,14 @@ Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics G
 - [.NET Framework 4.8 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net48)  
   
 **VRCHAT USAGE ONLY**    
+
 - A bHaptics Compatible Avatar  
   
 **VRCHAT AVATAR CREATION ONLY**
+
+- VRChat's Open-Beta SDK  
+Currently Avatar Dynamics is only available on the Open-Beta branch and SDK of VRChat.
+
 - A Custom Avatar with an FX Layer and Expression Parameters.  
 Depending on the Devices you choose to Integrate the Expression Parameters will need a certain amount of free memory space.  
 Below is a handy chart for how much memory each Device takes up.
