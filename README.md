@@ -19,7 +19,7 @@ Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics G
 
 ### USAGE:
 
-1) Download [bHapticsOSC](https://github.com/HerpDerpinstine/bHapticsOSC/releases) from Releases
+1) Download [bHapticsOSC](https://github.com/HerpDerpinstine/bHapticsOSC/releases) from [Releases](https://github.com/HerpDerpinstine/bHapticsOSC/releases).
 2) Extract the application from the ZIP Archive.
 3) Run ``bHapticsOSC.exe``
 4) Start the bHaptics Player and connect your Devices.
@@ -28,7 +28,18 @@ Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics G
 
 ### VRCHAT AVATAR CREATION:
 
-- Coming Soon...
+1) Download the Source Code for [Animator As Code](https://github.com/hai-vr/av3-animator-as-code) from [HERE](https://github.com/hai-vr/av3-animator-as-code/archive/refs/heads/main.zip).
+2) Extract the ``av3-animator-as-code-main`` folder from the ZIP to the Root of your Project's Assets folder.
+3) Download the [bHapticsOSC](https://github.com/HerpDerpinstine/bHapticsOSC/releases) VRCSDK Unity Package from [Releases](https://github.com/HerpDerpinstine/bHapticsOSC/releases).
+4) Import the [bHapticsOSC](https://github.com/HerpDerpinstine/bHapticsOSC/releases) VRCSDK Unity Package to your Project.
+5) Navigate to ``Assets/bHapticsOSC/VRChat/Prefabs``.
+6) Inside there you will see 2 sets of Prefabs. One set is for just the Contacts, One set is for using the included Meshs. Pick a set.
+7) Drag, Position, and Attach the Prefabs from that set's folder onto the Avatar's Armature.
+8) Add the ``bHapticsOSC Integration`` component to the Avatar next to it's Avatar Descriptor.
+9) Select which Devices you wish to Integrate.
+Every Device will give you a ``Mesh GameObject`` selection. If you used a Device Prefab that has an included Mesh then select it here, if not leave this blank.
+Some Devices will give you a ``Use ParentConstraints`` option. This will attempt to attach ParentConstraints from the Prefab to the Avatar's Bones.
+10) Click the ``APPLY`` button.
 
 ---
 

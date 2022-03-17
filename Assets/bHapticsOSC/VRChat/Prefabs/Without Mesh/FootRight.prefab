@@ -53,7 +53,6 @@ MonoBehaviour:
   - Head
   - Torso
   - Hand
-  - FootL
   - Finger
   allowSelf: 1
   allowOthers: 0
@@ -148,7 +147,6 @@ MonoBehaviour:
   - Head
   - Torso
   - Hand
-  - FootL
   - Finger
   allowSelf: 1
   allowOthers: 0
@@ -464,7 +462,6 @@ MonoBehaviour:
   - Head
   - Torso
   - Hand
-  - FootL
   - Finger
   allowSelf: 1
   allowOthers: 0

@@ -1,7 +1,9 @@
 #if UNITY_EDITOR
 using UnityEngine;
-using VRC.SDK3.Avatars.Components;
 using UnityEditor;
+using UnityEditor.Animations;
+using AnimatorAsCode.V0;
+using VRC.SDK3.Avatars.Components;
 
 namespace bHapticsOSC
 {
@@ -19,21 +21,34 @@ namespace bHapticsOSC
 		public GameObject VestObj;
 
 		public bool ToggleArmL = false;
-		public bool ToggleArmR = false;
 		public GameObject ArmLeftObj;
+
+		public bool ToggleArmR = false;
 		public GameObject ArmRightObj;
 
 		public bool ToggleHandL = false;
-		public bool ToggleHandR = false;
-		public bool HandLeftParentConstraint = true;
-		public bool HandRightParentConstraint = true;
 		public GameObject HandLeftObj;
+		public bool HandLeftParentConstraint = true;
+
+		public bool ToggleHandR = false;
 		public GameObject HandRightObj;
+		public bool HandRightParentConstraint = true;
 
 		public bool ToggleFootL = false;
-		public bool ToggleFootR = false;
 		public GameObject FootLeftObj;
+
+		public bool ToggleFootR = false;
 		public GameObject FootRightObj;
+
+		public bool IsAnyDeviceSelected()
+			=> ToggleHead
+				|| ToggleVest
+				|| ToggleArmL
+				|| ToggleArmR
+				|| ToggleHandL
+				|| ToggleHandR
+				|| ToggleFootL
+				|| ToggleFootR;
 
 		public void Awake()
         {
@@ -47,6 +62,22 @@ namespace bHapticsOSC
             if (string.IsNullOrEmpty(assetKey) || string.IsNullOrEmpty(assetKey.Trim()))
                 assetKey = GUID.Generate().ToString();
         }
-    }
+
+		public AacFlBase CreateAnimatorAsCode(string name, AnimatorController animatorController)
+		{
+			var aac = AacV0.Create(new AacConfiguration
+			{
+				SystemName = name,
+				AvatarDescriptor = avatar,
+				AnimatorRoot = transform,
+				DefaultValueRoot = transform,
+				AssetContainer = animatorController,
+				AssetKey = assetKey,
+				DefaultsProvider = new AacDefaultsProvider(false)
+			});
+			aac.ClearPreviousAssets();
+			return aac;
+		}
+	}
 }
 #endif

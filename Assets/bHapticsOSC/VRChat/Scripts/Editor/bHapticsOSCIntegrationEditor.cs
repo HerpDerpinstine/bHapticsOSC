@@ -1,40 +1,47 @@
-﻿using UnityEditor;
-using UnityEngine;
-using VRC.SDK3.Avatars.ScriptableObjects;
-using AnimatorAsCode.V0;
-using UnityEditor.Animations;
+﻿using System.IO;
 using System.Linq;
-using VRC.SDK3.Avatars.Components;
-using System.IO;
+using UnityEngine;
 using UnityEngine.Animations;
+using UnityEditor;
+using UnityEditor.Animations;
+using AnimatorAsCode.V0;
+using VRC.SDK3.Avatars.Components;
+using VRC.SDK3.Avatars.ScriptableObjects;
 
 namespace bHapticsOSC
 {
-    [CustomEditor(typeof(bHapticsOSCIntegration), true)]
+    [CustomEditor(typeof(bHapticsOSCIntegration))]
     public class bHapticsOSCIntegrationEditor : Editor
     {
-        private const string SystemName = "bHaptics";
+        private static string SystemName = "bHaptics";
+		private static int HeadCost = 6;
+		private static int VestCost = 40;
+		private static int ArmCost = 6;
+		private static int HandCost = 3;
+		private static int FootCost = 3;
 
-		private int HeadCost = 6;
-		private int VestCost = 40;
-		private int ArmCost = 6;
-		private int HandCost = 3;
-		private int FootCost = 3;
-
-
-		public static readonly HumanBodyBones[] HandBonesLeft = new HumanBodyBones[]
+		private static readonly HumanBodyBones[] HandBonesLeft = new HumanBodyBones[]
 		{
 			HumanBodyBones.LeftHand,
 			HumanBodyBones.LeftIndexProximal,
 			HumanBodyBones.LeftIndexIntermediate,
 		};
 
-		public static readonly HumanBodyBones[] HandBonesRight = new HumanBodyBones[]
+		private static readonly HumanBodyBones[] HandBonesRight = new HumanBodyBones[]
 		{
 			HumanBodyBones.RightHand,
 			HumanBodyBones.RightIndexProximal,
 			HumanBodyBones.RightIndexIntermediate,
 		};
+
+		private enum HelpBoxType
+        {
+			NoFXLayer,
+			NoExpressionParameters,
+			NoDevicesSelected,
+			NotEnoughMemory,
+			NonSceneObject,
+        }
 
 		public override void OnInspectorGUI()
 		{
@@ -54,110 +61,38 @@ namespace bHapticsOSC
 			VRCAvatarDescriptor.CustomAnimLayer fx_layer = editorComp.avatar.baseAnimationLayers.FirstOrDefault(x => x.type == VRCAvatarDescriptor.AnimLayerType.FX);
 			if (fx_layer.isDefault || (fx_layer.animatorController == null))
 			{
-				EditorGUILayout.HelpBox("No Custom FX Layer Found!\nIt is required that the Avatar have some form of non-default FX Layer set.", MessageType.Error);
+				DrawHelpBox(HelpBoxType.NoFXLayer);
 				return;
 			}
 
 			VRCExpressionParameters expressionParameters = editorComp.avatar.expressionParameters;
 			if (expressionParameters == null)
 			{
-				EditorGUILayout.HelpBox("No Custom Expression Parameters Found!\nIt is required that the Avatar have some form of Expression Parameters set.", MessageType.Error);
+				DrawHelpBox(HelpBoxType.NoExpressionParameters);
 				return;
 			}
 
-			editorComp.ToggleHead = EditorGUILayout.Toggle("Head", editorComp.ToggleHead);
-			EditorGUILayout.Space();
+			DrawAllDevices();
 
-			editorComp.ToggleVest = EditorGUILayout.Toggle("Vest", editorComp.ToggleVest);
-			EditorGUILayout.Space();
-
-			editorComp.ToggleArmL = EditorGUILayout.Toggle("Arm Left", editorComp.ToggleArmL);
-			editorComp.ToggleArmR = EditorGUILayout.Toggle("Arm Right", editorComp.ToggleArmR);
-			EditorGUILayout.Space();
-
-			editorComp.ToggleHandL = EditorGUILayout.Toggle("Hand Left", editorComp.ToggleHandL);
-			editorComp.ToggleHandR = EditorGUILayout.Toggle("Hand Right", editorComp.ToggleHandR);
-			EditorGUILayout.Space();
-
-			editorComp.ToggleFootL = EditorGUILayout.Toggle("Foot Left", editorComp.ToggleFootL);
-			editorComp.ToggleFootR = EditorGUILayout.Toggle("Foot Right", editorComp.ToggleFootR);
-			EditorGUILayout.Space();
-
-			if (!editorComp.ToggleHead
-				&& !editorComp.ToggleVest
-				&& !editorComp.ToggleArmL
-				&& !editorComp.ToggleArmR
-				&& !editorComp.ToggleHandL
-				&& !editorComp.ToggleHandR
-				&& !editorComp.ToggleFootL
-				&& !editorComp.ToggleFootR)
-            {
-                EditorGUILayout.HelpBox("Nothing is Selected!\nPlease check off at least 1 option to Integrate into the Avatar.", MessageType.Warning);
-                return;
-			}
-
-			if (editorComp.ToggleHead)
+			if (!editorComp.IsAnyDeviceSelected())
 			{
-				editorComp.HeadObj = (GameObject)EditorGUILayout.ObjectField("Head ~ GameObject", editorComp.HeadObj, typeof(GameObject), true);
-				EditorGUILayout.Space();
-			}
-
-			if (editorComp.ToggleVest)
-			{
-				editorComp.VestObj = (GameObject)EditorGUILayout.ObjectField("Vest ~ GameObject", editorComp.VestObj, typeof(GameObject), true);
-				EditorGUILayout.Space();
-			}
-
-			if (editorComp.ToggleArmL)
-			{
-				editorComp.ArmLeftObj = (GameObject)EditorGUILayout.ObjectField("Arm Left ~ GameObject", editorComp.ArmLeftObj, typeof(GameObject), true);
-				EditorGUILayout.Space();
-			}
-
-			if (editorComp.ToggleArmR)
-			{
-				editorComp.ArmRightObj = (GameObject)EditorGUILayout.ObjectField("Arm Right ~ GameObject", editorComp.ArmRightObj, typeof(GameObject), true);
-				EditorGUILayout.Space();
-			}
-
-			if (editorComp.ToggleHandL)
-			{
-				editorComp.HandLeftObj = (GameObject)EditorGUILayout.ObjectField("Hand Left ~ GameObject", editorComp.HandLeftObj, typeof(GameObject), true);
-				if (editorComp.HandLeftObj != null)
-					editorComp.HandLeftParentConstraint = EditorGUILayout.Toggle("Hand Left ~ Use ParentConstraints", editorComp.HandLeftParentConstraint);
-				EditorGUILayout.Space();
-			}
-
-			if (editorComp.ToggleHandR)
-			{
-				editorComp.HandRightObj = (GameObject)EditorGUILayout.ObjectField("Hand Right ~ GameObject", editorComp.HandRightObj, typeof(GameObject), true);
-				if (editorComp.HandRightObj != null)
-					editorComp.HandRightParentConstraint = EditorGUILayout.Toggle("Hand Right ~ Use ParentConstraints", editorComp.HandRightParentConstraint);
-				EditorGUILayout.Space();
-			}
-
-			if (editorComp.ToggleFootL)
-			{
-				editorComp.FootLeftObj = (GameObject)EditorGUILayout.ObjectField("Foot Left ~ GameObject", editorComp.FootLeftObj, typeof(GameObject), true);
-				EditorGUILayout.Space();
-			}
-
-			if (editorComp.ToggleFootR)
-			{
-				editorComp.FootRightObj = (GameObject)EditorGUILayout.ObjectField("Foot Right ~ GameObject", editorComp.FootRightObj, typeof(GameObject), true);
-				EditorGUILayout.Space();
+				DrawHelpBox(HelpBoxType.NoDevicesSelected);
+				return;
 			}
 
 			int optionsCost = GetTotalCost();
 			int currentMemoryUsed = editorComp.avatar.expressionParameters.CalcTotalCost();
 			int totalCost = (currentMemoryUsed + optionsCost);
 			if (totalCost > VRCExpressionParameters.MAX_PARAMETER_COST)
-            {
-				EditorGUILayout.HelpBox($"Not enough Expression Parameter Memory!\nIn order to Integrate this many options you need {(totalCost - VRCExpressionParameters.MAX_PARAMETER_COST)} more free bits.\nEither free up some space or uncheck some options.", MessageType.Error);
+			{
+				DrawHelpBox(HelpBoxType.NotEnoughMemory, (totalCost - VRCExpressionParameters.MAX_PARAMETER_COST).ToString());
 				return;
             }
 
-			bool integrateButton = GUILayout.Button("INTEGRATE");
+			if (!NonSceneGameObjectCheck())
+				return;
+
+			bool integrateButton = GUILayout.Button("APPLY");
 			EditorGUILayout.Space();
 			if (!integrateButton)
 				return;
@@ -194,6 +129,119 @@ namespace bHapticsOSC
 			GameObject.DestroyImmediate(target);
         }
 
+		private void DrawUIOption(string Name, ref bool Toggle, ref GameObject gameObject)
+        {
+			GUILayout.BeginVertical(Name, "window");
+			EditorGUILayout.Space();
+			DrawUIOptionInternal(ref Toggle, ref gameObject);
+			EditorGUILayout.Space();
+			GUILayout.EndVertical();
+			EditorGUILayout.Space();
+		}
+
+		private void DrawUIOption(string Name, ref bool Toggle, ref GameObject gameObject, ref bool parentConstraints)
+        {
+
+			GUILayout.BeginVertical(Name, "window");
+			EditorGUILayout.Space();
+			DrawUIOptionInternal(ref Toggle, ref gameObject);
+			if (Toggle && (gameObject != null))
+				parentConstraints = EditorGUILayout.Toggle("Use ParentConstraints", parentConstraints);
+			EditorGUILayout.Space();
+			GUILayout.EndVertical();
+			EditorGUILayout.Space();
+		}
+
+		private void DrawUIOptionInternal(ref bool Toggle, ref GameObject gameObject)
+        {
+			Toggle = EditorGUILayout.Toggle("Integrate", Toggle);
+			if (Toggle)
+				gameObject = (GameObject)EditorGUILayout.ObjectField("Mesh GameObject", gameObject, typeof(GameObject), true);
+		}
+
+		private void DrawAllDevices()
+        {
+			bHapticsOSCIntegration editorComp = (bHapticsOSCIntegration)target;
+
+			DrawUIOption("Head", ref editorComp.ToggleHead, ref editorComp.HeadObj);
+
+			DrawUIOption("Vest", ref editorComp.ToggleVest, ref editorComp.VestObj);
+
+			DrawUIOption("Arm Left", ref editorComp.ToggleArmL, ref editorComp.ArmLeftObj);
+			DrawUIOption("Arm Right", ref editorComp.ToggleArmR, ref editorComp.ArmRightObj);
+
+			DrawUIOption("Hand Left", ref editorComp.ToggleHandL, ref editorComp.HandLeftObj, ref editorComp.HandLeftParentConstraint);
+			DrawUIOption("Hand Right", ref editorComp.ToggleHandR, ref editorComp.HandRightObj, ref editorComp.HandRightParentConstraint);
+
+			DrawUIOption("Foot Left", ref editorComp.ToggleFootL, ref editorComp.FootLeftObj);
+			DrawUIOption("Foot Right", ref editorComp.ToggleFootR, ref editorComp.FootRightObj);
+		}
+
+		private bool NonSceneGameObjectCheck()
+		{
+			bHapticsOSCIntegration editorComp = (bHapticsOSCIntegration)target;
+			if (!NonSceneGameObjectCheck("Head", ref editorComp.ToggleHead, ref editorComp.HeadObj)
+				|| !NonSceneGameObjectCheck("Vest", ref editorComp.ToggleVest, ref editorComp.VestObj)
+				|| !NonSceneGameObjectCheck("Arm Left", ref editorComp.ToggleArmL, ref editorComp.ArmLeftObj)
+				|| !NonSceneGameObjectCheck("Arm Right", ref editorComp.ToggleArmR, ref editorComp.ArmRightObj)
+				|| !NonSceneGameObjectCheck("Hand Left", ref editorComp.ToggleHandL, ref editorComp.HandLeftObj)
+				|| !NonSceneGameObjectCheck("Hand Right", ref editorComp.ToggleHandR, ref editorComp.HandRightObj)
+				|| !NonSceneGameObjectCheck("Foot Left", ref editorComp.ToggleFootL, ref editorComp.FootLeftObj)
+				|| !NonSceneGameObjectCheck("Foot Right", ref editorComp.ToggleFootR, ref editorComp.FootRightObj))
+				return false;
+			return true;
+		}
+
+		private bool NonSceneGameObjectCheck(string Name, ref bool Toggle, ref GameObject gameObject)
+        {
+			if (!Toggle || (gameObject == null) || gameObject.scene.IsValid())
+				return true;
+
+			DrawHelpBox(HelpBoxType.NonSceneObject, Name);
+			return false;
+        }
+
+		private void DrawHelpBox(HelpBoxType type, string additionalText = null)
+        {
+			string msg = null;
+			MessageType messageType = MessageType.None;
+
+			switch (type)
+			{
+				case HelpBoxType.NoFXLayer:
+					messageType = MessageType.Error;
+					msg = "No Custom FX Layer Found!\nIt is required that the Avatar have some form of non-default FX Layer set.";
+					goto default;
+
+				case HelpBoxType.NoExpressionParameters:
+					messageType = MessageType.Error;
+					msg = "No Custom Expression Parameters Found!\nIt is required that the Avatar have some form of Expression Parameters set.";
+					goto default;
+
+				case HelpBoxType.NoDevicesSelected:
+					messageType = MessageType.Warning;
+					msg = "Nothing is Selected!\nPlease check off at least 1 Device to Integrate into the Avatar.";
+					goto default;
+
+				case HelpBoxType.NotEnoughMemory:
+					messageType = MessageType.Error;
+					msg = $"Not enough Expression Parameter Memory!\nIn order to Integrate this many Devices you need {additionalText} more free bits.\nEither free up some space or uncheck some options.";
+					goto default;
+
+				case HelpBoxType.NonSceneObject:
+					messageType = MessageType.Error;
+					msg = $"Non-Scene GameObject set for {additionalText}'s Mesh GameObject!\nPlease change this to a GameObject that is in the Scene.";
+					goto default;
+
+				default:
+					break;
+            }
+			if (string.IsNullOrEmpty(msg))
+				return;
+
+			EditorGUILayout.HelpBox(msg, messageType);
+		}
+
 		private int GetTotalCost()
 		{
 			bHapticsOSCIntegration editorComp = (bHapticsOSCIntegration)target;
@@ -226,9 +274,7 @@ namespace bHapticsOSC
 		private void CreateAllNodes(AnimatorController animatorController, VRCExpressionParameters expressionParameters)
 		{
 			bHapticsOSCIntegration editorComp = (bHapticsOSCIntegration)target;
-			AacFlBase aac = CreateAnimatorAsCode(animatorController);
-			aac.RemoveAllSupportingLayers(name);
-			aac.ClearPreviousAssets();
+			AacFlBase aac = editorComp.CreateAnimatorAsCode(SystemName, animatorController);
 
 			if (editorComp.ToggleHead)
 				CreateNodes(aac, expressionParameters, editorComp.HeadObj, "Head", HeadCost);
@@ -328,7 +374,7 @@ namespace bHapticsOSC
 				return null;
 
 			T obj = AssetDatabase.LoadAssetAtPath<T>(newPath);
-			AssetDatabase.ForceReserializeAssets(new[] { AssetDatabase.GetAssetPath(obj) });
+			AssetDatabase.ForceReserializeAssets(new[] { newPath });
 			return obj;
 		}
 
@@ -384,8 +430,11 @@ namespace bHapticsOSC
         }
 
 		private void CreateAnimatorLayerStates(AacFlBase aac, GameObject obj, int node, string name, string deviceName)
-        {
-			AacFlLayer layer = aac.CreateSupportingFxLayer($"{deviceName}_{node}");
+		{
+			string layer_name = $"{deviceName}_{node}";
+
+			aac.RemoveAllSupportingLayers(layer_name);
+			AacFlLayer layer = aac.CreateSupportingFxLayer(layer_name);
 
 			AacFlFloatParameter inputParam = layer.FloatParameter(name);
 			AacFlBoolParameter outputParam = layer.BoolParameter($"{name}_bool");
@@ -466,30 +515,6 @@ namespace bHapticsOSC
 			saved.boolValue = false;
 
 			avatarParametersObj.ApplyModifiedProperties();
-		}
-
-		private AacFlBase CreateAnimatorAsCode(AnimatorController animatorController)
-		{
-			bHapticsOSCIntegration editorComp = (bHapticsOSCIntegration)target;
-			var aac = AacV0.Create(new AacConfiguration
-			{
-				SystemName = SystemName,
-				AvatarDescriptor = editorComp.avatar,
-				AnimatorRoot = editorComp.avatar.transform,
-				DefaultValueRoot = editorComp.avatar.transform,
-				AssetContainer = animatorController,
-				AssetKey = editorComp.assetKey,
-				DefaultsProvider = new AacDefaultsProvider(true)
-			});
-			aac.ClearPreviousAssets();
-			return aac;
-		}
-
-		internal class ToggleStatePair
-        {
-			internal AacFlState FalseState;
-			internal AacFlState TrueState;
-			internal AacFlFloatParameter Param;
 		}
 	}
 }

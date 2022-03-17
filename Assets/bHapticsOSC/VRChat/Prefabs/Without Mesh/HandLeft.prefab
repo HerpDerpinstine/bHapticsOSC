@@ -54,6 +54,7 @@ MonoBehaviour:
   - Torso
   - Foot
   - HandR
+  - FingerR
   allowSelf: 1
   allowOthers: 0
   localOnly: 0
@@ -178,6 +179,7 @@ MonoBehaviour:
   - Torso
   - Foot
   - HandR
+  - FingerR
   allowSelf: 1
   allowOthers: 0
   localOnly: 0
@@ -463,6 +465,7 @@ MonoBehaviour:
   - Torso
   - Foot
   - HandR
+  - FingerR
   allowSelf: 1
   allowOthers: 0
   localOnly: 0
