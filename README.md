@@ -13,7 +13,23 @@ Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics G
 ### REQUIREMENTS:
 
 - A Windows PC to run the bHaptics Player and bHapticsOSC application on.
-- [.NET Framework 4.8 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net48)
+- [.NET Framework 4.8 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net48)  
+  
+**VRCHAT USAGE ONLY**    
+- A bHaptics Compatible Avatar  
+  
+**VRCHAT AVATAR CREATION ONLY**
+- A Custom Avatar with an FX Layer and Expression Parameters.  
+Depending on the Devices you choose to Integrate the Expression Parameters will need a certain amount of free memory space.  
+Below is a handy chart for how much memory each Device takes up.
+
+| Device | Memory Usage Per Device |
+| - |
+| Head | 6 bits |
+| Vest | 40 bits |
+| Arm | 6 bits |
+| Hand | 3 bits |
+| Foot | 3 bits |
 
 ---
 
@@ -28,6 +44,8 @@ Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics G
 
 ### VRCHAT AVATAR CREATION:
 
+- Be sure to create a backup of the Avatar's Scene before continuing.
+
 1) Download the Source Code for [Animator As Code](https://github.com/hai-vr/av3-animator-as-code) from [HERE](https://github.com/hai-vr/av3-animator-as-code/archive/refs/heads/main.zip).
 2) Extract the ``av3-animator-as-code-main`` folder from the ZIP to the Root of your Project's Assets folder.
 3) Download the [bHapticsOSC](https://github.com/HerpDerpinstine/bHapticsOSC/releases) VRCSDK Unity Package from [Releases](https://github.com/HerpDerpinstine/bHapticsOSC/releases).
@@ -38,8 +56,12 @@ Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics G
 8) Add the ``bHapticsOSC Integration`` component to the Avatar next to it's Avatar Descriptor.
 
 9) Select which Devices you wish to Integrate.  
-Every Device will give you a ``Mesh GameObject`` selection. If you used a Device Prefab that has an included Mesh then select it here, if not leave this blank.  
-Some Devices will give you a ``Use ParentConstraints`` option. This will attempt to attach ParentConstraints from the Prefab to the Avatar's Bones.  
+
+- Every Device will give you a ``Mesh GameObject`` selection.  
+If you used a Device Prefab that has an included Mesh then select it here, if not leave this blank.  
+
+- Some Devices will give you a ``Use ParentConstraints`` option.  
+This will attempt to attach ParentConstraints from the Prefab to the Avatar's Bones.  
 
 10) Click the ``APPLY`` button.
 
