@@ -24,7 +24,7 @@ Depending on the Devices you choose to Integrate the Expression Parameters will 
 Below is a handy chart for how much memory each Device takes up.
 
 | Device | Memory Usage Per Device |
-| - |
+| - | - |
 | Head | 6 bits |
 | Vest | 40 bits |
 | Arm | 6 bits |
