@@ -36,9 +36,9 @@ Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics G
 6) Inside there you will see 2 sets of Prefabs. One set is for just the Contacts, One set is for using the included Meshs. Pick a set.
 7) Drag, Position, and Attach the Prefabs from that set's folder onto the Avatar's Armature.
 8) Add the ``bHapticsOSC Integration`` component to the Avatar next to it's Avatar Descriptor.
-9) Select which Devices you wish to Integrate.
-Every Device will give you a ``Mesh GameObject`` selection. If you used a Device Prefab that has an included Mesh then select it here, if not leave this blank.
-Some Devices will give you a ``Use ParentConstraints`` option. This will attempt to attach ParentConstraints from the Prefab to the Avatar's Bones.
+9) Select which Devices you wish to Integrate.  
+Every Device will give you a ``Mesh GameObject`` selection. If you used a Device Prefab that has an included Mesh then select it here, if not leave this blank.  
+Some Devices will give you a ``Use ParentConstraints`` option. This will attempt to attach ParentConstraints from the Prefab to the Avatar's Bones.  
 10) Click the ``APPLY`` button.
 
 ---
