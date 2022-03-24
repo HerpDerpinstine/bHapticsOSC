@@ -47,6 +47,14 @@ Below is a handy chart for how much memory each Device takes up.
 
 ---
 
+### VRCHAT USAGE:
+
+1) Follow the normal [USAGE](#usage) guide above.
+2) Change into a bHapticsOSC Compatible Avatar.
+3) Make sure that OSC is enabled in the Avatar 3.0 Radial Menu. (Options -> OSC -> Enable)
+
+---
+
 ### VRCHAT AVATAR CREATION:
 
 - Be sure to create a backup of the Avatar's Scene before continuing.
