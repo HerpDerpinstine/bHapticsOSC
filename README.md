@@ -21,7 +21,7 @@ Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics G
 
 - VRChat's Open-Beta  
 Currently Avatar Dynamics is only available on the Open-Beta branch of VRChat.  
-You can switch to this branch in the VRChat's Properties in Steam or Oculus.
+You can switch to this branch in VRChat's Properties in Steam or Oculus.
   
 **VRCHAT AVATAR CREATION ONLY**
 
