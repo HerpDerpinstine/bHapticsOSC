@@ -18,11 +18,15 @@ Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics G
 **VRCHAT USAGE ONLY**    
 
 - A bHaptics Compatible Avatar  
+
+- VRChat's Open-Beta
+Currently Avatar Dynamics is only available on the Open-Beta branch of VRChat.
+You can switch to this branch in the VRChat's Properties in Steam or Oculus.
   
 **VRCHAT AVATAR CREATION ONLY**
 
 - VRChat's Open-Beta SDK  
-Currently Avatar Dynamics is only available on the Open-Beta branch and SDK of VRChat.
+Currently Avatar Dynamics is only available on the Open-Beta SDK of VRChat.
 
 - A Custom Avatar with an FX Layer and Expression Parameters.  
 Depending on the Devices you choose to Integrate the Expression Parameters will need a certain amount of free memory space.  
@@ -48,6 +52,8 @@ Below is a handy chart for how much memory each Device takes up.
 ---
 
 ### VRCHAT USAGE:
+
+- Be sure you are on VRChat's Open-Beta branch.
 
 1) Follow the normal [USAGE](#usage) guide above.
 2) Change into a bHapticsOSC Compatible Avatar.

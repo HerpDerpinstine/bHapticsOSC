@@ -65,7 +65,7 @@ namespace bHapticsOSC
 
 		public AacFlBase CreateAnimatorAsCode(string name, AnimatorController animatorController)
 		{
-			var aac = AacV0.Create(new AacConfiguration
+			AacFlBase aac = AacV0.Create(new AacConfiguration
 			{
 				SystemName = name,
 				AvatarDescriptor = avatar,
@@ -75,7 +75,6 @@ namespace bHapticsOSC
 				AssetKey = assetKey,
 				DefaultsProvider = new AacDefaultsProvider(false)
 			});
-			aac.ClearPreviousAssets();
 			return aac;
 		}
 	}
