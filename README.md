@@ -53,7 +53,7 @@ Below is a handy chart for how much memory each Device takes up.
 
 ### VRCHAT USAGE:
 
-- Be sure you are on VRChat's Open-Beta branch.
+- Make sure you are on VRChat's Open-Beta branch.
 
 1) Follow the normal [USAGE](#usage) guide above.
 2) Change into a bHapticsOSC Compatible Avatar.
