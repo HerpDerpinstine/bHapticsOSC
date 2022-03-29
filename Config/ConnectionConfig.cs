@@ -1,9 +1,9 @@
 ﻿namespace bHapticsOSC.Config
 {
-    internal class ConnectionConfig : IniFile
+    public class ConnectionConfig : IniFile
     {
-        internal int Port;
-        internal int UpdateRate;
+        public int Port;
+        public int UpdateRate;
 
         internal ConnectionConfig(string filepath) : base(filepath) { }
 

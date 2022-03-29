@@ -1,19 +1,19 @@
 ﻿namespace bHapticsOSC.Config
 {
-    internal class DevicesConfig : IniFile
+    public class DevicesConfig : IniFile
     {
-        internal Device Head;
+        public Device Head;
 
-        internal Device Vest;
+        public Device Vest;
 
-        internal Device ArmLeft;
-        internal Device ArmRight;
+        public Device ArmLeft;
+        public Device ArmRight;
 
-        internal Device HandLeft;
-        internal Device HandRight;
+        public Device HandLeft;
+        public Device HandRight;
 
-        internal Device FootLeft;
-        internal Device FootRight;
+        public Device FootLeft;
+        public Device FootRight;
 
         internal DevicesConfig(string filepath) : base(filepath) { }
 
@@ -52,13 +52,13 @@
             FootRight.Load();
         }
 
-        internal class Device
+        public class Device
         {
             internal IniFile Parent;
             internal string Category;
 
-            internal bool Enabled;
-            internal int Intensity;
+            public bool Enabled;
+            public int Intensity;
 
             internal void Load()
             {

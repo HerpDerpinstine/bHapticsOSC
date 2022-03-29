@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<Target Name="ILRepacker_Debug" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
 		<ItemGroup>
-			<AssemblyFile Include="$(OutputPath)$(AssemblyName).exe" />
+			<AssemblyFile Include="$(OutputPath)$(AssemblyName).dll" />
 		</ItemGroup>
 		<ItemGroup>
 			<InputAssemblies Include="@(AssemblyFile)" />
@@ -12,14 +12,14 @@
 			Parallel="true"
 			DebugInfo="true"
 			InputAssemblies="@(InputAssemblies)"
-			TargetKind="Exe"
+			TargetKind="Dll"
 			OutputFile="@(AssemblyFile)"
 		/>
 	</Target>
 	
 	<Target Name="ILRepacker_Release" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
 		<ItemGroup>
-			<AssemblyFile Include="$(OutputPath)$(AssemblyName).exe" />
+			<AssemblyFile Include="$(OutputPath)$(AssemblyName).dll" />
 		</ItemGroup>
 		<ItemGroup>
 			<InputAssemblies Include="@(AssemblyFile)" />
@@ -29,7 +29,7 @@
 			Parallel="true"
 			DebugInfo="false"
 			InputAssemblies="@(InputAssemblies)"
-			TargetKind="Exe"
+			TargetKind="Dll"
 			OutputFile="@(AssemblyFile)"
 		/>
 	</Target>

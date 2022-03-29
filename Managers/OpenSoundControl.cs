@@ -4,19 +4,19 @@ using System.Threading;
 
 namespace bHapticsOSC.Managers
 {
-    internal static class OpenSoundControl
+    public static class OpenSoundControl
     {
-        internal static OscAddressManager AddressManager = new OscAddressManager();
-        internal static OscReceiver Receiver;
+        public static OscAddressManager AddressManager = new OscAddressManager();
+        public static OscReceiver Receiver;
 
-        internal static void Run()
+        public static void Run()
         {
             Console.WriteLine("Creating OSC Receiver...");
             Receiver = new OscReceiver(ConfigManager.Connection.Port);
             Receiver.Connect();
         }
 
-        internal static void Disconnect()
+        public static void Disconnect()
         {
             if (Receiver.State == OscSocketState.Closed)
                 return;
@@ -24,7 +24,7 @@ namespace bHapticsOSC.Managers
             Console.WriteLine("Disconnected!");
         }
 
-        internal static void ReceivePackets()
+        public static void ReceivePackets()
         {
             Console.WriteLine("Awaiting Packets...");
             Console.WriteLine();

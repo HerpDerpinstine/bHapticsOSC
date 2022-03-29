@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 
 namespace bHapticsOSC.Utils
 {
-    internal static class bHaptics
+    public static class bHaptics
     {
         private static NativeExports NativeLib = null;
         internal const int MaxBufferSize = 20;
 
-        internal static void Load()
+        public static void Load()
         {
             Console.WriteLine("Loading bHaptics Native Library...");
 
@@ -39,32 +39,32 @@ namespace bHapticsOSC.Utils
         private static bool SteamLibraryCheck()
             => !string.IsNullOrEmpty(SteamManifestReader.GetInstallPathFromAppId("1573010"));
 
-        internal static void Quit()
+        public static void Quit()
         {
             NativeLib?.TurnOff();
             NativeLib?.Destroy();
         }
 
-        internal static bool IsPlaying() => NativeLib?.IsPlaying() ?? false;
-        internal static bool IsPlaying(string key) => NativeLib?.IsPlayingKey(Marshal.StringToHGlobalAnsi(key)) ?? false;
-        internal static bool IsDeviceConnected(PositionType type) => NativeLib?.IsDevicePlaying(type) ?? false;
-        internal static bool IsDeviceConnected(DeviceType type, bool isLeft = true) => NativeLib?.IsDevicePlaying(DeviceTypeToPositionType(type, isLeft)) ?? false;
-        internal static bool IsFeedbackRegistered(string key) => NativeLib?.IsFeedbackRegistered(Marshal.StringToHGlobalAnsi(key)) ?? false;
+        public static bool IsPlaying() => NativeLib?.IsPlaying() ?? false;
+        public static bool IsPlaying(string key) => NativeLib?.IsPlayingKey(Marshal.StringToHGlobalAnsi(key)) ?? false;
+        public static bool IsDeviceConnected(PositionType type) => NativeLib?.IsDevicePlaying(type) ?? false;
+        public static bool IsDeviceConnected(DeviceType type, bool isLeft = true) => NativeLib?.IsDevicePlaying(DeviceTypeToPositionType(type, isLeft)) ?? false;
+        public static bool IsFeedbackRegistered(string key) => NativeLib?.IsFeedbackRegistered(Marshal.StringToHGlobalAnsi(key)) ?? false;
 
-        internal static void RegisterFeedback(string key, string tactFileStr) => NativeLib?.RegisterFeedback(Marshal.StringToHGlobalAnsi(key), Marshal.StringToHGlobalAnsi(tactFileStr));
-        internal static void RegisterFeedbackFromTactFile(string key, string tactFileStr) => NativeLib?.RegisterFeedbackFromTactFile(Marshal.StringToHGlobalAnsi(key), Marshal.StringToHGlobalAnsi(tactFileStr));
-        internal static void RegisterFeedbackFromTactFileReflected(string key, string tactFileStr) => NativeLib?.RegisterFeedbackFromTactFileReflected(Marshal.StringToHGlobalAnsi(key), Marshal.StringToHGlobalAnsi(tactFileStr));
+        public static void RegisterFeedback(string key, string tactFileStr) => NativeLib?.RegisterFeedback(Marshal.StringToHGlobalAnsi(key), Marshal.StringToHGlobalAnsi(tactFileStr));
+        public static void RegisterFeedbackFromTactFile(string key, string tactFileStr) => NativeLib?.RegisterFeedbackFromTactFile(Marshal.StringToHGlobalAnsi(key), Marshal.StringToHGlobalAnsi(tactFileStr));
+        public static void RegisterFeedbackFromTactFileReflected(string key, string tactFileStr) => NativeLib?.RegisterFeedbackFromTactFileReflected(Marshal.StringToHGlobalAnsi(key), Marshal.StringToHGlobalAnsi(tactFileStr));
 
-        internal static void SubmitRegistered(string key) => NativeLib?.SubmitRegistered(Marshal.StringToHGlobalAnsi(key));
-        internal static void SubmitRegistered(string key, int startTimeMillis) => NativeLib?.SubmitRegisteredStartMillis(Marshal.StringToHGlobalAnsi(key), startTimeMillis);
-        internal static void SubmitRegistered(string key, string altKey, ScaleOption option) => NativeLib?.SubmitRegisteredWithOption(Marshal.StringToHGlobalAnsi(key), Marshal.StringToHGlobalAnsi(altKey), option.Intensity, option.Duration, 1f, 1f);
-        internal static void SubmitRegistered(string key, string altKey, ScaleOption sOption, RotationOption rOption) => NativeLib?.SubmitRegisteredWithOption(Marshal.StringToHGlobalAnsi(key), Marshal.StringToHGlobalAnsi(altKey), sOption.Intensity, sOption.Duration, rOption.OffsetX, rOption.OffsetY);
+        public static void SubmitRegistered(string key) => NativeLib?.SubmitRegistered(Marshal.StringToHGlobalAnsi(key));
+        public static void SubmitRegistered(string key, int startTimeMillis) => NativeLib?.SubmitRegisteredStartMillis(Marshal.StringToHGlobalAnsi(key), startTimeMillis);
+        public static void SubmitRegistered(string key, string altKey, ScaleOption option) => NativeLib?.SubmitRegisteredWithOption(Marshal.StringToHGlobalAnsi(key), Marshal.StringToHGlobalAnsi(altKey), option.Intensity, option.Duration, 1f, 1f);
+        public static void SubmitRegistered(string key, string altKey, ScaleOption sOption, RotationOption rOption) => NativeLib?.SubmitRegisteredWithOption(Marshal.StringToHGlobalAnsi(key), Marshal.StringToHGlobalAnsi(altKey), sOption.Intensity, sOption.Duration, rOption.OffsetX, rOption.OffsetY);
 
-        internal static void TurnOff() => NativeLib?.TurnOff();
-        internal static void TurnOff(string key) => NativeLib?.TurnOffKey(Marshal.StringToHGlobalAnsi(key));
+        public static void TurnOff() => NativeLib?.TurnOff();
+        public static void TurnOff(string key) => NativeLib?.TurnOffKey(Marshal.StringToHGlobalAnsi(key));
 
-        internal static void Submit(string key, DeviceType type, bool isLeft, byte[] bytes, int durationMillis) => Submit(key, DeviceTypeToPositionType(type, isLeft), bytes, durationMillis);
-        internal static void Submit(string key, PositionType position, byte[] bytes, int durationMillis)
+        public static void Submit(string key, DeviceType type, bool isLeft, byte[] bytes, int durationMillis) => Submit(key, DeviceTypeToPositionType(type, isLeft), bytes, durationMillis);
+        public static void Submit(string key, PositionType position, byte[] bytes, int durationMillis)
         {
             int bytes_size = bytes.Length;
             if (bytes_size != MaxBufferSize)
@@ -75,8 +75,8 @@ namespace bHapticsOSC.Utils
             }
             NativeLib?.SubmitByteArray(Marshal.StringToHGlobalAnsi(key), position, bytes, MaxBufferSize, durationMillis);
         }
-        internal static void Submit(string key, DeviceType type, bool isLeft, List<DotPoint> points, int durationMillis) => Submit(key, DeviceTypeToPositionType(type, isLeft), points, durationMillis);
-        internal static void Submit(string key, PositionType position, List<DotPoint> points, int durationMillis)
+        public static void Submit(string key, DeviceType type, bool isLeft, List<DotPoint> points, int durationMillis) => Submit(key, DeviceTypeToPositionType(type, isLeft), points, durationMillis);
+        public static void Submit(string key, PositionType position, List<DotPoint> points, int durationMillis)
         {
             byte[] bytes = new byte[MaxBufferSize];
             for (var i = 0; i < points.Count; i++)
@@ -88,22 +88,22 @@ namespace bHapticsOSC.Utils
             }
             NativeLib?.SubmitByteArray(Marshal.StringToHGlobalAnsi(key), position, bytes, MaxBufferSize, durationMillis);
         }
-        internal static void Submit(string key, DeviceType type, bool isLeft, List<PathPoint> points, int durationMillis) => Submit(key, DeviceTypeToPositionType(type, isLeft), points, durationMillis);
-        internal static void Submit(string key, PositionType position, List<PathPoint> points, int durationMillis)
+        public static void Submit(string key, DeviceType type, bool isLeft, List<PathPoint> points, int durationMillis) => Submit(key, DeviceTypeToPositionType(type, isLeft), points, durationMillis);
+        public static void Submit(string key, PositionType position, List<PathPoint> points, int durationMillis)
         {
             PathPoint[] pathPoints = points.ToArray();
             NativeLib?.SubmitPathArray(Marshal.StringToHGlobalAnsi(key), position, pathPoints, pathPoints.Length, durationMillis);
         }
 
-        internal static FeedbackStatus GetCurrentFeedbackStatus(DeviceType type, bool isLeft = true) => GetCurrentFeedbackStatus(DeviceTypeToPositionType(type, isLeft));
-        internal static FeedbackStatus GetCurrentFeedbackStatus(PositionType pos)
+        public static FeedbackStatus GetCurrentFeedbackStatus(DeviceType type, bool isLeft = true) => GetCurrentFeedbackStatus(DeviceTypeToPositionType(type, isLeft));
+        public static FeedbackStatus GetCurrentFeedbackStatus(PositionType pos)
         {
             FeedbackStatus status = default;
             NativeLib?.TryGetResponseForPosition(pos, out status);
             return status;
         }
 
-        internal static PositionType DeviceTypeToPositionType(DeviceType pos, bool isLeft = true)
+        public static PositionType DeviceTypeToPositionType(DeviceType pos, bool isLeft = true)
         {
             switch (pos)
             {
@@ -123,7 +123,7 @@ namespace bHapticsOSC.Utils
             return PositionType.Head;
         }
 
-        internal enum DeviceType
+        public enum DeviceType
         {
             None = 0,
             Tactal = 1,
@@ -133,7 +133,7 @@ namespace bHapticsOSC.Utils
             Tactosy_feet = 5
         }
 
-        internal enum PositionType
+        public enum PositionType
         {
             All = 0,
             Left = 1, Right = 2,
@@ -148,60 +148,60 @@ namespace bHapticsOSC.Utils
             Custom1 = 251, Custom2 = 252, Custom3 = 253, Custom4 = 254
         }
 
-        internal class RotationOption
+        public class RotationOption
         {
-            internal RotationOption(float offsetX, float offsetY)
+            public RotationOption(float offsetX, float offsetY)
             {
                 OffsetX = offsetX;
                 OffsetY = offsetY;
             }
-            internal float OffsetX, OffsetY;
+            public float OffsetX, OffsetY;
             public override string ToString() => "RotationOption { OffsetX=" + OffsetX.ToString() +
                        ", OffsetY=" + OffsetY.ToString() + " }";
         }
 
-        internal class ScaleOption
+        public class ScaleOption
         {
-            internal ScaleOption(float intensity = 1f, float duration = 1f)
+            public ScaleOption(float intensity = 1f, float duration = 1f)
             {
                 Intensity = intensity;
                 Duration = duration;
             }
-            internal float Intensity, Duration;
+            public float Intensity, Duration;
             public override string ToString() => "ScaleOption { Intensity=" + Intensity.ToString() +
                        ", Duration=" + Duration.ToString() + " }";
         }
 
-        internal class DotPoint
+        public class DotPoint
         {
-            internal DotPoint(int index, int intensity = 50)
+            public DotPoint(int index, int intensity = 50)
             {
                 if ((index < 0) || (index > MaxBufferSize))
                     throw new Exception("Invalid argument index : " + index);
                 Intensity = intensity.Clamp(0, 100);
                 Index = index;
             }
-            internal int Index, Intensity;
+            public int Index, Intensity;
             public override string ToString() => "DotPoint { Index=" + Index.ToString() +
                        ", Intensity=" + Intensity.ToString() + " }";
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        internal struct PathPoint
+        public struct PathPoint
         {
-            internal PathPoint(float x, float y, int intensity = 50, int motorCount = 3)
+            public PathPoint(float x, float y, int intensity = 50, int motorCount = 3)
             {
                 X = x.Clamp(0f, 1f);
                 Y = y.Clamp(0f, 1f);
                 Intensity = intensity.Clamp(0, 100);
                 MotorCount = motorCount.Clamp(0, 3);
             }
-            internal float X, Y;
-            internal int Intensity;
+            public float X, Y;
+            public int Intensity;
 
             // Number of maximum motors to vibrate
             // if 0 means default motor count, now 3
-            internal int MotorCount;
+            public int MotorCount;
 
             public override string ToString() => "PathPoint { X=" + X.ToString() +
                        ", Y=" + Y.ToString() +
@@ -210,10 +210,10 @@ namespace bHapticsOSC.Utils
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        internal struct FeedbackStatus
+        public struct FeedbackStatus
         {
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
-            internal int[] values;
+            public int[] values;
         };
 
         private class NativeExports

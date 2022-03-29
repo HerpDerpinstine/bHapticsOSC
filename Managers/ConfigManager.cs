@@ -3,12 +3,12 @@ using System.IO;
 
 namespace bHapticsOSC.Managers
 {
-    internal static class ConfigManager
+    public static class ConfigManager
     {
-        internal static ConnectionConfig Connection;
-        internal static DevicesConfig Devices;
+        public static ConnectionConfig Connection;
+        public static DevicesConfig Devices;
 
-        internal static void Setup()
+        public static void Setup()
         {
             string baseFolder = Path.GetDirectoryName(typeof(ConfigManager).Assembly.Location);
 

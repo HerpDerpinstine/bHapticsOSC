@@ -3,9 +3,9 @@ using bHapticsOSC.Utils;
 
 namespace bHapticsOSC.Managers
 {
-    internal static class PacketHandler
+	public static class PacketHandler
 	{
-		internal static void Setup()
+		public static void Setup()
 		{
 			OpenSoundControl.AddressManager.Attach($"{Addresses.VRChat_Avatar.Prefix}{Addresses.VRChat_Avatar.OnChange}", (OscMessage msg) => HapticsHandler.ResetAllDevices());
 
