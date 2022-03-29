@@ -1,5 +1,5 @@
 ﻿using bHapticsOSC.Config;
-using bOscLib.Config.Interface;
+using bHapticsOSC.Config.Interface;
 using System;
 using System.IO;
 

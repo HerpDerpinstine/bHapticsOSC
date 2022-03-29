@@ -1,4 +1,4 @@
-﻿using bOscLib.Config.Interface;
+﻿using bHapticsOSC.Config.Interface;
 using Tomlet.Attributes;
 
 namespace bHapticsOSC.Config
@@ -13,8 +13,9 @@ namespace bHapticsOSC.Config
         }
 
         [TomlDoNotInlineObject]
-        public class VRChat
+        public class VRChat : ConfigCategoryValue
         {
+            [TomlPrecedingComment("If the Devices should React while in a Seat.")]
             public bool InStation = true;
         }
     }

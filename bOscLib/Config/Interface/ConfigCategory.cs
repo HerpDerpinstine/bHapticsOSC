@@ -1,6 +1,6 @@
 ﻿using Tomlet.Models;
 
-namespace bOscLib.Config.Interface
+namespace bHapticsOSC.Config.Interface
 {
     public abstract class ConfigCategory
     {

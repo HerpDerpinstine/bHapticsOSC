@@ -3,9 +3,9 @@ using Tomlet;
 using Tomlet.Exceptions;
 using Tomlet.Models;
 
-namespace bOscLib.Config.Interface
+namespace bHapticsOSC.Config.Interface
 {
-    public class ConfigCategory<T> : ConfigCategory
+    public class ConfigCategory<T> : ConfigCategory where T : ConfigCategoryValue
     {
         public T Value;
 
@@ -18,13 +18,14 @@ namespace bOscLib.Config.Interface
             catch (TomlTypeMismatchException) { }
             catch (TomlNoSuchValueException) { }
             catch (TomlEnumParseException) { }
+            Value?.Clamp();
         }
 
         internal override TomlValue Save()
         {
             if (Value == null)
                 LoadDefaults();
-
+            Value?.Clamp();
             return TomletMain.ValueFrom(typeof(T), Value);
         }
     }

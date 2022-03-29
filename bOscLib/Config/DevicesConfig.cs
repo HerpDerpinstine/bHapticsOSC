@@ -1,4 +1,5 @@
-﻿using bOscLib.Config.Interface;
+﻿using bHapticsOSC.Config.Interface;
+using bHapticsOSC.Utils;
 using Tomlet.Attributes;
 
 namespace bHapticsOSC.Config
@@ -37,10 +38,16 @@ namespace bHapticsOSC.Config
         }
         
         [TomlDoNotInlineObject]
-        public class Device
+        public class Device : ConfigCategoryValue
         {
+            [TomlPrecedingComment("If the Device is Enabled.")]
             public bool Enabled = true;
+
+            [TomlPrecedingComment("Percentage of Intensity for the Device.  (0 - 500)")]
             public int Intensity = 100;
+
+            public override void Clamp()
+                => Intensity = Intensity.Clamp(0, 500);
         }
     }
 }

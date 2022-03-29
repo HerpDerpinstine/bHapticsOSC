@@ -6,13 +6,14 @@ using Tomlet;
 using Tomlet.Exceptions;
 using Tomlet.Models;
 
-namespace bOscLib.Config.Interface
+namespace bHapticsOSC.Config.Interface
 {
     public class ConfigFile
     {
         private string FilePath;
         private TomlDocument Document = TomlDocument.CreateEmpty();
-        internal List<ConfigCategory> Categories = new List<ConfigCategory>();
+        public List<ConfigCategory> Categories = new List<ConfigCategory>();
+        public event Action OnChange;
 
         public ConfigFile(string filepath)
         {
@@ -33,18 +34,19 @@ namespace bOscLib.Config.Interface
 
             Document = TomlParser.ParseFile(FilePath);
 
-            if (Categories.Count <= 0)
-                return;
-            foreach (ConfigCategory category in Categories)
-            {
-                if (!(TryGetCategoryTable(category.Name) is { } table))
+            if (Categories.Count > 0)
+                foreach (ConfigCategory category in Categories)
                 {
-                    category.LoadDefaults();
-                    continue;
+                    if (!(TryGetCategoryTable(category.Name) is { } table))
+                    {
+                        category.LoadDefaults();
+                        continue;
+                    }
+
+                    category.Load(table);
                 }
 
-                category.Load(table);
-            }
+            OnChange?.Invoke();
         }
 
         public void Save()
@@ -57,6 +59,8 @@ namespace bOscLib.Config.Interface
                     Document.PutValue(category.Name, category.Save());
 
             File.WriteAllText(FilePath, Document.SerializedValue);
+
+            OnChange?.Invoke();
         }
 
         private TomlTable TryGetCategoryTable(string category)

@@ -1,5 +1,6 @@
-﻿using bOscLib.Config.Interface;
+﻿using bHapticsOSC.Config.Interface;
 using Tomlet.Attributes;
+using bHapticsOSC.Utils;
 
 namespace bHapticsOSC.Config
 {
@@ -10,20 +11,31 @@ namespace bHapticsOSC.Config
 
         public ConnectionConfig(string filepath) : base(filepath)
         {
-            Categories.Add(connection = new ConfigCategory<Connection>(nameof(Connection)));
-            Categories.Add(threading = new ConfigCategory<Threading>(nameof(Threading)));
+            Categories.AddRange(new ConfigCategory[]
+            {
+                connection = new ConfigCategory<Connection>(nameof(Connection)),
+                threading = new ConfigCategory<Threading>(nameof(Threading))
+            });
         }
 
         [TomlDoNotInlineObject]
-        public class Connection
+        public class Connection : ConfigCategoryValue
         {
+            [TomlPrecedingComment("Port for the Receiver.  (0 - 65535)")]
             public int Port = 9001;
+
+            public override void Clamp()
+                => Port = Port.Clamp(0, 65535);
         }
 
         [TomlDoNotInlineObject]
-        public class Threading
+        public class Threading : ConfigCategoryValue
         {
+            [TomlPrecedingComment("Update Rate of the Receiver Thread in Milliseconds.  (100 - 1000)")]
             public int UpdateRate = 100;
+
+            public override void Clamp()
+                => UpdateRate = UpdateRate.Clamp(100, 1000);
         }
     }
 }
