@@ -9,6 +9,7 @@ namespace bHapticsOSC.Managers
     {
         public static ConnectionConfig Connection;
         public static DevicesConfig Devices;
+        public static VRChatConfig VRChat;
 
         public static void Setup()
         {
@@ -16,6 +17,7 @@ namespace bHapticsOSC.Managers
 
             Connection = CreateConfig<ConnectionConfig>(baseFolder, nameof(Connection));
             Devices = CreateConfig<DevicesConfig>(baseFolder, nameof(Devices));
+            VRChat = CreateConfig<VRChatConfig>(baseFolder, nameof(VRChat));
         }
 
         private static T CreateConfig<T>(string baseFolder, string fileName) where T : ConfigFile
