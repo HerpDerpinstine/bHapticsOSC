@@ -2,9 +2,11 @@
 Application to allow the bHaptics Player to interface over OSC.  
 Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics Gear as well as supporting me wherever needed! :D
 
-- All Connection based Settings are located in ``Connection.ini``
+- All Connection based Settings are located in ``Connection.cfg``
 
-- All Device based Settings are located in ``Devices.ini``
+- All Device based Settings are located in ``Devices.cfg``
+
+- All VRChat specific Settings are located in ``VRChat.cfg``
 
 - Discord: https://discord.gg/JDw423Wskf
 
