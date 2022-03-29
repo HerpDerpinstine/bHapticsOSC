@@ -22,6 +22,13 @@ namespace bHapticsOSC.Managers
 
 			AttachVRCAPNodes(bHaptics.PositionType.FootL, ConfigManager.Devices.FootLeft.Value.Intensity, 3);
 			AttachVRCAPNodes(bHaptics.PositionType.FootR, ConfigManager.Devices.FootRight.Value.Intensity, 3);
+
+			OpenSoundControl.AddressManager.Attach($"{Addresses.VRChatAvatar.Prefix}{Addresses.VRChatAvatar.Parameters}{Addresses.VRChatAvatar.InStation}", (OscMessage msg) => 
+			{
+				if (!(msg[0] is bool))
+					return;
+				HapticsHandler.InStation = (bool)msg[0];
+			});
 		}
 
 		private static void AttachVRCAPNodes(bHaptics.PositionType positionType, int intensity, int nodeCount)
@@ -56,6 +63,7 @@ namespace bHapticsOSC.Managers
 				internal static string Prefix = "/avatar";
 				internal static string OnChange = "/change";
 				internal static string Parameters = "/parameters";
+				internal static string InStation = "/InStation";
 			}
 
 			internal static string PositionToAddress(bHaptics.PositionType positionType)

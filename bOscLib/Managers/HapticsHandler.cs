@@ -8,6 +8,7 @@ namespace bHapticsOSC.Managers
     internal static class HapticsHandler
     {
         private static int DurationOffset = 50; // ms
+        internal static bool InStation = false;
 
         internal static Dictionary<bHaptics.PositionType, Device> Devices = new Dictionary<bHaptics.PositionType, Device>()
         {
@@ -30,6 +31,9 @@ namespace bHapticsOSC.Managers
         {
             if (Devices.Count <= 0)
                 return;
+            if (InStation && !ConfigManager.VRChat.vrchat.Value.InStation)
+                return;
+
             foreach (Device device in Devices.Values)
                 device.SubmitPacket();
         }
