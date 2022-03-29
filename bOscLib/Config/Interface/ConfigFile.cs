@@ -10,10 +10,17 @@ namespace bHapticsOSC.Config.Interface
 {
     public class ConfigFile
     {
-        private string FilePath;
+        //private ConfigFileWatcher fileWatcher;
         private TomlDocument Document = TomlDocument.CreateEmpty();
-        public List<ConfigCategory> Categories = new List<ConfigCategory>();
-        public event Action OnChange;
+        internal List<ConfigCategory> Categories = new List<ConfigCategory>();
+
+        public event Action OnFileModified;
+        public void OnFileModified_SafeInvoke()
+            => OnFileModified?.Invoke();
+
+        private string FilePath;
+        public string GetFilePath()
+            => FilePath;
 
         public ConfigFile(string filepath)
         {
@@ -21,9 +28,9 @@ namespace bHapticsOSC.Config.Interface
                 throw new NullReferenceException(filepath);
 
             FilePath = filepath;
+            //fileWatcher = new ConfigFileWatcher(this);
         }
 
-        public string GetFilePath() => FilePath;
 
         public void Load()
         {
@@ -46,7 +53,7 @@ namespace bHapticsOSC.Config.Interface
                     category.Load(table);
                 }
 
-            OnChange?.Invoke();
+            OnFileModified_SafeInvoke();
         }
 
         public void Save()
@@ -60,7 +67,7 @@ namespace bHapticsOSC.Config.Interface
 
             File.WriteAllText(FilePath, Document.SerializedValue);
 
-            OnChange?.Invoke();
+            OnFileModified_SafeInvoke();
         }
 
         private TomlTable TryGetCategoryTable(string category)

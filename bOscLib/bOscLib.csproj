@@ -10,6 +10,7 @@
 	    <ApplicationIcon>../bhaptics_icon.ico</ApplicationIcon>
 		<OutputType>Library</OutputType>
 		<StartupObject />
+		<RootNamespace>bHapticsOSC</RootNamespace>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

@@ -16,8 +16,13 @@ namespace bHapticsOSC.Managers
             string baseFolder = Path.GetDirectoryName(typeof(ConfigManager).Assembly.Location);
 
             Connection = CreateConfig<ConnectionConfig>(baseFolder, nameof(Connection));
+            Connection.OnFileModified += () => { Console.WriteLine("Connection.cfg Changed!"); };
+
             Devices = CreateConfig<DevicesConfig>(baseFolder, nameof(Devices));
+            Devices.OnFileModified += () => { Console.WriteLine("Devices.cfg Changed!"); };
+
             VRChat = CreateConfig<VRChatConfig>(baseFolder, nameof(VRChat));
+            VRChat.OnFileModified += () => { Console.WriteLine("VRChat.cfg Changed!"); };
         }
 
         private static T CreateConfig<T>(string baseFolder, string fileName) where T : ConfigFile
@@ -37,6 +42,5 @@ namespace bHapticsOSC.Managers
             file.Save();
             return file;
         }
-
     }
 }
