@@ -7,21 +7,21 @@ namespace bHapticsOSC.Managers
 	{
 		public static void Setup()
 		{
-			OpenSoundControl.AddressManager.Attach($"{Addresses.VRChat_Avatar.Prefix}{Addresses.VRChat_Avatar.OnChange}", (OscMessage msg) => HapticsHandler.ResetAllDevices());
+			OpenSoundControl.AddressManager.Attach($"{Addresses.VRChatAvatar.Prefix}{Addresses.VRChatAvatar.OnChange}", (OscMessage msg) => HapticsHandler.ResetAllDevices());
 
-			AttachVRCAPNodes(bHaptics.PositionType.Head, ConfigManager.Devices.Head.Intensity, 6);
+			AttachVRCAPNodes(bHaptics.PositionType.Head, ConfigManager.Devices.Head.Value.Intensity, 6);
 
-			AttachVRCAPNodes(bHaptics.PositionType.VestFront, ConfigManager.Devices.Vest.Intensity, 20);
-			AttachVRCAPNodes(bHaptics.PositionType.VestBack, ConfigManager.Devices.Vest.Intensity, 20);
+			AttachVRCAPNodes(bHaptics.PositionType.VestFront, ConfigManager.Devices.Vest.Value.Intensity, 20);
+			AttachVRCAPNodes(bHaptics.PositionType.VestBack, ConfigManager.Devices.Vest.Value.Intensity, 20);
 
-			AttachVRCAPNodes(bHaptics.PositionType.ForearmL, ConfigManager.Devices.ArmLeft.Intensity, 6);
-			AttachVRCAPNodes(bHaptics.PositionType.ForearmR, ConfigManager.Devices.ArmRight.Intensity, 6);
+			AttachVRCAPNodes(bHaptics.PositionType.ForearmL, ConfigManager.Devices.ArmLeft.Value.Intensity, 6);
+			AttachVRCAPNodes(bHaptics.PositionType.ForearmR, ConfigManager.Devices.ArmRight.Value.Intensity, 6);
 
-			AttachVRCAPNodes(bHaptics.PositionType.HandL, ConfigManager.Devices.HandLeft.Intensity, 3);
-			AttachVRCAPNodes(bHaptics.PositionType.HandR, ConfigManager.Devices.HandRight.Intensity, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.HandL, ConfigManager.Devices.HandLeft.Value.Intensity, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.HandR, ConfigManager.Devices.HandRight.Value.Intensity, 3);
 
-			AttachVRCAPNodes(bHaptics.PositionType.FootL, ConfigManager.Devices.FootLeft.Intensity, 3);
-			AttachVRCAPNodes(bHaptics.PositionType.FootR, ConfigManager.Devices.FootRight.Intensity, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.FootL, ConfigManager.Devices.FootLeft.Value.Intensity, 3);
+			AttachVRCAPNodes(bHaptics.PositionType.FootR, ConfigManager.Devices.FootRight.Value.Intensity, 3);
 		}
 
 		private static void AttachVRCAPNodes(bHaptics.PositionType positionType, int intensity, int nodeCount)
@@ -51,7 +51,7 @@ namespace bHapticsOSC.Managers
 		{
 			internal static string Unknown = "/unknown";
 
-			internal static class VRChat_Avatar
+			internal static class VRChatAvatar
 			{
 				internal static string Prefix = "/avatar";
 				internal static string OnChange = "/change";
@@ -104,31 +104,31 @@ namespace bHapticsOSC.Managers
 				{
 					// Head
 					case bHaptics.PositionType.Head:
-						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Head_{node}_bool";
+						return $"{VRChatAvatar.Prefix}{VRChatAvatar.Parameters}/bHaptics_Head_{node}_bool";
 
 					// Vest
 					case bHaptics.PositionType.VestFront:
-						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Vest_Front_{node}_bool";
+						return $"{VRChatAvatar.Prefix}{VRChatAvatar.Parameters}/bHaptics_Vest_Front_{node}_bool";
 					case bHaptics.PositionType.VestBack:
-						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Vest_Back_{node}_bool";
+						return $"{VRChatAvatar.Prefix}{VRChatAvatar.Parameters}/bHaptics_Vest_Back_{node}_bool";
 
 					// Arms
 					case bHaptics.PositionType.ForearmL:
-						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Arm_Left_{node}_bool";
+						return $"{VRChatAvatar.Prefix}{VRChatAvatar.Parameters}/bHaptics_Arm_Left_{node}_bool";
 					case bHaptics.PositionType.ForearmR:
-						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Arm_Right_{node}_bool";
+						return $"{VRChatAvatar.Prefix}{VRChatAvatar.Parameters}/bHaptics_Arm_Right_{node}_bool";
 
 					// Hands
 					case bHaptics.PositionType.HandL:
-						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Hand_Left_{node}_bool";
+						return $"{VRChatAvatar.Prefix}{VRChatAvatar.Parameters}/bHaptics_Hand_Left_{node}_bool";
 					case bHaptics.PositionType.HandR:
-						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Hand_Right_{node}_bool";
+						return $"{VRChatAvatar.Prefix}{VRChatAvatar.Parameters}/bHaptics_Hand_Right_{node}_bool";
 
 					// Feet
 					case bHaptics.PositionType.FootL:
-						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Foot_Left_{node}_bool";
+						return $"{VRChatAvatar.Prefix}{VRChatAvatar.Parameters}/bHaptics_Foot_Left_{node}_bool";
 					case bHaptics.PositionType.FootR:
-						return $"{VRChat_Avatar.Prefix}{VRChat_Avatar.Parameters}/bHaptics_Foot_Right_{node}_bool";
+						return $"{VRChatAvatar.Prefix}{VRChatAvatar.Parameters}/bHaptics_Foot_Right_{node}_bool";
 
 					// Unknown
 					default:

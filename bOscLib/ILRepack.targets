@@ -7,6 +7,7 @@
 		<ItemGroup>
 			<InputAssemblies Include="@(AssemblyFile)" />
 			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'Rug.Osc'" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'Tomlet'" />
 		</ItemGroup>
 		<ILRepack
 			Parallel="true"
@@ -24,6 +25,7 @@
 		<ItemGroup>
 			<InputAssemblies Include="@(AssemblyFile)" />
 			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'Rug.Osc'" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'Tomlet'" />
 		</ItemGroup>
 		<ILRepack
 			Parallel="true"
@@ -37,6 +39,7 @@
 	<Target Name="Cleanup" AfterTargets="ILRepack">
 		<ItemGroup>
 			<FilesToDelete Include="$(OutputPath)Rug.Osc.dll" />
+			<FilesToDelete Include="$(OutputPath)Tomlet.dll" />
 		</ItemGroup>
 		<Delete Files="@(FilesToDelete)" />
 	</Target>

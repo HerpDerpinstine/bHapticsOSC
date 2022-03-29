@@ -78,7 +78,7 @@ namespace bHapticsOSC.Managers
                         break;
                 }
 
-                bHaptics.Submit($"{BuildInfo.Name}_{Position}", Position, Value, ConfigManager.Connection.UpdateRate + DurationOffset);
+                bHaptics.Submit($"{BuildInfo.Name}_{Position}", Position, Value, ConfigManager.Connection.threading.Value.UpdateRate + DurationOffset);
             }
 
             internal void SetNodeIntensity(int node, int intensity)
