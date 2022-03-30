@@ -6,17 +6,34 @@ namespace bHapticsOSC.Config
 {
     public static class ConfigManager
     {
+        private static ConfigFile[] AllConfigFiles;
+
         public static ConnectionConfig Connection;
         public static DevicesConfig Devices;
         public static VRChatConfig VRChat;
 
-        public static void Setup()
+        static ConfigManager()
         {
             string baseFolder = Path.GetDirectoryName(typeof(ConfigManager).Assembly.Location);
 
-            Connection = CreateConfig<ConnectionConfig>(baseFolder, nameof(Connection));
-            Devices = CreateConfig<DevicesConfig>(baseFolder, nameof(Devices));
-            VRChat = CreateConfig<VRChatConfig>(baseFolder, nameof(VRChat));
+            AllConfigFiles = new ConfigFile[]
+            {
+                Connection = CreateConfig<ConnectionConfig>(baseFolder, nameof(Connection)),
+                Devices = CreateConfig<DevicesConfig>(baseFolder, nameof(Devices)),
+                VRChat = CreateConfig<VRChatConfig>(baseFolder, nameof(VRChat))
+            };
+        }
+
+        public static void LoadAll()
+        {
+            foreach (ConfigFile configFile in AllConfigFiles)
+                configFile.Load();
+        }
+
+        public static void SaveAll()
+        {
+            foreach (ConfigFile configFile in AllConfigFiles)
+                configFile.Save();
         }
 
         private static T CreateConfig<T>(string baseFolder, string fileName) where T : ConfigFile
@@ -31,10 +48,7 @@ namespace bHapticsOSC.Config
                 File.Move(oldFile, newFile);
             }
 
-            T file = (T)Activator.CreateInstance(typeof(T), new object[] { newFile });
-            file.Load();
-            file.Save();
-            return file;
+            return (T)Activator.CreateInstance(typeof(T), new object[] { newFile });
         }
     }
 }

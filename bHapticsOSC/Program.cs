@@ -11,7 +11,7 @@ namespace bHapticsOSC
         {
             WelcomeMessage();
 
-            ConfigManager.Setup();
+            ConfigManager.LoadAll();
             PrintConfig();
 
             bHaptics.Load();
@@ -24,14 +24,11 @@ namespace bHapticsOSC
             ConsoleKeyInfo keyInfo;
             while (((keyInfo = Console.ReadKey(true)) == null) || (keyInfo.Key != ConsoleKey.Escape)) { }
 
-            OnQuit();
-            return 0;
-        }
-
-        private static void OnQuit()
-        {
             OscManager.Disconnect();
             bHaptics.Quit();
+            ConfigManager.SaveAll();
+
+            return 0;
         }
 
         private static void WelcomeMessage()
