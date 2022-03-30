@@ -10,49 +10,49 @@ namespace bHapticsOSC
 {
     internal static class VRChatAvatar
     {
+        private static Dictionary<bHaptics.PositionType, Device> Devices = new Dictionary<bHaptics.PositionType, Device>();
         private static int DurationOffset = 50; // ms
-
         private static bool InStation = false;
 
-        private const string Address_Head = "/avatar/parameters/bHaptics_Head";
-
-        //private const string Address_Vest = "/avatar/parameters/bHaptics_Vest";
-
-#region TO_REMOVE_LATER
-        private const string Address_Vest_Front = "/avatar/parameters/bHaptics_Vest_Front";
-        private const string Address_Vest_Back = "/avatar/parameters/bHaptics_Vest_Back";
-#endregion
-
-        private const string Address_Arm_Left = "/avatar/parameters/bHaptics_Arm_Left";
-        private const string Address_Arm_Right = "/avatar/parameters/bHaptics_Arm_Right";
-
-        private const string Address_Hand_Left = "/avatar/parameters/bHaptics_Hand_Left";
-        private const string Address_Hand_Right = "/avatar/parameters/bHaptics_Hand_Right";
-
-        private const string Address_Foot_Left = "/avatar/parameters/bHaptics_Foot_Left";
-        private const string Address_Foot_Right = "/avatar/parameters/bHaptics_Foot_Right";
-
-        private static Dictionary<bHaptics.PositionType, Device> Devices = new Dictionary<bHaptics.PositionType, Device>()
+        internal static void SetupDevices()
         {
-            { bHaptics.PositionType.Head, new Device(bHaptics.PositionType.Head) },
+            string Prefix = "/avatar/parameters";
+            foreach (Tuple<int, bHaptics.PositionType, string> device in new Tuple<int, bHaptics.PositionType, string>[]
+            {
+                new Tuple<int, bHaptics.PositionType, string>(6, bHaptics.PositionType.Head, $"{Prefix}/bHaptics_Head"),
 
-            //{ bHaptics.PositionType.Vest, new Device(bHaptics.PositionType.Vest) },
+                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Vest_Front"),
+                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Vest_Back"),
 
-#region TO_REMOVE_LATER
-            { bHaptics.PositionType.VestFront, new Device(bHaptics.PositionType.VestFront) },
-            { bHaptics.PositionType.VestBack, new Device(bHaptics.PositionType.VestBack) },
-#endregion
+                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Arm_Left"),
+                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Arm_Right"),
 
-            { bHaptics.PositionType.ForearmL, new Device(bHaptics.PositionType.ForearmL) },
-            { bHaptics.PositionType.ForearmR, new Device(bHaptics.PositionType.ForearmR) },
+                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Hand_Left"),
+                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Hand_Right"),
 
-            { bHaptics.PositionType.HandL, new Device(bHaptics.PositionType.HandL) },
-            { bHaptics.PositionType.HandR, new Device(bHaptics.PositionType.HandR) },
+                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Foot_Left"),
+                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Foot_Right"),
+            })
+            {
+                Devices[device.Item2] = new Device(device.Item2);
+                for (int i = 0; i < device.Item1 + 1; i++)
+                    OscManager.Attach($"{device.Item3}_{i}_bool", (string address, OscMessage msg) => OnNode(msg, i, device.Item2));
+            }
+        }
 
-            { bHaptics.PositionType.FootL, new Device(bHaptics.PositionType.FootL) },
-            { bHaptics.PositionType.FootR, new Device(bHaptics.PositionType.FootR)  },
-        };
-        
+        private static void OnNode(OscMessage msg, int node, bHaptics.PositionType position)
+        {
+            if (msg == null)
+                return;
+            if (!(msg[0] is bool))
+                return;
+
+            if ((bool)msg[0])
+                SetDeviceNodeIntensity(position, node, ConfigManager.Devices.PositionTypeToIntensity(position));
+            else
+                SetDeviceNodeIntensity(position, node, 0);
+        }
+
         [OscAddress("/avatar/parameters/InStation")]
         private static void OnStation(string address, OscMessage msg)
         {
@@ -71,65 +71,6 @@ namespace bHapticsOSC
                 return;
             foreach (Device device in Devices.Values)
                 device.Reset();
-        }
-
-        [OscAddress(Address_Head, 6, "bool")]
-        private static void OnHeadNode(string address, OscMessage msg)
-            => OnNode(address, msg, bHaptics.PositionType.Head, Address_Head);
-
-        //[OscAddress(Address_Vest, 40, "bool")]
-        //private static void OnVestNode(string address, OscMessage msg)
-        //    => OnNode(address, msg, bHaptics.PositionType.Vest, Address_Vest);
-
-#region TO_REMOVE_LATER
-        [OscAddress(Address_Vest_Front, 20, "bool")]
-        private static void OnVestFrontNode(string address, OscMessage msg)
-            => OnNode(address, msg, bHaptics.PositionType.VestFront, Address_Vest_Front);
-        [OscAddress(Address_Vest_Back, 20, "bool")]
-        private static void OnVestBackNode(string address, OscMessage msg)
-            => OnNode(address, msg, bHaptics.PositionType.VestBack, Address_Vest_Back);
-#endregion
-
-        [OscAddress(Address_Arm_Left, 6, "bool")]
-        private static void OnArmLeftNode(string address, OscMessage msg)
-            => OnNode(address, msg, bHaptics.PositionType.ForearmL, Address_Arm_Left);
-        [OscAddress(Address_Arm_Right, 6, "bool")]
-        private static void OnArmRightNode(string address, OscMessage msg)
-            => OnNode(address, msg, bHaptics.PositionType.ForearmR, Address_Arm_Right);
-
-        [OscAddress(Address_Hand_Left, 3, "bool")]
-        private static void OnHandLeftNode(string address, OscMessage msg)
-            => OnNode(address, msg, bHaptics.PositionType.ForearmL, Address_Hand_Left);
-        [OscAddress(Address_Hand_Right, 3, "bool")]
-        private static void OnHandRightNode(string address, OscMessage msg)
-            => OnNode(address, msg, bHaptics.PositionType.ForearmR, Address_Hand_Right);
-
-        [OscAddress(Address_Foot_Left, 3, "bool")]
-        private static void OnFootLeftNode(string address, OscMessage msg)
-            => OnNode(address, msg, bHaptics.PositionType.ForearmL, Address_Foot_Left);
-        [OscAddress(Address_Foot_Right, 3, "bool")]
-        private static void OnFootRightNode(string address, OscMessage msg)
-            => OnNode(address, msg, bHaptics.PositionType.ForearmR, Address_Foot_Right);
-
-        private static void OnNode(string address, OscMessage msg, bHaptics.PositionType position, string partialAddress)
-        {
-            if (!ConfigManager.Devices.PositionTypeToEnabled(position))
-                return;
-
-            if (msg == null)
-                return;
-            if (!(msg[0] is bool))
-                return;
-
-            string nodestr = address.Substring(partialAddress.Length + 1);
-            nodestr = nodestr.Substring(0, nodestr.Length - 5);
-            if (!int.TryParse(nodestr, out int node))
-                return;
-
-            if ((bool)msg[0])
-                SetDeviceNodeIntensity(position, node, ConfigManager.Devices.PositionTypeToIntensity(position));
-            else
-                SetDeviceNodeIntensity(position, node, 0);
         }
 
         internal static void SubmitPackets()
@@ -162,6 +103,9 @@ namespace bHapticsOSC
 
             internal void SubmitPacket()
             {
+                if (!ConfigManager.Devices.PositionTypeToEnabled(Position))
+                    return;
+
                 byte[] Value = Packet.ToArray();
                 switch (Position)
                 {

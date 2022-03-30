@@ -11,7 +11,10 @@ namespace bHapticsOSC.OpenSoundControl
         private static OscReceiverHandler oscReceiver = new OscReceiverHandler();
 
         static OscManager()
-            => GrabOscAddressesFromAssembly(typeof(OscManager).Assembly);
+        {
+            GrabOscAddressesFromAssembly(typeof(OscManager).Assembly);
+            VRChatAvatar.SetupDevices();
+        }
 
         public static void Connect()
         {

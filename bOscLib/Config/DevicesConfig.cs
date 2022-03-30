@@ -43,12 +43,8 @@ namespace bHapticsOSC.Config
             {
                 bHaptics.PositionType.Head => Head.Value.Enabled,
 
-                bHaptics.PositionType.Vest => Vest.Value.Enabled,
-
-#region TO_REMOVE_LATER
                 bHaptics.PositionType.VestFront => Vest.Value.Enabled,
                 bHaptics.PositionType.VestBack => Vest.Value.Enabled,
-#endregion
 
                 bHaptics.PositionType.ForearmL => ArmLeft.Value.Enabled,
                 bHaptics.PositionType.ForearmR => ArmRight.Value.Enabled,
@@ -69,12 +65,8 @@ namespace bHapticsOSC.Config
             {
                 bHaptics.PositionType.Head => Head.Value.Intensity,
 
-                bHaptics.PositionType.Vest => Vest.Value.Intensity,
-
-#region TO_REMOVE_LATER
                 bHaptics.PositionType.VestFront => Vest.Value.Intensity,
                 bHaptics.PositionType.VestBack => Vest.Value.Intensity,
-#endregion
 
                 bHaptics.PositionType.ForearmL => ArmLeft.Value.Intensity,
                 bHaptics.PositionType.ForearmR => ArmRight.Value.Intensity,
