@@ -26,14 +26,13 @@ namespace bHapticsOSC.Utils
         {
             if (thread == null)
                 thread = new Thread(WithinThread);
-
-            if (thread.IsAlive)
+            else if (thread.IsAlive)
                 return;
             thread.Start();
         }
         private void KillThread()
         {
-            if (thread == null)
+            if ((thread == null) || !thread.IsAlive)
                 return;
             thread.Abort();
         }
