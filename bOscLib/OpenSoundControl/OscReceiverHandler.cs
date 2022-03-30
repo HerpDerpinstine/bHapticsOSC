@@ -44,7 +44,7 @@ namespace bHapticsOSC.OpenSoundControl
                 {
                     while (Receiver.TryReceive(out OscPacket packet) && (packet != null))
                     {
-                        OscManager.SendPacket(packet);
+                        OscManager.Send(packet);
                         switch (OscManager.ShouldInvoke(packet))
                         {
                             case OscPacketInvokeAction.Pospone:
