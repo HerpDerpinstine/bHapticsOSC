@@ -41,6 +41,7 @@ namespace bHapticsOSC.OpenSoundControl
                 || (Sender.State == OscSocketState.Closed))
                 return;
 
+            Sender.WaitForAllMessagesToComplete();
             Sender.Close();
             Sender = null;
             Console.WriteLine("[Sender] Disconnected!");
