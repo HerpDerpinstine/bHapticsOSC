@@ -16,6 +16,9 @@ namespace bHapticsOSC.Config
         public ConfigCategory<Device> HandLeft;
         public ConfigCategory<Device> HandRight;
 
+        //public ConfigCategory<Device> GloveLeft;
+        //public ConfigCategory<Device> GloveRight;
+
         public ConfigCategory<Device> FootLeft;
         public ConfigCategory<Device> FootRight;
 
@@ -31,6 +34,9 @@ namespace bHapticsOSC.Config
 
                 HandLeft = new ConfigCategory<Device>(nameof(HandLeft)),
                 HandRight = new ConfigCategory<Device>(nameof(HandRight)),
+
+                //GloveLeft = new ConfigCategory<Device>(nameof(GloveLeft)),
+                //GloveRight = new ConfigCategory<Device>(nameof(GloveRight)),
 
                 FootLeft = new ConfigCategory<Device>(nameof(FootLeft)),
                 FootRight = new ConfigCategory<Device>(nameof(FootRight))
@@ -51,6 +57,9 @@ namespace bHapticsOSC.Config
 
                 bHaptics.PositionType.HandL => HandLeft.Value.Enabled,
                 bHaptics.PositionType.HandR => HandRight.Value.Enabled,
+
+                //bHaptics.PositionType.GloveLeft => GloveLeft.Value.Enabled,
+                //bHaptics.PositionType.GloveRight => GloveRight.Value.Enabled,
 
                 bHaptics.PositionType.FootL => FootLeft.Value.Enabled,
                 bHaptics.PositionType.FootR => FootRight.Value.Enabled,
@@ -73,6 +82,9 @@ namespace bHapticsOSC.Config
 
                 bHaptics.PositionType.HandL => HandLeft.Value.Intensity,
                 bHaptics.PositionType.HandR => HandRight.Value.Intensity,
+
+                //bHaptics.PositionType.GloveLeft => GloveLeft.Value.Intensity,
+                //bHaptics.PositionType.GloveRight => GloveRight.Value.Intensity,
 
                 bHaptics.PositionType.FootL => FootLeft.Value.Intensity,
                 bHaptics.PositionType.FootR => FootRight.Value.Intensity,

@@ -24,16 +24,21 @@ namespace bHapticsOSC
                 new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Vest_Front"),
                 new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Vest_Back"),
 
-                new Tuple<int, bHaptics.PositionType, string>(6, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Arm_Left"),
-                new Tuple<int, bHaptics.PositionType, string>(6, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Arm_Right"),
+                new Tuple<int, bHaptics.PositionType, string>(6, bHaptics.PositionType.ForearmL, $"{Prefix}/bHaptics_Arm_Left"),
+                new Tuple<int, bHaptics.PositionType, string>(6, bHaptics.PositionType.ForearmR, $"{Prefix}/bHaptics_Arm_Right"),
 
-                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Hand_Left"),
-                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Hand_Right"),
+                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.HandL, $"{Prefix}/bHaptics_Hand_Left"),
+                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.HandR, $"{Prefix}/bHaptics_Hand_Right"),
 
-                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Foot_Left"),
-                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Foot_Right"),
+                //new Tuple<int, bHaptics.PositionType, string>(0, bHaptics.PositionType.GloveLeft, $"{Prefix}/bHaptics_Glove_Left"),
+                //new Tuple<int, bHaptics.PositionType, string>(0, bHaptics.PositionType.GloveRight, $"{Prefix}/bHaptics_Glove_Right"),
+
+                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.FootL, $"{Prefix}/bHaptics_Foot_Left"),
+                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.FootR, $"{Prefix}/bHaptics_Foot_Right"),
             })
             {
+                if (device.Item1 <= 0)
+                    continue;
                 Devices[device.Item2] = new Device(device.Item2);
                 for (int i = 1; i < device.Item1 + 1; i++)
                     OscManager.Attach($"{device.Item3}_{i}_bool", (string address, OscMessage msg) => OnNode(msg, i, device.Item2));
