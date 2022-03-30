@@ -25,7 +25,7 @@ namespace bHapticsOSC
             while (((keyInfo = Console.ReadKey(true)) == null) || (keyInfo.Key != ConsoleKey.Escape)) { }
 
             OscManager.Disconnect();
-            //bHaptics.Quit();
+            bHaptics.Quit();
             //ConfigManager.SaveAll();
 
             return 0;
