@@ -26,6 +26,8 @@
 	
 	<ItemGroup>
 	  <None Remove="ILRepack.targets" />
+	  <None Remove="NativeLibs\bHaptics.x64.lib" />
+	  <None Remove="NativeLibs\bHaptics.x86.lib" />
 	</ItemGroup>
 	
 	<ItemGroup>
