@@ -24,14 +24,14 @@ namespace bHapticsOSC
                 new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Vest_Front"),
                 new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Vest_Back"),
 
-                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Arm_Left"),
-                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Arm_Right"),
+                new Tuple<int, bHaptics.PositionType, string>(6, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Arm_Left"),
+                new Tuple<int, bHaptics.PositionType, string>(6, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Arm_Right"),
 
-                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Hand_Left"),
-                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Hand_Right"),
+                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Hand_Left"),
+                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Hand_Right"),
 
-                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Foot_Left"),
-                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Foot_Right"),
+                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Foot_Left"),
+                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Foot_Right"),
             })
             {
                 Devices[device.Item2] = new Device(device.Item2);
