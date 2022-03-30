@@ -35,7 +35,7 @@ namespace bHapticsOSC
             })
             {
                 Devices[device.Item2] = new Device(device.Item2);
-                for (int i = 0; i < device.Item1 + 1; i++)
+                for (int i = 1; i < device.Item1 + 1; i++)
                     OscManager.Attach($"{device.Item3}_{i}_bool", (string address, OscMessage msg) => OnNode(msg, i, device.Item2));
             }
         }
