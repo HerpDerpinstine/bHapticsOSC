@@ -36,7 +36,59 @@ namespace bHapticsOSC.Config
                 FootRight = new ConfigCategory<Device>(nameof(FootRight))
             });
         }
-        
+
+        internal bool PositionTypeToEnabled(bHaptics.PositionType positionType)
+        {
+            return (positionType) switch
+            {
+                bHaptics.PositionType.Head => Head.Value.Enabled,
+
+                bHaptics.PositionType.Vest => Vest.Value.Enabled,
+
+#region TO_REMOVE_LATER
+                bHaptics.PositionType.VestFront => Vest.Value.Enabled,
+                bHaptics.PositionType.VestBack => Vest.Value.Enabled,
+#endregion
+
+                bHaptics.PositionType.ForearmL => ArmLeft.Value.Enabled,
+                bHaptics.PositionType.ForearmR => ArmRight.Value.Enabled,
+
+                bHaptics.PositionType.HandL => HandLeft.Value.Enabled,
+                bHaptics.PositionType.HandR => HandRight.Value.Enabled,
+
+                bHaptics.PositionType.FootL => FootLeft.Value.Enabled,
+                bHaptics.PositionType.FootR => FootRight.Value.Enabled,
+
+                _ => true
+            };
+        }
+
+        internal int PositionTypeToIntensity(bHaptics.PositionType positionType)
+        {
+            return (positionType) switch
+            {
+                bHaptics.PositionType.Head => Head.Value.Intensity,
+
+                bHaptics.PositionType.Vest => Vest.Value.Intensity,
+
+#region TO_REMOVE_LATER
+                bHaptics.PositionType.VestFront => Vest.Value.Intensity,
+                bHaptics.PositionType.VestBack => Vest.Value.Intensity,
+#endregion
+
+                bHaptics.PositionType.ForearmL => ArmLeft.Value.Intensity,
+                bHaptics.PositionType.ForearmR => ArmRight.Value.Intensity,
+
+                bHaptics.PositionType.HandL => HandLeft.Value.Intensity,
+                bHaptics.PositionType.HandR => HandRight.Value.Intensity,
+
+                bHaptics.PositionType.FootL => FootLeft.Value.Intensity,
+                bHaptics.PositionType.FootR => FootRight.Value.Intensity,
+
+                _ => 100
+            };
+        }
+
         [TomlDoNotInlineObject]
         public class Device : ConfigCategoryValue
         {

@@ -4,6 +4,7 @@ namespace bHapticsOSC.Utils
 {
     public abstract class ThreadedTask
     {
+        internal static int UpdateRate = 100; // ms
         private Thread thread;
 
         public abstract bool BeginInitInternal();

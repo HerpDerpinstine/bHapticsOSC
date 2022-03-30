@@ -13,7 +13,7 @@ namespace bHapticsOSC.OpenSoundControl
         public override bool BeginInitInternal()
         {
             if (Receiver == null)
-                Receiver = new OscReceiver(ConfigManager.Connection.connection.Value.Port);
+                Receiver = new OscReceiver(ConfigManager.Connection.receiver.Value.Port);
             else if (Receiver.State != OscSocketState.Closed)
                 return false;
 
@@ -41,7 +41,7 @@ namespace bHapticsOSC.OpenSoundControl
             {
                 ParsePackets();
                 VRChatAvatar.SubmitPackets();
-                Thread.Sleep(ConfigManager.Connection.threading.Value.UpdateRate);
+                Thread.Sleep(UpdateRate);
             }
         }
 

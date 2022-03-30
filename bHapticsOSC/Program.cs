@@ -43,15 +43,9 @@ namespace bHapticsOSC
 
         private static void PrintConfig()
         {
-            Console.WriteLine($"===== Connection =====");
+            Console.WriteLine($"===== Receiver =====");
             Console.WriteLine();
-            Console.WriteLine($"[Port] = {ConfigManager.Connection.connection.Value.Port}");
-            Console.WriteLine();
-            Console.WriteLine();
-
-            Console.WriteLine($"===== Threading =====");
-            Console.WriteLine();
-            Console.WriteLine($"[Update Rate] = {ConfigManager.Connection.threading.Value.UpdateRate}ms");
+            Console.WriteLine($"[Port] = {ConfigManager.Connection.receiver.Value.Port}");
             Console.WriteLine();
             Console.WriteLine();
 
