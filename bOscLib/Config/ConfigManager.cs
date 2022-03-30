@@ -12,22 +12,25 @@ namespace bHapticsOSC.Config
         public static DevicesConfig Devices;
         public static VRChatConfig VRChat;
 
-        static ConfigManager()
-        {
-            string baseFolder = Path.GetDirectoryName(typeof(ConfigManager).Assembly.Location);
-
-            AllConfigFiles = new ConfigFile[]
-            {
-                Connection = CreateConfig<ConnectionConfig>(baseFolder, nameof(Connection)),
-                Devices = CreateConfig<DevicesConfig>(baseFolder, nameof(Devices)),
-                VRChat = CreateConfig<VRChatConfig>(baseFolder, nameof(VRChat))
-            };
-        }
-
         public static void LoadAll()
         {
+            if (AllConfigFiles == null)
+            {
+                string baseFolder = Path.GetDirectoryName(typeof(ConfigManager).Assembly.Location);
+
+                AllConfigFiles = new ConfigFile[]
+                {
+                    Connection = CreateConfig<ConnectionConfig>(baseFolder, nameof(Connection)),
+                    Devices = CreateConfig<DevicesConfig>(baseFolder, nameof(Devices)),
+                    VRChat = CreateConfig<VRChatConfig>(baseFolder, nameof(VRChat))
+                };
+            }
+
             foreach (ConfigFile configFile in AllConfigFiles)
+            {
                 configFile.Load();
+                configFile.Save();
+            }
         }
 
         public static void SaveAll()
