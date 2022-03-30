@@ -26,7 +26,7 @@ namespace bHapticsOSC
 
             OscManager.Disconnect();
             bHaptics.Quit();
-            ConfigManager.SaveAll();
+            //ConfigManager.SaveAll();
 
             return 0;
         }
