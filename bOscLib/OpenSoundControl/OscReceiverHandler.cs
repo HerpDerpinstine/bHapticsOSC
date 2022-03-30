@@ -8,7 +8,8 @@ namespace bHapticsOSC.OpenSoundControl
 {
     internal class OscReceiverHandler : ThreadedTask
     {
-        private static OscReceiver Receiver;
+        private OscReceiver Receiver;
+        private bool ShouldRun = true;
 
         public override bool BeginInitInternal()
         {
@@ -17,8 +18,8 @@ namespace bHapticsOSC.OpenSoundControl
             else if (Receiver.State != OscSocketState.Closed)
                 return false;
 
+            ShouldRun = true;
             Receiver.Connect();
-
             Console.WriteLine("[OscReceiver] Connected!");
 
             return true;
@@ -29,16 +30,13 @@ namespace bHapticsOSC.OpenSoundControl
             if ((Receiver == null) || (Receiver.State == OscSocketState.Closed))
                 return false;
 
-            Receiver.Close();
-            Receiver = null;
-            Console.WriteLine("[OscReceiver] Disconnected!");
-
-            return true;
+            ShouldRun = false;
+            return false;
         }
 
         public override void WithinThread()
         {
-            while (Receiver.State != OscSocketState.Closed)
+            while (ShouldRun && (Receiver != null) && (Receiver.State != OscSocketState.Closed))
             {
                 try
                 {
@@ -65,7 +63,15 @@ namespace bHapticsOSC.OpenSoundControl
                 }
 
                 VRChatAvatar.SubmitPackets();
-                Thread.Sleep(UpdateRate);
+
+                if (ShouldRun)
+                    Thread.Sleep(UpdateRate);
+            }
+
+            if (!ShouldRun && (Receiver != null))
+            {
+                Receiver.Close();
+                Console.WriteLine("[OscReceiver] Disconnected!");
             }
         }
     }

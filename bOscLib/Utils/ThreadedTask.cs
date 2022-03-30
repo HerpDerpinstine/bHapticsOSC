@@ -7,6 +7,9 @@ namespace bHapticsOSC.Utils
         internal static int UpdateRate = 100; // ms
         private Thread thread;
 
+        public bool IsAlive()
+            => (thread == null) ? false : thread.IsAlive;
+
         public abstract bool BeginInitInternal();
         public void BeginInit()
         {
@@ -26,13 +29,13 @@ namespace bHapticsOSC.Utils
         {
             if (thread == null)
                 thread = new Thread(WithinThread);
-            else if (thread.IsAlive)
+            else if (IsAlive())
                 return;
             thread.Start();
         }
         private void KillThread()
         {
-            if ((thread == null) || !thread.IsAlive)
+            if (!IsAlive())
                 return;
             thread.Abort();
         }
