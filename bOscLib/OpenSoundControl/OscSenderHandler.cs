@@ -57,7 +57,7 @@ namespace bHapticsOSC.OpenSoundControl
         {
             while (Sender.State != OscSocketState.Closed)
             {
-                if (PacketQueue.Count < 0)
+                if (PacketQueue.Count > 0)
                 {
                     lock (PacketQueue)
                     {
