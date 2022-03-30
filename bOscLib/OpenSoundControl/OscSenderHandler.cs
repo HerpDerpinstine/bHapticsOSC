@@ -1,36 +1,68 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Threading;
-using Rug.Osc;
 using bHapticsOSC.Config;
 using bHapticsOSC.Utils;
+using Rug.Osc;
 
 namespace bHapticsOSC.OpenSoundControl
 {
     internal class OscSenderHandler : ThreadedTask
     {
+        private OscSender Sender;
+        private List<OscPacket> PacketQueue = new List<OscPacket>();
+
+        internal void SendPacket(OscPacket packet)
+            => PacketQueue.Add(packet);
+
         public override bool BeginInitInternal()
         {
             if (!ConfigManager.Connection.sender.Value.Enabled)
                 return false;
 
-            // Connect Sender
+            if (Sender == null)
+                Sender = new OscSender(IPAddress.Parse(ConfigManager.Connection.sender.Value.IP), ConfigManager.Connection.sender.Value.Port);
+            else if (Sender.State != OscSocketState.Closed)
+                return false;
 
+            Sender.Connect();
+
+            Console.WriteLine("[Sender] Connected!");
             return true;
         }
 
         public override bool EndInitInternal()
         {
-            if (!ConfigManager.Connection.sender.Value.Enabled)
+            if (!ConfigManager.Connection.sender.Value.Enabled 
+                || (Sender == null)
+                || (Sender.State == OscSocketState.Closed))
                 return false;
 
-            // Disconnect Sender
+            Sender.Close();
+            Sender = null;
+            Console.WriteLine("[Sender] Disconnected!");
 
             return true;
         }
 
         public override void WithinThread()
         {
-            // Process Queue
+            while (Sender.State != OscSocketState.Closed)
+            {
+                if (PacketQueue.Count < 0)
+                {
+                    lock (PacketQueue)
+                    {
+                        foreach (OscPacket packet in PacketQueue)
+                            Sender.Send(packet);
+                        PacketQueue.Clear();
+                    }
+                }
+
+                Thread.Sleep(UpdateRate);
+            }
         }
     }
 }

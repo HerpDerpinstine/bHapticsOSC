@@ -30,6 +30,7 @@ namespace bHapticsOSC.OpenSoundControl
                 return false;
 
             Receiver.Close();
+            Receiver = null;
             Console.WriteLine("[Receiver] Disconnected!");
 
             return true;

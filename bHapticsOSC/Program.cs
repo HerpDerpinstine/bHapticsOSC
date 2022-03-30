@@ -49,6 +49,14 @@ namespace bHapticsOSC
             Console.WriteLine();
             Console.WriteLine();
 
+            Console.WriteLine($"===== Sender =====");
+            Console.WriteLine();
+            Console.WriteLine($"[Enabled] = {ConfigManager.Connection.sender.Value.Enabled}");
+            Console.WriteLine($"[IP] = {ConfigManager.Connection.sender.Value.IP}");
+            Console.WriteLine($"[Port] = {ConfigManager.Connection.sender.Value.Port}");
+            Console.WriteLine();
+            Console.WriteLine();
+
             Console.WriteLine($"===== Devices =====");
             Console.WriteLine();
             Console.WriteLine($"[Head] = {ConfigManager.Devices.Head.Value.Enabled}");
