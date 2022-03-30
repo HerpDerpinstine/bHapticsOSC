@@ -49,7 +49,7 @@ Below is a handy chart for how much memory each Device takes up.
 ### USAGE:
 
 1) Download [bHapticsOSC](https://github.com/HerpDerpinstine/bHapticsOSC/releases) from [Releases](https://github.com/HerpDerpinstine/bHapticsOSC/releases).
-2) Extract the application from the ZIP Archive.
+2) Extract the ``bHapticsOSC`` Folder from the ZIP Archive.
 3) Run ``bHapticsOSC.exe``
 4) Start the bHaptics Player and connect your Devices.
 
