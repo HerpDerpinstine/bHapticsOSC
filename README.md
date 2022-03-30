@@ -16,8 +16,9 @@ Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics G
 
 ### REQUIREMENTS:
 
-- A Windows PC to run the bHaptics Player and bHapticsOSC application on.
+- A Windows PC
 - [.NET Framework 4.8 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net48)  
+- [bHaptics Player](https://www.bhaptics.com/support/download)
   
 **VRCHAT USAGE ONLY**    
 
@@ -48,10 +49,10 @@ Below is a handy chart for how much memory each Device takes up.
 
 ### USAGE:
 
-1) Download [bHapticsOSC](https://github.com/HerpDerpinstine/bHapticsOSC/releases) from [Releases](https://github.com/HerpDerpinstine/bHapticsOSC/releases).
+1) Download the bHapticsOSC ZIP Archive from [Releases](https://github.com/HerpDerpinstine/bHapticsOSC/releases).
 2) Extract the ``bHapticsOSC`` Folder from the ZIP Archive.
-3) Run ``bHapticsOSC.exe``
-4) Start the bHaptics Player and connect your Devices.
+3) Start the bHaptics Player and connect your Devices.
+4) Run ``bHapticsOSC.exe``
 
 ---
 
@@ -69,10 +70,10 @@ Below is a handy chart for how much memory each Device takes up.
 
 - Be sure to create a backup of the Avatar's Scene before continuing.
 
-1) Download the Source Code for [Animator As Code](https://github.com/hai-vr/av3-animator-as-code) from [HERE](https://github.com/hai-vr/av3-animator-as-code/archive/refs/heads/main.zip).
-2) Extract the ``av3-animator-as-code-main`` folder from the ZIP to the Root of your Project's Assets folder.
-3) Download the [bHapticsOSC](https://github.com/HerpDerpinstine/bHapticsOSC/releases) VRCSDK Unity Package from [Releases](https://github.com/HerpDerpinstine/bHapticsOSC/releases).
-4) Import the [bHapticsOSC](https://github.com/HerpDerpinstine/bHapticsOSC/releases) VRCSDK Unity Package to your Project.
+1) Download the Source Code for [Haï~](https://github.com/hai-vr)'s Animator As Code from [HERE](https://github.com/hai-vr/av3-animator-as-code/archive/refs/heads/main.zip).
+2) Extract the ``av3-animator-as-code-main`` Folder from the ZIP to the Root of your Project's Assets folder.
+3) Download the bHapticsOSC VRCSDK Unity Package from [Releases](https://github.com/HerpDerpinstine/bHapticsOSC/releases).
+4) Import the bHapticsOSC VRCSDK Unity Package to your Project.
 5) Navigate to ``Assets/bHapticsOSC/VRChat/Prefabs``.
 
 6) Pick a set. Inside the Prefabs folder you will see 2 sets of Prefabs.  
