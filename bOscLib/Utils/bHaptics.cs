@@ -123,6 +123,46 @@ namespace bHapticsOSC.Utils
             return PositionType.Head;
         }
 
+        internal static string PositionTypeToOscAddress(PositionType positionType)
+        {
+            switch (positionType)
+            {
+                // Head
+                case PositionType.Head:
+                    return "/head";
+
+                // Vest
+                case PositionType.Vest:
+                    return "/vest";
+                case PositionType.VestFront:
+                    return "/vest/front";
+                case PositionType.VestBack:
+                    return "/vest/back";
+
+                // Arms
+                case PositionType.ForearmL:
+                    return "/arm/left";
+                case PositionType.ForearmR:
+                    return "/arm/right";
+
+                // Hands
+                case PositionType.HandL:
+                    return "/hand/left";
+                case PositionType.HandR:
+                    return "/hand/right";
+
+                // Feet
+                case PositionType.FootL:
+                    return "/foot/left";
+                case PositionType.FootR:
+                    return "/foot/right";
+
+                // Unknown
+                default:
+                    return "/unknown";
+            }
+        }
+
         public enum DeviceType
         {
             None = 0,

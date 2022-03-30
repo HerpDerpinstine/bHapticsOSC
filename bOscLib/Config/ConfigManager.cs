@@ -1,9 +1,8 @@
-﻿using bHapticsOSC.Config;
-using bHapticsOSC.Config.Interface;
+﻿using bHapticsOSC.Config.Interface;
 using System;
 using System.IO;
 
-namespace bHapticsOSC.Managers
+namespace bHapticsOSC.Config
 {
     public static class ConfigManager
     {

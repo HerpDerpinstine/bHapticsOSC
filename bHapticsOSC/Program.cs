@@ -1,6 +1,7 @@
-﻿using bHapticsOSC.Utils;
-using bHapticsOSC.Managers;
-using System;
+﻿using System;
+using bHapticsOSC.Config;
+using bHapticsOSC.Utils;
+using bHapticsOSC.OpenSoundControl;
 
 namespace bHapticsOSC
 {
@@ -14,17 +15,23 @@ namespace bHapticsOSC
             PrintConfig();
 
             bHaptics.Load();
+            OscManager.Connect();
 
-            PacketHandler.Setup();
-            OpenSoundControl.Run();
-            OpenSoundControl.ReceivePackets();
-
-            OpenSoundControl.Disconnect();
-            bHaptics.Quit();
             Console.WriteLine();
-            Console.WriteLine("Press any key to exit.");
-            while (Console.ReadKey(true) == null) { }
+            Console.WriteLine("Awaiting Packets...");
+            Console.WriteLine("Press ESC to Exit...");
+
+            ConsoleKeyInfo keyInfo;
+            while (((keyInfo = Console.ReadKey(true)) == null) || (keyInfo.Key != ConsoleKey.Escape)) { }
+
+            OnQuit();
             return 0;
+        }
+
+        private static void OnQuit()
+        {
+            OscManager.Disconnect();
+            bHaptics.Quit();
         }
 
         private static void WelcomeMessage()
