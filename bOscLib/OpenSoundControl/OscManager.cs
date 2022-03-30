@@ -32,6 +32,9 @@ namespace bHapticsOSC.OpenSoundControl
         public static void Attach(string address, OscAddressMethod oscMessageEvent)
             => AddressBook.Attach(address, (OscMessage msg) => { oscMessageEvent(address, msg); });
 
+        public static void SendPacket(OscPacket packet)
+            => oscSender.SendPacket(packet);
+
         public static OscPacketInvokeAction ShouldInvoke(OscPacket packet)
             => AddressBook.ShouldInvoke(packet);
 

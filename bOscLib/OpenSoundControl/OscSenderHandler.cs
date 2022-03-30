@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using bHapticsOSC.Config;
@@ -15,7 +14,14 @@ namespace bHapticsOSC.OpenSoundControl
         private List<OscPacket> PacketQueue = new List<OscPacket>();
 
         internal void SendPacket(OscPacket packet)
-            => PacketQueue.Add(packet);
+        {
+            if (!ConfigManager.Connection.sender.Value.Enabled
+                || (Sender == null)
+                || (Sender.State == OscSocketState.Closed))
+                return;
+
+            PacketQueue.Add(packet);
+        }
 
         public override bool BeginInitInternal()
         {

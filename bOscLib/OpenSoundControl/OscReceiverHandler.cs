@@ -40,35 +40,32 @@ namespace bHapticsOSC.OpenSoundControl
         {
             while (Receiver.State != OscSocketState.Closed)
             {
-                ParsePackets();
-                VRChatAvatar.SubmitPackets();
-                Thread.Sleep(UpdateRate);
-            }
-        }
-
-        private static void ParsePackets()
-        {
-            try
-            {
-                while (Receiver.TryReceive(out OscPacket packet) && (packet != null))
+                try
                 {
-                    switch (OscManager.ShouldInvoke(packet))
+                    while (Receiver.TryReceive(out OscPacket packet) && (packet != null))
                     {
-                        case OscPacketInvokeAction.Pospone:
-                        case OscPacketInvokeAction.Invoke:
-                            OscManager.Invoke(packet);
-                            goto default;
-                        case OscPacketInvokeAction.HasError:
-                            throw new Exception($"Error while reading OscPacket: {packet.Error}");
-                        case OscPacketInvokeAction.DontInvoke:
-                        default:
-                            break;
+                        OscManager.SendPacket(packet);
+                        switch (OscManager.ShouldInvoke(packet))
+                        {
+                            case OscPacketInvokeAction.Pospone:
+                            case OscPacketInvokeAction.Invoke:
+                                OscManager.Invoke(packet);
+                                goto default;
+                            case OscPacketInvokeAction.HasError:
+                                throw new Exception($"Error while reading OscPacket: {packet.Error}");
+                            case OscPacketInvokeAction.DontInvoke:
+                            default:
+                                break;
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception in ReceiverThread: {ex}");
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception in ReceiverThread: {ex}");
+                }
+
+                VRChatAvatar.SubmitPackets();
+                Thread.Sleep(UpdateRate);
             }
         }
     }
