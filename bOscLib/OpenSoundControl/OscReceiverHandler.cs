@@ -19,7 +19,7 @@ namespace bHapticsOSC.OpenSoundControl
 
             Receiver.Connect();
 
-            Console.WriteLine("[Receiver] Connected!");
+            Console.WriteLine("[OscReceiver] Connected!");
 
             return true;
         }
@@ -31,7 +31,7 @@ namespace bHapticsOSC.OpenSoundControl
 
             Receiver.Close();
             Receiver = null;
-            Console.WriteLine("[Receiver] Disconnected!");
+            Console.WriteLine("[OscReceiver] Disconnected!");
 
             return true;
         }
@@ -61,7 +61,7 @@ namespace bHapticsOSC.OpenSoundControl
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Exception in ReceiverThread: {ex}");
+                    Console.WriteLine($"Exception in OscReceiver Thread: {ex}");
                 }
 
                 VRChatAvatar.SubmitPackets();

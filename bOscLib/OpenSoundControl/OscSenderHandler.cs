@@ -31,7 +31,7 @@ namespace bHapticsOSC.OpenSoundControl
 
             Sender.Connect();
 
-            Console.WriteLine("[Sender] Connected!");
+            Console.WriteLine("[OscSender] Connected!");
         }
 
         public void EndInit()
@@ -44,7 +44,7 @@ namespace bHapticsOSC.OpenSoundControl
             Sender.WaitForAllMessagesToComplete();
             Sender.Close();
             Sender = null;
-            Console.WriteLine("[Sender] Disconnected!");
+            Console.WriteLine("[OscSender] Disconnected!");
         }
     }
 }
