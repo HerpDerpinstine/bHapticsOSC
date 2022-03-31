@@ -48,9 +48,7 @@ namespace bHapticsOSC.Config
                 File.Move(oldFile, newFile);
             }
 
-            T returnval = (T)Activator.CreateInstance(typeof(T), new object[] { newFile });
-
-            return returnval;
+            return (T)Activator.CreateInstance(typeof(T), new object[] { newFile });
         }
     }
 }
