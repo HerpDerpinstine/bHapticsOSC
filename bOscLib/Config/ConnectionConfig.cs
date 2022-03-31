@@ -14,8 +14,8 @@ namespace bHapticsOSC.Config
         {
             Categories.AddRange(new ConfigCategory[]
             {
-                receiver = new ConfigCategory<Receiver>(nameof(Receiver)),
-                sender = new ConfigCategory<Sender>(nameof(Sender))
+                receiver = new ConfigCategory<Receiver>("OscReceiver"),
+                sender = new ConfigCategory<Sender>("OscSender")
             });
         }
 

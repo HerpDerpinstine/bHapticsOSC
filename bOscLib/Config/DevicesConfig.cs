@@ -43,7 +43,7 @@ namespace bHapticsOSC.Config
             });
         }
 
-        internal bool PositionTypeToEnabled(bHaptics.PositionType positionType)
+        public bool PositionTypeToEnabled(bHaptics.PositionType positionType)
         {
             return (positionType) switch
             {
@@ -68,7 +68,7 @@ namespace bHapticsOSC.Config
             };
         }
 
-        internal int PositionTypeToIntensity(bHaptics.PositionType positionType)
+        public int PositionTypeToIntensity(bHaptics.PositionType positionType)
         {
             return (positionType) switch
             {

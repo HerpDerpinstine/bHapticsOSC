@@ -90,13 +90,13 @@ namespace bHapticsOSC
 
         private static void PrintConnection()
         {
-            Console.WriteLine($"===== Receiver =====");
+            Console.WriteLine($"===== OscReceiver =====");
             Console.WriteLine();
             Console.WriteLine($"[Port] = {ConfigManager.Connection.receiver.Value.Port}");
             Console.WriteLine();
             Console.WriteLine();
 
-            Console.WriteLine($"===== Sender =====");
+            Console.WriteLine($"===== OscSender =====");
             Console.WriteLine();
             Console.WriteLine($"[Enabled] = {ConfigManager.Connection.sender.Value.Enabled}");
             Console.WriteLine($"[IP] = {ConfigManager.Connection.sender.Value.IP}");
@@ -107,31 +107,29 @@ namespace bHapticsOSC
 
         private static void PrintDevices()
         {
-            Console.WriteLine($"===== Devices =====");
+            PrintDevice("Head", bHaptics.PositionType.Head);
+
+            PrintDevice("Vest", bHaptics.PositionType.Vest);
+
+            PrintDevice("Arm Left", bHaptics.PositionType.ForearmL);
+            PrintDevice("Arm Right", bHaptics.PositionType.ForearmR);
+
+            PrintDevice("Hand Left", bHaptics.PositionType.HandL);
+            PrintDevice("Hand Right", bHaptics.PositionType.HandR);
+
+            PrintDevice("Foot Left", bHaptics.PositionType.FootL);
+            PrintDevice("Foot Right", bHaptics.PositionType.FootR);
+        }
+
+        private static void PrintDevice(string name, bHaptics.PositionType positionType)
+        {
+            Console.WriteLine($"===== {name} =====");
             Console.WriteLine();
-            Console.WriteLine($"[Head] = {ConfigManager.Devices.Head.Value.Enabled}");
-            Console.WriteLine($"[Vest] = {ConfigManager.Devices.Vest.Value.Enabled}");
-            Console.WriteLine($"[Arm | Left] = {ConfigManager.Devices.ArmLeft.Value.Enabled}");
-            Console.WriteLine($"[Arm | Right] = {ConfigManager.Devices.ArmRight.Value.Enabled}");
-            Console.WriteLine($"[Hand | Left] = {ConfigManager.Devices.HandLeft.Value.Enabled}");
-            Console.WriteLine($"[Hand | Right] = {ConfigManager.Devices.HandRight.Value.Enabled}");
-            Console.WriteLine($"[Foot | Left] = {ConfigManager.Devices.FootLeft.Value.Enabled}");
-            Console.WriteLine($"[Foot | Right] = {ConfigManager.Devices.FootRight.Value.Enabled}");
+            Console.WriteLine($"[Enabled] = {ConfigManager.Devices.PositionTypeToEnabled(positionType)}");
+            Console.WriteLine($"[Intensity] = {ConfigManager.Devices.PositionTypeToIntensity(positionType)}");
             Console.WriteLine();
             Console.WriteLine();
 
-            Console.WriteLine($"===== Intensity =====");
-            Console.WriteLine();
-            Console.WriteLine($"[Head] = {ConfigManager.Devices.Head.Value.Intensity}");
-            Console.WriteLine($"[Vest] = {ConfigManager.Devices.Vest.Value.Intensity}");
-            Console.WriteLine($"[Arm | Left] = {ConfigManager.Devices.ArmLeft.Value.Intensity}");
-            Console.WriteLine($"[Arm | Right] = {ConfigManager.Devices.ArmRight.Value.Intensity}");
-            Console.WriteLine($"[Hand | Left] = {ConfigManager.Devices.HandLeft.Value.Intensity}");
-            Console.WriteLine($"[Hand | Right] = {ConfigManager.Devices.HandRight.Value.Intensity}");
-            Console.WriteLine($"[Foot | Left] = {ConfigManager.Devices.FootLeft.Value.Intensity}");
-            Console.WriteLine($"[Foot | Right] = {ConfigManager.Devices.FootRight.Value.Intensity}");
-            Console.WriteLine();
-            Console.WriteLine();
         }
     }
 }
