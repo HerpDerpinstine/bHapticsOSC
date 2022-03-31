@@ -19,6 +19,15 @@ namespace bHapticsOSC
 
             ConfigManager.LoadAll();
 
+            ConfigManager.Connection.OnFileModified = () =>
+            {
+                Console.WriteLine();
+                Console.WriteLine("Connection.cfg Reloaded!");
+                Console.WriteLine();
+                PrintConnection();
+                OscManager.Connect();
+            };
+
             ConfigManager.Devices.OnFileModified += () =>
             {
                 Console.WriteLine();

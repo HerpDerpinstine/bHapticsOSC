@@ -1,4 +1,5 @@
-﻿using System;
+﻿using bHapticsOSC.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace bHapticsOSC.Config.Interface
         private TomlDocument Document = TomlDocument.CreateEmpty();
         internal List<ConfigCategory> Categories = new List<ConfigCategory>();
 
-        public event Action OnFileModified;
+        public Action OnFileModified;
         public void OnFileModified_SafeInvoke()
             => OnFileModified?.Invoke();
 
@@ -45,9 +46,12 @@ namespace bHapticsOSC.Config.Interface
 
             if (Watcher != null)
                 Watcher.IgnoreEvents = true;
-            Thread.Sleep(100);
+            Thread.Sleep(ThreadedTask.UpdateRate);
+
+            // Exception Catching
             Document = TomlParser.ParseFile(FilePath);
-            Thread.Sleep(100);
+
+            Thread.Sleep(ThreadedTask.UpdateRate);
             if (Watcher != null)
                 Watcher.IgnoreEvents = false;
 
@@ -75,9 +79,9 @@ namespace bHapticsOSC.Config.Interface
 
             if (Watcher != null)
                 Watcher.IgnoreEvents = true;
-            Thread.Sleep(100);
+            Thread.Sleep(ThreadedTask.UpdateRate);
             File.WriteAllText(FilePath, Document.SerializedValue);
-            Thread.Sleep(100);
+            Thread.Sleep(ThreadedTask.UpdateRate);
             if (Watcher != null)
                 Watcher.IgnoreEvents = false;
         }

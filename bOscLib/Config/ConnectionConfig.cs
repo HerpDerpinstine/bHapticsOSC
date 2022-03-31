@@ -10,7 +10,7 @@ namespace bHapticsOSC.Config
         public ConfigCategory<Receiver> receiver;
         public ConfigCategory<Sender> sender;
 
-        public ConnectionConfig(string filepath) : base(filepath, false)
+        public ConnectionConfig(string filepath) : base(filepath)
         {
             Categories.AddRange(new ConfigCategory[]
             {

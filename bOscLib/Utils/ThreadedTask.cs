@@ -4,7 +4,7 @@ namespace bHapticsOSC.Utils
 {
     public abstract class ThreadedTask
     {
-        public const int UpdateRate = 100; // ms
+        public static readonly int UpdateRate = 100; // ms
         private Thread thread;
 
         public bool IsAlive()
@@ -27,17 +27,19 @@ namespace bHapticsOSC.Utils
         public abstract void WithinThread();
         private void RunThread()
         {
-            if (thread == null)
-                thread = new Thread(WithinThread);
-            else if (IsAlive())
-                return;
+            if (IsAlive())
+                KillThread();
+
+            thread = new Thread(WithinThread);
             thread.Start();
         }
         private void KillThread()
         {
             if (!IsAlive())
                 return;
+
             thread.Abort();
+            thread = null;
         }
     }
 }

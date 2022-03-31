@@ -13,12 +13,11 @@ namespace bHapticsOSC.OpenSoundControl
 
         public override bool BeginInitInternal()
         {
-            if (Receiver == null)
-                Receiver = new OscReceiver(ConfigManager.Connection.receiver.Value.Port);
-            else if (Receiver.State != OscSocketState.Closed)
-                return false;
-
+            if (Receiver != null)
+                EndInitInternal();
+            
             ShouldRun = true;
+            Receiver = new OscReceiver(ConfigManager.Connection.receiver.Value.Port);
             Receiver.Connect();
             Console.WriteLine("[OscReceiver] Connected!");
 
@@ -27,11 +26,12 @@ namespace bHapticsOSC.OpenSoundControl
 
         public override bool EndInitInternal()
         {
-            if ((Receiver == null) || (Receiver.State == OscSocketState.Closed))
+            if (Receiver == null)
                 return false;
-
+            
             ShouldRun = false;
-            return false;
+            while(IsAlive()) { }
+            return true;
         }
 
         public override void WithinThread()
@@ -67,7 +67,12 @@ namespace bHapticsOSC.OpenSoundControl
                 if (ShouldRun)
                     Thread.Sleep(UpdateRate);
                 else
-                    Receiver.Close();
+                {
+                    if ((Receiver.State != OscSocketState.Closing) && (Receiver.State != OscSocketState.Closed))
+                        Receiver.Close();
+                    Receiver.Dispose();
+                    Receiver = null;
+                }
             }
 
             Console.WriteLine("[OscReceiver] Disconnected!");
