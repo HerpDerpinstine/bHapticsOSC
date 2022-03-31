@@ -1,6 +1,6 @@
-﻿using bHapticsOSC.Config.Interface;
-using System;
+﻿using System;
 using System.IO;
+using bHapticsOSC.Config.Interface;
 
 namespace bHapticsOSC.Config
 {
@@ -10,20 +10,24 @@ namespace bHapticsOSC.Config
         public static DevicesConfig Devices;
         public static VRChatConfig VRChat;
 
-        private static ConfigFile[] AllConfigFiles = new ConfigFile[]
+        private static ConfigFile[] AllConfigFiles;
+
+        static ConfigManager()
         {
-            Connection = CreateConfig<ConnectionConfig>(Path.GetDirectoryName(typeof(ConfigManager).Assembly.Location), nameof(Connection)),
-            Devices = CreateConfig<DevicesConfig>(Path.GetDirectoryName(typeof(ConfigManager).Assembly.Location), nameof(Devices)),
-            VRChat = CreateConfig<VRChatConfig>(Path.GetDirectoryName(typeof(ConfigManager).Assembly.Location), nameof(VRChat))
-        };
+            string basefolder = Path.GetDirectoryName(typeof(ConfigManager).Assembly.Location);
+
+            AllConfigFiles = new ConfigFile[]
+            {
+                Connection = CreateConfig<ConnectionConfig>(basefolder, nameof(Connection)),
+                Devices = CreateConfig<DevicesConfig>(basefolder, nameof(Devices)),
+                VRChat = CreateConfig<VRChatConfig>(basefolder,  nameof(VRChat))
+            };
+        }
 
         public static void LoadAll()
         {
             foreach (ConfigFile configFile in AllConfigFiles)
-            {
                 configFile.Load();
-                configFile.Save();
-            }
         }
 
         public static void SaveAll()
@@ -44,7 +48,9 @@ namespace bHapticsOSC.Config
                 File.Move(oldFile, newFile);
             }
 
-            return (T)Activator.CreateInstance(typeof(T), new object[] { newFile });
+            T returnval = (T)Activator.CreateInstance(typeof(T), new object[] { newFile });
+
+            return returnval;
         }
     }
 }

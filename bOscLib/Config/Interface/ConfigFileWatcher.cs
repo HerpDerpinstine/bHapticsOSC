@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace bHapticsOSC.Config.Interface
 {
     internal class ConfigFileWatcher
     {
+        internal bool IgnoreEvents = false;
         private ConfigFile File;
         private FileSystemWatcher Watcher;
 
@@ -20,14 +20,24 @@ namespace bHapticsOSC.Config.Interface
                 return;
 
             string filepath = File.GetFilePath();
-            Watcher = new FileSystemWatcher(Path.GetDirectoryName(filepath), Path.GetFileName(filepath))
-            {
-                NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.Size,
-                EnableRaisingEvents = true
-            };
+            Watcher = new FileSystemWatcher(Path.GetDirectoryName(filepath));
 
-            Watcher.Changed += new FileSystemEventHandler(OnFileWatcherTriggered);
-            Watcher.BeginInit();
+            Watcher.NotifyFilter = NotifyFilters.Attributes
+                                 | NotifyFilters.CreationTime
+                                 | NotifyFilters.DirectoryName
+                                 | NotifyFilters.FileName
+                                 | NotifyFilters.LastAccess
+                                 | NotifyFilters.LastWrite
+                                 | NotifyFilters.Security
+                                 | NotifyFilters.Size;
+
+            Watcher.Changed += OnChanged;
+            Watcher.Renamed += OnRenamed;
+            Watcher.Error += OnError;
+
+            Watcher.Filter = Path.GetFileName(filepath);
+            Watcher.IncludeSubdirectories = true;
+            Watcher.EnableRaisingEvents = true;
         }
 
         internal void EndInit()
@@ -35,14 +45,40 @@ namespace bHapticsOSC.Config.Interface
             if (Watcher == null)
                 return;
 
-            Watcher.EndInit();
             Watcher.Dispose();
             Watcher = null;
         }
 
-        private void OnFileWatcherTriggered(object source, FileSystemEventArgs e)
+
+        private void OnChanged(object sender, FileSystemEventArgs e)
         {
-            File.Load();
+            if (IgnoreEvents)
+                return;
+
+            switch (e.ChangeType)
+            {
+                case WatcherChangeTypes.Changed:
+                    File.Load();
+                    File.OnFileModified_SafeInvoke();
+                    break;
+
+                case WatcherChangeTypes.Deleted:
+                    File.Save();
+                    break;
+
+                default:
+                    break;
+            }
         }
+
+        private void OnRenamed(object sender, RenamedEventArgs e)
+        {
+            if (IgnoreEvents)
+                return;
+            File.Save();
+        }
+
+        private void OnError(object sender, ErrorEventArgs e)
+            => throw e.GetException();
     }
 }

@@ -1,7 +1,7 @@
-﻿using bHapticsOSC.Config.Interface;
-using Tomlet.Attributes;
+﻿using System.Net;
+using bHapticsOSC.Config.Interface;
 using bHapticsOSC.Utils;
-using System.Net;
+using Tomlet.Attributes;
 
 namespace bHapticsOSC.Config
 {
@@ -10,7 +10,7 @@ namespace bHapticsOSC.Config
         public ConfigCategory<Receiver> receiver;
         public ConfigCategory<Sender> sender;
 
-        public ConnectionConfig(string filepath) : base(filepath)
+        public ConnectionConfig(string filepath) : base(filepath, false)
         {
             Categories.AddRange(new ConfigCategory[]
             {
@@ -33,7 +33,7 @@ namespace bHapticsOSC.Config
         public class Sender : ConfigCategoryValue
         {
             [TomlPrecedingComment("If the OSC Sender is Enabled.")]
-            public bool Enabled = true;
+            public bool Enabled = false;
 
             [TomlPrecedingComment("IP Address for the OSC Sender.")]
             public string IP = "127.0.0.1";

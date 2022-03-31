@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Tomlet;
 using Tomlet.Exceptions;
 using Tomlet.Models;
@@ -10,7 +11,7 @@ namespace bHapticsOSC.Config.Interface
 {
     public class ConfigFile
     {
-        //private ConfigFileWatcher fileWatcher;
+        private ConfigFileWatcher Watcher;
         private TomlDocument Document = TomlDocument.CreateEmpty();
         internal List<ConfigCategory> Categories = new List<ConfigCategory>();
 
@@ -22,24 +23,33 @@ namespace bHapticsOSC.Config.Interface
         public string GetFilePath()
             => FilePath;
 
-        public ConfigFile(string filepath)
+        public ConfigFile(string filepath, bool useWatcher = true)
         {
             if (string.IsNullOrEmpty(filepath))
                 throw new NullReferenceException(filepath);
 
             FilePath = filepath;
-            //fileWatcher = new ConfigFileWatcher(this);
+            if (useWatcher)
+                Watcher = new ConfigFileWatcher(this);
         }
-
 
         public void Load()
         {
             if (string.IsNullOrEmpty(FilePath))
                 return;
             if (!File.Exists(FilePath))
+            {
+                Save();
                 return;
+            }
 
+            if (Watcher != null)
+                Watcher.IgnoreEvents = true;
+            Thread.Sleep(100);
             Document = TomlParser.ParseFile(FilePath);
+            Thread.Sleep(100);
+            if (Watcher != null)
+                Watcher.IgnoreEvents = false;
 
             if (Categories.Count > 0)
                 foreach (ConfigCategory category in Categories)
@@ -52,8 +62,6 @@ namespace bHapticsOSC.Config.Interface
 
                     category.Load(table);
                 }
-
-            OnFileModified_SafeInvoke();
         }
 
         public void Save()
@@ -65,9 +73,13 @@ namespace bHapticsOSC.Config.Interface
                 foreach (ConfigCategory category in Categories)
                     Document.PutValue(category.Name, category.Save());
 
+            if (Watcher != null)
+                Watcher.IgnoreEvents = true;
+            Thread.Sleep(100);
             File.WriteAllText(FilePath, Document.SerializedValue);
-
-            OnFileModified_SafeInvoke();
+            Thread.Sleep(100);
+            if (Watcher != null)
+                Watcher.IgnoreEvents = false;
         }
 
         private TomlTable TryGetCategoryTable(string category)

@@ -50,6 +50,8 @@ namespace bHapticsOSC
 
                 
             }
+
+            ConfigManager.Devices.OnFileModified += RefreshNodeIntensity;
         }
 
         private static void OnNode(OscMessage msg, int node, bHaptics.PositionType position)
@@ -94,6 +96,14 @@ namespace bHapticsOSC
 
             foreach (Device device in Devices.Values)
                 device.SubmitPacket();
+        }
+
+        private static void RefreshNodeIntensity()
+        {
+            if (Devices.Count <= 0)
+                return;
+            foreach (Device device in Devices.Values)
+                device.RefreshNodeIntensity();
         }
 
         private static void SetDeviceNodeIntensity(bHaptics.PositionType positionType, int node, int intensity)
@@ -151,8 +161,19 @@ namespace bHapticsOSC
                 }
             }
 
+            internal int GetNodeIntensity(int node)
+                => Packet[node - 1];
+
             internal void SetNodeIntensity(int node, int intensity)
                 => Packet[node - 1] = (byte)intensity;
+
+            internal void RefreshNodeIntensity()
+            {
+                int intensity = ConfigManager.Devices.PositionTypeToIntensity(Position);
+                for (int i = 0; i < Packet.Length; i++)
+                    if (Packet[i] > 0)
+                        Packet[i] = (byte)intensity;
+            }
 
             internal void Reset()
             {

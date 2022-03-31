@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Threading;
 using bHapticsOSC.Config;
 using bHapticsOSC.Utils;
 using bHapticsOSC.OpenSoundControl;
-using System.Threading;
 
 namespace bHapticsOSC
 {
@@ -10,10 +10,34 @@ namespace bHapticsOSC
     {
         internal static int Main(string[] args)
         {
+            bool isFirst;
+            Mutex mutex = new Mutex(true, BuildInfo.Name, out isFirst);
+            if (!isFirst)
+                return 0;
+
             WelcomeMessage();
 
             ConfigManager.LoadAll();
-            PrintConfig();
+
+            ConfigManager.Devices.OnFileModified += () =>
+            {
+                Console.WriteLine();
+                Console.WriteLine("Devices.cfg Reloaded!");
+                Console.WriteLine();
+                PrintDevices();
+            };
+
+            ConfigManager.VRChat.OnFileModified += () =>
+            {
+                Console.WriteLine();
+                Console.WriteLine("VRChat.cfg Reloaded!");
+                Console.WriteLine();
+                PrintVRChat();
+            };
+
+            PrintConnection();
+            PrintDevices();
+            PrintVRChat();
 
             bHaptics.Load();
             OscManager.Connect();
@@ -21,6 +45,7 @@ namespace bHapticsOSC
             Console.WriteLine();
             Console.WriteLine("Awaiting Packets...");
             Console.WriteLine("Press ESC to Exit...");
+            Console.WriteLine();
 
             ConsoleKeyInfo keyInfo;
             while (((keyInfo = Console.ReadKey(true)) == null) || (keyInfo.Key != ConsoleKey.Escape))
@@ -32,10 +57,9 @@ namespace bHapticsOSC
 
         private static void OnQuit()
         {
-            Console.WriteLine();
             OscManager.Disconnect();
             bHaptics.Quit();
-            //ConfigManager.SaveAll();
+            ConfigManager.SaveAll();
         }
 
         private static void WelcomeMessage()
@@ -43,9 +67,19 @@ namespace bHapticsOSC
             Console.WriteLine(Console.Title = $"{BuildInfo.Name} v{BuildInfo.Version}");
             Console.WriteLine($"Created by Herp Derpinstine");
             Console.WriteLine();
+            Console.WriteLine();
         }
 
-        private static void PrintConfig()
+        private static void PrintVRChat()
+        {
+            Console.WriteLine($"===== VRChat =====");
+            Console.WriteLine();
+            Console.WriteLine($"[InStation] = {ConfigManager.VRChat.vrchat.Value.InStation}");
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+
+        private static void PrintConnection()
         {
             Console.WriteLine($"===== Receiver =====");
             Console.WriteLine();
@@ -60,7 +94,10 @@ namespace bHapticsOSC
             Console.WriteLine($"[Port] = {ConfigManager.Connection.sender.Value.Port}");
             Console.WriteLine();
             Console.WriteLine();
+        }
 
+        private static void PrintDevices()
+        {
             Console.WriteLine($"===== Devices =====");
             Console.WriteLine();
             Console.WriteLine($"[Head] = {ConfigManager.Devices.Head.Value.Enabled}");
@@ -84,9 +121,6 @@ namespace bHapticsOSC
             Console.WriteLine($"[Hand | Right] = {ConfigManager.Devices.HandRight.Value.Intensity}");
             Console.WriteLine($"[Foot | Left] = {ConfigManager.Devices.FootLeft.Value.Intensity}");
             Console.WriteLine($"[Foot | Right] = {ConfigManager.Devices.FootRight.Value.Intensity}");
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine($"===============");
             Console.WriteLine();
             Console.WriteLine();
         }
