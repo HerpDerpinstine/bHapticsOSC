@@ -30,7 +30,7 @@ namespace bHapticsOSC.OpenSoundControl
                 return false;
             
             ShouldRun = false;
-            while(IsAlive()) { }
+            while(IsAlive()) { Thread.Sleep(UpdateRate); }
             return true;
         }
 
