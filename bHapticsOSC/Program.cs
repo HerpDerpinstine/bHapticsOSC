@@ -2,6 +2,7 @@
 using bHapticsOSC.Config;
 using bHapticsOSC.Utils;
 using bHapticsOSC.OpenSoundControl;
+using System.Threading;
 
 namespace bHapticsOSC
 {
@@ -22,13 +23,19 @@ namespace bHapticsOSC
             Console.WriteLine("Press ESC to Exit...");
 
             ConsoleKeyInfo keyInfo;
-            while (((keyInfo = Console.ReadKey(true)) == null) || (keyInfo.Key != ConsoleKey.Escape)) { }
+            while (((keyInfo = Console.ReadKey(true)) == null) || (keyInfo.Key != ConsoleKey.Escape))
+                Thread.Sleep(ThreadedTask.UpdateRate);
 
+            OnQuit();
+            return 0;
+        }
+
+        private static void OnQuit()
+        {
+            Console.WriteLine();
             OscManager.Disconnect();
             bHaptics.Quit();
             //ConfigManager.SaveAll();
-
-            return 0;
         }
 
         private static void WelcomeMessage()

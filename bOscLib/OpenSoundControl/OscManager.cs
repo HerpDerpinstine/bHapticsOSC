@@ -19,8 +19,8 @@ namespace bHapticsOSC.OpenSoundControl
 
         public static void Connect()
         {
-            oscReceiver.BeginInit();
             oscSender.BeginInit();
+            oscReceiver.BeginInit();
         }
 
         public static void Disconnect()

@@ -66,13 +66,11 @@ namespace bHapticsOSC.OpenSoundControl
 
                 if (ShouldRun)
                     Thread.Sleep(UpdateRate);
+                else
+                    Receiver.Close();
             }
 
-            if (!ShouldRun && (Receiver != null))
-            {
-                Receiver.Close();
-                Console.WriteLine("[OscReceiver] Disconnected!");
-            }
+            Console.WriteLine("[OscReceiver] Disconnected!");
         }
     }
 }

@@ -9,23 +9,13 @@ namespace bHapticsOSC.OpenSoundControl
     {
         private OscSender Sender;
 
-        internal void Send(OscPacket packet)
-        {
-            if (!ConfigManager.Connection.sender.Value.Enabled
-                || (Sender == null)
-                || (Sender.State == OscSocketState.Closed))
-                return;
-
-            Sender.Send(packet);
-        }
-
         public void BeginInit()
         {
             if (!ConfigManager.Connection.sender.Value.Enabled)
                 return;
 
             if (Sender == null)
-                Sender = new OscSender(IPAddress.Parse(ConfigManager.Connection.sender.Value.IP), ConfigManager.Connection.sender.Value.Port);
+                Sender = new OscSender(IPAddress.Parse(ConfigManager.Connection.sender.Value.IP), 0, ConfigManager.Connection.sender.Value.Port);
             else if (Sender.State != OscSocketState.Closed)
                 return;
 
@@ -42,6 +32,16 @@ namespace bHapticsOSC.OpenSoundControl
 
             Sender.Close();
             Console.WriteLine("[OscSender] Disconnected!");
+        }
+
+        internal void Send(OscPacket packet)
+        {
+            if (!ConfigManager.Connection.sender.Value.Enabled
+                || (Sender == null)
+                || (Sender.State == OscSocketState.Closed))
+                return;
+
+            Sender.Send(packet);
         }
     }
 }

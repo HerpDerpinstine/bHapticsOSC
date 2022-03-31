@@ -39,7 +39,7 @@ namespace bHapticsOSC
             {
                 if (device.Item1 <= 0)
                     continue;
-                Devices[device.Item2] = new Device(device.Item2);
+                Devices[device.Item2] = new Device(device.Item2, device.Item3);
                 for (int i = 1; i < device.Item1 + 1; i++)
                 {
                     var path = $"{device.Item3}_{i}_bool";
@@ -107,11 +107,15 @@ namespace bHapticsOSC
 
         private class Device
         {
+            private static string Address;
             private bHaptics.PositionType Position;
             private byte[] Packet = new byte[bHaptics.MaxBufferSize];
 
-            internal Device(bHaptics.PositionType position)
-                => Position = position;
+            internal Device(bHaptics.PositionType position, string address)
+            {
+                Position = position;
+                Address = address;
+            }
 
             internal void SubmitPacket()
             {
@@ -139,6 +143,12 @@ namespace bHapticsOSC
                 }
 
                 bHaptics.Submit($"{BuildInfo.Name}_{Position}", Position, Value, ThreadedTask.UpdateRate + DurationOffset);
+
+                for (int i = 1; i < Value.Length + 1; i++)
+                {
+                    int node_val = Value[i - 1];
+                    OscManager.Send(new OscMessage($"{Address}_{i}_bool", new object[] { (node_val > 0) ? true : false }));
+                }
             }
 
             internal void SetNodeIntensity(int node, int intensity)
