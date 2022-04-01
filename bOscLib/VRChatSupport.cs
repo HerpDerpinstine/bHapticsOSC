@@ -40,7 +40,7 @@ namespace bHapticsOSC
             {
                 if (device.Item1 <= 0)
                     continue;
-                Devices[device.Item2] = new Device(device.Item2, device.Item3);
+                Devices[device.Item2] = new Device(device.Item2);
                 for (int i = 1; i < device.Item1 + 1; i++)
                     OscManager.Attach($"{device.Item3}_{i}_bool", (OscMessage msg) => OnNode(msg, i, device.Item2));
             }
@@ -63,11 +63,8 @@ namespace bHapticsOSC
 
         private static void OnNode(OscMessage msg, int node, bHaptics.PositionType position)
         {
-            if (msg == null)
+            if ((msg == null) || (!(msg[0] is bool)))
                 return;
-            if (!(msg[0] is bool))
-                return;
-
             if ((bool)msg[0])
                 SetDeviceNodeIntensity(position, node, ConfigManager.Devices.PositionTypeToIntensity(position));
             else
@@ -76,11 +73,8 @@ namespace bHapticsOSC
 
         internal static void SubmitPackets()
         {
-            if (Devices.Count <= 0)
+            if ((Devices.Count <= 0) || (InStation && !ConfigManager.VRChat.vrchat.Value.InStation))
                 return;
-            if (InStation && !ConfigManager.VRChat.vrchat.Value.InStation)
-                return;
-
             foreach (Device device in Devices.Values)
                 device.SubmitPacket();
         }
@@ -95,24 +89,18 @@ namespace bHapticsOSC
 
         private static void SetDeviceNodeIntensity(bHaptics.PositionType positionType, int node, int intensity)
         {
-            if (Devices.Count <= 0)
-                return;
-            if (!Devices.TryGetValue(positionType, out Device device))
+            if ((Devices.Count <= 0) || !Devices.TryGetValue(positionType, out Device device))
                 return;
             device.SetNodeIntensity(node, intensity);
         }
 
         private class Device
         {
-            private static string Address;
             private bHaptics.PositionType Position;
             private byte[] Packet = new byte[bHaptics.MaxBufferSize];
 
-            internal Device(bHaptics.PositionType position, string address)
-            {
-                Position = position;
-                Address = address;
-            }
+            internal Device(bHaptics.PositionType position)
+                => Position = position;
 
             internal void SubmitPacket()
             {
@@ -140,12 +128,6 @@ namespace bHapticsOSC
                 }
 
                 bHaptics.Submit($"{BuildInfo.Name}_{Position}", Position, Value, ThreadedTask.UpdateRate + DurationOffset);
-
-                for (int i = 1; i < Value.Length + 1; i++)
-                {
-                    int node_val = Value[i - 1];
-                    OscManager.Send(new OscMessage($"{Address}_{i}_bool", new object[] { (node_val > 0) ? true : false }));
-                }
             }
 
             internal int GetNodeIntensity(int node)
