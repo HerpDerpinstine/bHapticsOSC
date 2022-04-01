@@ -10,6 +10,8 @@ namespace bHapticsOSC
     {
         internal static int Main(string[] args)
         {
+            AppDomain.CurrentDomain.ProcessExit += ProcessExit;
+
             bool isFirst;
             Mutex mutex = new Mutex(true, BuildInfo.Name, out isFirst);
             if (!isFirst)
@@ -60,8 +62,15 @@ namespace bHapticsOSC
             while (((keyInfo = Console.ReadKey(true)) == null) || (keyInfo.Key != ConsoleKey.Escape))
                 Thread.Sleep(ThreadedTask.UpdateRate);
 
-            OnQuit();
+            Environment.Exit(0);
             return 0;
+        }
+
+        private static void ProcessExit(object sender, EventArgs e)
+        {
+            OscManager.Disconnect();
+            bHaptics.Quit();
+            ConfigManager.SaveAll();
         }
 
         private static void OnQuit()
