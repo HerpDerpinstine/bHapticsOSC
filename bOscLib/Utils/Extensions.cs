@@ -3,13 +3,13 @@ using System.Runtime.InteropServices;
 
 namespace bHapticsOSC.Utils
 {
-    internal static class Extensions
+    public static class Extensions
     {
-        internal static void GetDelegate<T>(this IntPtr ptr, out T output) where T : Delegate
+        public static void GetDelegate<T>(this IntPtr ptr, out T output) where T : Delegate
                => output = GetDelegate<T>(ptr);
-        internal static T GetDelegate<T>(this IntPtr ptr) where T : Delegate
+        public static T GetDelegate<T>(this IntPtr ptr) where T : Delegate
             => GetDelegate(ptr, typeof(T)) as T;
-        internal static Delegate GetDelegate(this IntPtr ptr, Type type)
+        public static Delegate GetDelegate(this IntPtr ptr, Type type)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentNullException(nameof(ptr));
@@ -18,20 +18,28 @@ namespace bHapticsOSC.Utils
                 throw new Exception($"Unable to Get Delegate of Type {type.FullName} for Function Pointer!");
             return del;
         }
-        internal static IntPtr GetFunctionPointer(this Delegate del)
+        public static IntPtr GetFunctionPointer(this Delegate del)
             => Marshal.GetFunctionPointerForDelegate(del);
 
-        internal static NativeLibrary ToNewNativeLibrary(this IntPtr ptr)
+        public static NativeLibrary ToNewNativeLibrary(this IntPtr ptr)
             => new NativeLibrary(ptr);
-        internal static NativeLibrary<T> ToNewNativeLibrary<T>(this IntPtr ptr)
+        public static NativeLibrary<T> ToNewNativeLibrary<T>(this IntPtr ptr)
             => new NativeLibrary<T>(ptr);
-        internal static IntPtr GetNativeLibraryExport(this IntPtr ptr, string name)
+        public static IntPtr GetNativeLibraryExport(this IntPtr ptr, string name)
             => NativeLibrary.GetExport(ptr, name);
 
-        internal static T Clamp<T>(T value, T min, T max) where T : IComparable<T> { if (value.CompareTo(min) < 0) return min; if (value.CompareTo(max) > 0) return max; return value; }
-        internal static int Clamp(this int value, int min, int max)
-            => Clamp<int>(value, min, max);
-        internal static float Clamp(this float value, float min, float max)
-            => Clamp<float>(value, min, max);
+        public static T Clamp<T>(T value, T min, T max) where T : IComparable<T> { if (value.CompareTo(min) < 0) return min; if (value.CompareTo(max) > 0) return max; return value; }
+        public static Int16 Clamp(this Int16 value, Int16 min, Int16 max)
+            => Clamp<Int16>(value, min, max);
+        public static UInt16 Clamp(this UInt16 value, UInt16 min, UInt16 max)
+            => Clamp<UInt16>(value, min, max);
+        public static Int32 Clamp(this Int32 value, Int32 min, Int32 max)
+            => Clamp<Int32>(value, min, max);
+        public static UInt32 Clamp(this UInt32 value, UInt32 min, UInt32 max)
+            => Clamp<UInt32>(value, min, max);
+        public static Double Clamp(this Double value, Double min, Double max)
+            => Clamp<Double>(value, min, max);
+        public static Single Clamp(this Single value, Single min, Single max)
+            => Clamp<Single>(value, min, max);
     }
 }

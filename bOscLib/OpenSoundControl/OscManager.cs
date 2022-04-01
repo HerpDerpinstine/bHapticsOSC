@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Rug.Osc;
 
@@ -13,8 +14,8 @@ namespace bHapticsOSC.OpenSoundControl
 
         static OscManager()
         {
-            GrabOscAddressesFromAssembly(typeof(OscManager).Assembly);
-            VRChatAvatar.SetupDevices();
+            AttachOscAttributesFromAssembly(typeof(OscManager).Assembly);
+            VRChatSupport.SetupDevices();
         }
 
         public static void Connect()
@@ -29,11 +30,14 @@ namespace bHapticsOSC.OpenSoundControl
             oscSender.EndInit();
         }
 
-        public static void Attach(string address, OscAddressMethod oscMessageEvent)
-            => AddressBook.Attach(address, (OscMessage msg) => { oscMessageEvent(address, msg); });
-
         public static void Send(OscPacket packet)
             => oscSender.Send(packet);
+
+        public static void Attach(string address, OscMessageEvent oscMessageEvent)
+            => AddressBook.Attach(address, oscMessageEvent);
+
+        public static void Detach(string address, OscMessageEvent oscMessageEvent)
+            => AddressBook.Detach(address, oscMessageEvent);
 
         public static OscPacketInvokeAction ShouldInvoke(OscPacket packet)
             => AddressBook.ShouldInvoke(packet);
@@ -41,21 +45,46 @@ namespace bHapticsOSC.OpenSoundControl
         public static bool Invoke(OscPacket packet)
             => AddressBook.Invoke(packet);
 
-        public static void GrabOscAddressesFromAssembly(Assembly assembly)
+        public static void AttachOscAttributesFromAssembly(Assembly assembly)
         {
             foreach (Type type in assembly.GetTypes())
                 foreach (MethodInfo method in type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static))
                 {
-                    // Parameter Check
+                    ParameterInfo[] parameters = method.GetParameters();
 
-                    foreach (OscAddressAttribute oscAddress in method.GetCustomAttributes<OscAddressAttribute>())
+                    foreach (IOscAddress oscAddress in method.GetCustomAttributes().Where(x => x.GetType().GetInterface("IOscAddress") != null))
                     {
-                        if (oscAddress.AddressBook == null)
+                        string prefix = oscAddress.GetAddressPrefix();
+                        string[] addressBook = oscAddress.GetAddressBook();
+
+                        if ((addressBook == null) || (addressBook.Length <= 0))
                             continue;
-                        if (oscAddress.AddressBook.Length <= 0)
-                            continue;
-                        foreach (string address in oscAddress.AddressBook)
-                            Attach(address, (OscAddressMethod)method.CreateDelegate(typeof(OscAddressMethod)));
+
+                        foreach (string address in addressBook)
+                        {
+                            if (string.IsNullOrEmpty(address))
+                                continue;
+
+                            string newAddress = address;
+                            if (!string.IsNullOrEmpty(prefix))
+                                newAddress = $"{prefix}/{address}";
+
+                            Attach(newAddress, (OscMessage msg) =>
+                            {
+                                if (msg.Count != parameters.Length)
+                                    return;
+
+                                if (msg.Count > 0)
+                                    for (int i = 0; i < msg.Count; i++)
+                                        if (msg[i].GetType() != parameters[i].ParameterType)
+                                        {
+                                            // To-Do: Log Information
+                                            return;
+                                        }
+
+                                method.Invoke(null, msg.ToArray());
+                            });
+                        }
                     }
                 }
         }

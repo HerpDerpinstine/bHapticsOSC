@@ -1,17 +1,18 @@
 ﻿using System;
+using bHapticsOSC.OpenSoundControl;
 
-namespace bHapticsOSC.OpenSoundControl
+namespace bHapticsOSC.VRChat
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class OscAddressAttribute : Attribute, IOscAddress
+    public class VRC_AvatarParameter : Attribute, IOscAddress
     {
         private string[] AddressBook;
 
-        public OscAddressAttribute(params string[] addressbook)
-            => AddressBook = addressbook;
+        public VRC_AvatarParameter(params string[] parameters)
+            => AddressBook = parameters;
 
         public string GetAddressPrefix()
-            => null;
+            => "/avatar/parameters";
         public string[] GetAddressBook()
             => AddressBook;
     }

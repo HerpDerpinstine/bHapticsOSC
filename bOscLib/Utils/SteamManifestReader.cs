@@ -6,6 +6,21 @@ namespace bHapticsOSC.Utils
 {
     public static class SteamManifestReader
     {
+        public static string GetSteamInstallPath()
+        {
+            RegistryKey key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\Valve\\Steam");
+            if (key == null)
+                key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Valve\\Steam");
+            if (key == null)
+                return null;
+
+            object installpathobj = key.GetValue("InstallPath");
+            if (installpathobj == null)
+                return null;
+
+            return installpathobj.ToString();
+        }
+
         public static string GetInstallPathFromAppId(string appid)
         {
             if (string.IsNullOrEmpty(appid))
@@ -81,21 +96,6 @@ namespace bHapticsOSC.Utils
                 output = installdir;
             }
             return output;
-        }
-
-        private static string GetSteamInstallPath()
-        {
-            RegistryKey key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\Valve\\Steam");
-            if (key == null)
-                key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Valve\\Steam");
-            if (key == null)
-                return null;
-
-            object installpathobj = key.GetValue("InstallPath");
-            if (installpathobj == null)
-                return null;
-
-            return installpathobj.ToString();
         }
     }
 }

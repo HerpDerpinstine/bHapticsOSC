@@ -32,6 +32,8 @@ namespace bHapticsOSC.Config.Interface
             FilePath = filepath;
             if (useWatcher)
                 Watcher = new ConfigFileWatcher(this);
+
+            ConfigManager.AllConfigFiles.Add(this);
         }
 
         public void Load()

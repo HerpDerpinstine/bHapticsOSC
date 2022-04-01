@@ -4,11 +4,12 @@ using System.Linq;
 using bHapticsOSC.Utils;
 using bHapticsOSC.Config;
 using bHapticsOSC.OpenSoundControl;
+using bHapticsOSC.VRChat;
 using Rug.Osc;
 
 namespace bHapticsOSC
 {
-    internal static class VRChatAvatar
+    internal static class VRChatSupport
     {
         private static Dictionary<bHaptics.PositionType, Device> Devices = new Dictionary<bHaptics.PositionType, Device>();
         private static int DurationOffset = 50; // ms
@@ -41,17 +42,23 @@ namespace bHapticsOSC
                     continue;
                 Devices[device.Item2] = new Device(device.Item2, device.Item3);
                 for (int i = 1; i < device.Item1 + 1; i++)
-                {
-                    var path = $"{device.Item3}_{i}_bool";
-
-                    int motorIndex = i;
-                    OscManager.Attach(path, (string address, OscMessage msg) => OnNode(msg, motorIndex, device.Item2));
-                }
-
-                
+                    OscManager.Attach($"{device.Item3}_{i}_bool", (OscMessage msg) => OnNode(msg, i, device.Item2));
             }
 
             ConfigManager.Devices.OnFileModified += RefreshNodeIntensity;
+        }
+
+        [VRC_InStation]
+        private static void OnInStationChanged(bool status)
+            => InStation = status;
+
+        [VRC_AvatarChange]
+        private static void OnChange(string address, OscMessage msg)
+        {
+            if (Devices.Count <= 0)
+                return;
+            foreach (Device device in Devices.Values)
+                device.Reset();
         }
 
         private static void OnNode(OscMessage msg, int node, bHaptics.PositionType position)
@@ -65,26 +72,6 @@ namespace bHapticsOSC
                 SetDeviceNodeIntensity(position, node, ConfigManager.Devices.PositionTypeToIntensity(position));
             else
                 SetDeviceNodeIntensity(position, node, 0);
-        }
-
-        [OscAddress("/avatar/parameters/InStation")]
-        private static void OnStation(string address, OscMessage msg)
-        {
-            if (msg == null)
-                return;
-            if (!(msg[0] is bool))
-                return;
-
-            InStation = (bool)msg[0];
-        }
-
-        [OscAddress("/avatar/change")]
-        private static void OnChange(string address, OscMessage msg)
-        {
-            if (Devices.Count <= 0)
-                return;
-            foreach (Device device in Devices.Values)
-                device.Reset();
         }
 
         internal static void SubmitPackets()

@@ -62,7 +62,7 @@ namespace bHapticsOSC.OpenSoundControl
                     Console.WriteLine($"Exception in OscReceiver Thread: {ex}");
                 }
 
-                VRChatAvatar.SubmitPackets();
+                VRChatSupport.SubmitPackets();
 
                 if (ShouldRun)
                     Thread.Sleep(UpdateRate);

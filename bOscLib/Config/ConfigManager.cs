@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using bHapticsOSC.Config.Interface;
 
@@ -10,18 +11,15 @@ namespace bHapticsOSC.Config
         public static DevicesConfig Devices;
         public static VRChatConfig VRChat;
 
-        private static ConfigFile[] AllConfigFiles;
+        internal static List<ConfigFile> AllConfigFiles = new List<ConfigFile>();
 
         static ConfigManager()
         {
             string basefolder = Path.GetDirectoryName(typeof(ConfigManager).Assembly.Location);
 
-            AllConfigFiles = new ConfigFile[]
-            {
-                Connection = CreateConfig<ConnectionConfig>(basefolder, nameof(Connection)),
-                Devices = CreateConfig<DevicesConfig>(basefolder, nameof(Devices)),
-                VRChat = CreateConfig<VRChatConfig>(basefolder,  nameof(VRChat))
-            };
+            Connection = CreateConfig<ConnectionConfig>(basefolder, nameof(Connection));
+            Devices = CreateConfig<DevicesConfig>(basefolder, nameof(Devices));
+            VRChat = CreateConfig<VRChatConfig>(basefolder, nameof(VRChat));
         }
 
         public static void LoadAll()
