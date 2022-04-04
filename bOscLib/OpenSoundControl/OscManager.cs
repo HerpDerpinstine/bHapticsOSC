@@ -71,17 +71,20 @@ namespace bHapticsOSC.OpenSoundControl
 
                             Attach(newAddress, (OscMessage msg) =>
                             {
-                                if (msg.Count != parameters.Length)
-                                    return;
+                                if (parameters.Length > 0)
+                                {
+                                    if (msg.Count != parameters.Length)
+                                        return;
 
-                                if (msg.Count > 0)
-                                    for (int i = 0; i < msg.Count; i++)
-                                        if (msg[i].GetType() != parameters[i].ParameterType)
-                                        {
-                                            // To-Do: Log Information
-                                            return;
-                                        }
-
+                                    if (msg.Count > 0)
+                                        for (int i = 0; i < msg.Count; i++)
+                                            if (msg[i].GetType() != parameters[i].ParameterType)
+                                            {
+                                                // To-Do: Log Information
+                                                Console.WriteLine($"Parameter Mismatch for {newAddress}");
+                                                return;
+                                            }
+                                }
                                 method.Invoke(null, msg.ToArray());
                             });
                         }

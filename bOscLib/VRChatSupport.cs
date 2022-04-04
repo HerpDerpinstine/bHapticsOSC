@@ -49,11 +49,11 @@ namespace bHapticsOSC
         }
 
         [VRC_InStation]
-        private static void OnInStationChanged(bool status)
+        private static void OnInStation(bool status)
             => InStation = status;
 
         [VRC_AvatarChange]
-        private static void OnChange(string address, OscMessage msg)
+        private static void OnAvatarChange(string avatarId)
         {
             if (Devices.Count <= 0)
                 return;
