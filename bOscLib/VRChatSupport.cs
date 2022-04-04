@@ -72,7 +72,7 @@ namespace bHapticsOSC
                 device.Reset();
         }
 
-        [VRC_AvatarParameter("bHapticsOSC_AudioLink")]
+        [VRC_AvatarParameter("bHaptics_AudioLink")]
         private static void OnAudioLink(int amplitude)
             => AudioLink = amplitude;
 
