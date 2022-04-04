@@ -51,11 +51,12 @@ namespace bHapticsOSC.OpenSoundControl
                 foreach (MethodInfo method in type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static))
                 {
                     ParameterInfo[] parameters = method.GetParameters();
-
                     foreach (IOscAddress oscAddress in method.GetCustomAttributes().Where(x => x.GetType().GetInterface("IOscAddress") != null))
                     {
                         string prefix = oscAddress.GetAddressPrefix();
                         string[] addressBook = oscAddress.GetAddressBook();
+
+                        // To-Do: Parameter Check
 
                         if ((addressBook == null) || (addressBook.Length <= 0))
                             continue;
