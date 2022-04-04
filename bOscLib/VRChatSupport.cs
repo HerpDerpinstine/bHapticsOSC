@@ -16,6 +16,7 @@ namespace bHapticsOSC
         private static bool AFK = false;
         private static bool InStation = false;
         private static bool Seated = false;
+        private static int AudioLink = 0;
 
         internal static void SetupDevices()
         {
@@ -70,6 +71,10 @@ namespace bHapticsOSC
             foreach (Device device in Devices.Values)
                 device.Reset();
         }
+
+        [VRC_AvatarParameter("bHapticsOSC_AudioLink")]
+        private static void OnAudioLink(int amplitude)
+            => AudioLink = amplitude;
 
         private static void OnNode(OscMessage msg, int node, bHaptics.PositionType position)
         {
@@ -138,6 +143,13 @@ namespace bHapticsOSC
                     case bHaptics.PositionType.FootR:
                         Array.Reverse(Value, 0, 3);
                         break;
+                }
+
+                if (AudioLink > 0)
+                {
+                    for (int i = 0; i < Value.Length; i++)
+                        if (Value[i] < AudioLink)
+                            Value[i] = (byte)AudioLink;
                 }
 
                 bHaptics.Submit($"{BuildInfo.Name}_{Position}", Position, Value, ThreadedTask.UpdateRate + DurationOffset);
