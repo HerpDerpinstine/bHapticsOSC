@@ -15,8 +15,12 @@ namespace bHapticsOSC.Config
         [TomlDoNotInlineObject]
         public class VRChat : ConfigCategoryValue
         {
-            [TomlPrecedingComment("If the Devices should React while in a Seat.")]
+            [TomlPrecedingComment("If the Devices should React while AFK.")]
+            public bool AFK = true;
+            [TomlPrecedingComment("If the Devices should React while in a Station.")]
             public bool InStation = true;
+            [TomlPrecedingComment("If the Devices should React while Seated in a Station.")]
+            public bool Seated = true;
         }
     }
 }

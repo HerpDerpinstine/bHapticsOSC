@@ -13,7 +13,9 @@ namespace bHapticsOSC
     {
         private static Dictionary<bHaptics.PositionType, Device> Devices = new Dictionary<bHaptics.PositionType, Device>();
         private static int DurationOffset = 50; // ms
+        private static bool AFK = false;
         private static bool InStation = false;
+        private static bool Seated = false;
 
         internal static void SetupDevices()
         {
@@ -48,9 +50,17 @@ namespace bHapticsOSC
             ConfigManager.Devices.OnFileModified += RefreshNodeIntensity;
         }
 
+        [VRC_AFK]
+        private static void OnAFK(bool status)
+            => AFK = status;
+
         [VRC_InStation]
         private static void OnInStation(bool status)
             => InStation = status;
+
+        [VRC_Seated]
+        private static void OnSeated(bool status)
+            => Seated = status;
 
         [VRC_AvatarChange]
         private static void OnAvatarChange(string avatarId)
@@ -73,7 +83,10 @@ namespace bHapticsOSC
 
         internal static void SubmitPackets()
         {
-            if ((Devices.Count <= 0) || (InStation && !ConfigManager.VRChat.vrchat.Value.InStation))
+            if ((AFK && !ConfigManager.VRChat.vrchat.Value.AFK) 
+                || (InStation && !ConfigManager.VRChat.vrchat.Value.InStation)
+                || (Seated && !ConfigManager.VRChat.vrchat.Value.Seated)
+                || (Devices.Count <= 0))
                 return;
             foreach (Device device in Devices.Values)
                 device.SubmitPacket();

@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bOscLib", "bOscLib\bOscLib.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bHapticsOSC", "bHapticsOSC\bHapticsOSC.csproj", "{95C78075-3C51-4BD5-BA16-8BB8A69B013B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmpGen", "AmpGen\AmpGen.csproj", "{F8E18AB0-15B6-4228-BDF8-8222FDD4511A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{95C78075-3C51-4BD5-BA16-8BB8A69B013B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95C78075-3C51-4BD5-BA16-8BB8A69B013B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95C78075-3C51-4BD5-BA16-8BB8A69B013B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F8E18AB0-15B6-4228-BDF8-8222FDD4511A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F8E18AB0-15B6-4228-BDF8-8222FDD4511A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F8E18AB0-15B6-4228-BDF8-8222FDD4511A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F8E18AB0-15B6-4228-BDF8-8222FDD4511A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
