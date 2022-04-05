@@ -7,10 +7,18 @@ namespace bHapticsOSC.OpenSoundControl
 {
     public static class OscManager
     {
-        public delegate void OscAddressMethod(string address, OscMessage msg);
         private static OscAddressManager AddressBook = new OscAddressManager();
         private static OscReceiverHandler oscReceiver = new OscReceiverHandler();
         private static OscSenderHandler oscSender = new OscSenderHandler();
+        public delegate void OscAddressMethod(string address, OscMessage msg);
+
+        public delegate void dOnOscPacketArgumentMismatch(string address, OscMessage msg);
+
+        public delegate void dOnOscPacketError();
+
+        public delegate void dOnOscReceiverError();
+
+        public delegate void dOnOscSenderError();
 
         static OscManager()
         {

@@ -139,11 +139,11 @@ namespace bHapticsOSC
                         break;
                 }
 
-                if (ConfigManager.UdonAudioLink.PositionTypeToEnabled(Position) && (UdonAudioLink > 0))
+                if (ConfigManager.VRChat.PositionTypeToUALEnabled(Position) && (UdonAudioLink > 0))
                 {
-                    int audioLinkIntensity = (ConfigManager.UdonAudioLink.PositionTypeToIntensity(Position) * (UdonAudioLink / 100));
+                    int audioLinkIntensity = (ConfigManager.VRChat.PositionTypeToUALIntensity(Position) * (UdonAudioLink / 100));
                     for (int i = 0; i < Value.Length; i++)
-                        if (ConfigManager.UdonAudioLink.udonAudioLink.Value.OverrideTouch || (Value[i] < audioLinkIntensity))
+                        if (ConfigManager.VRChat.udonAudioLink.Value.OverrideTouch || (Value[i] < audioLinkIntensity))
                             Value[i] = (byte)audioLinkIntensity;
                 }
 

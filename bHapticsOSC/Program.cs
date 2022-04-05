@@ -46,20 +46,14 @@ namespace bHapticsOSC
                     Console.WriteLine("VRChat.cfg Reloaded!");
                     Console.WriteLine();
                     PrintVRChat();
-                };
-
-                ConfigManager.UdonAudioLink.OnFileModified += () =>
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("UdonAudioLink.cfg Reloaded!");
-                    Console.WriteLine();
                     PrintUdonAudioLink();
                 };
 
                 PrintConnection();
                 PrintDevices(false);
-                PrintUdonAudioLink();
+
                 PrintVRChat();
+                PrintUdonAudioLink();
 
                 bHaptics.Load();
                 OscManager.Connect();
@@ -135,7 +129,7 @@ namespace bHapticsOSC
         {
             Console.WriteLine($"===== Udon AudioLink =====");
             Console.WriteLine();
-            Console.WriteLine($"[OverrideTouch] = {ConfigManager.UdonAudioLink.udonAudioLink.Value.OverrideTouch}");
+            Console.WriteLine($"[OverrideTouch] = {ConfigManager.VRChat.udonAudioLink.Value.OverrideTouch}");
             Console.WriteLine();
             PrintDevices(true);
         }
@@ -166,8 +160,8 @@ namespace bHapticsOSC
 
         private static void PrintDevice(string name, bHaptics.PositionType positionType, bool isAudioLink)
         {
-            Console.WriteLine($"[{name}  |  Enabled] = {(isAudioLink ? ConfigManager.UdonAudioLink.PositionTypeToEnabled(positionType) : ConfigManager.Devices.PositionTypeToEnabled(positionType))}");
-            Console.WriteLine($"[{name}  |  Intensity] = {(isAudioLink ? ConfigManager.UdonAudioLink.PositionTypeToIntensity(positionType) : ConfigManager.Devices.PositionTypeToIntensity(positionType))}");
+            Console.WriteLine($"[{name}  |  Enabled] = {(isAudioLink ? ConfigManager.VRChat.PositionTypeToUALEnabled(positionType) : ConfigManager.Devices.PositionTypeToEnabled(positionType))}");
+            Console.WriteLine($"[{name}  |  Intensity] = {(isAudioLink ? ConfigManager.VRChat.PositionTypeToUALIntensity(positionType) : ConfigManager.Devices.PositionTypeToIntensity(positionType))}");
             Console.WriteLine();
         }
     }
