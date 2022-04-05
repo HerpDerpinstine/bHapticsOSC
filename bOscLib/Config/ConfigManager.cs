@@ -10,6 +10,7 @@ namespace bHapticsOSC.Config
         public static ConnectionConfig Connection;
         public static DevicesConfig Devices;
         public static VRChatConfig VRChat;
+        public static AudioLinkConfig AudioLink;
 
         internal static List<ConfigFile> AllConfigFiles = new List<ConfigFile>();
 
@@ -20,6 +21,7 @@ namespace bHapticsOSC.Config
             Connection = CreateConfig<ConnectionConfig>(basefolder, nameof(Connection));
             Devices = CreateConfig<DevicesConfig>(basefolder, nameof(Devices));
             VRChat = CreateConfig<VRChatConfig>(basefolder, nameof(VRChat));
+            AudioLink = CreateConfig<AudioLinkConfig>(basefolder, nameof(AudioLink));
         }
 
         public static void LoadAll()

@@ -45,7 +45,10 @@ namespace bHapticsOSC
                     continue;
                 Devices[device.Item2] = new Device(device.Item2);
                 for (int i = 1; i < device.Item1 + 1; i++)
+                {
+                    OscManager.Attach($"{device.Item3}_{i}", (OscMessage msg) => OnNode(msg, i, device.Item2));
                     OscManager.Attach($"{device.Item3}_{i}_bool", (OscMessage msg) => OnNode(msg, i, device.Item2));
+                }
             }
 
             ConfigManager.Devices.OnFileModified += RefreshNodeIntensity;
@@ -72,9 +75,9 @@ namespace bHapticsOSC
                 device.Reset();
         }
 
-        //[VRC_AvatarParameter("bHaptics_AudioLink")]
-        //private static void OnAudioLink(int amplitude)
-        //    => AudioLink = amplitude;
+        [VRC_AvatarParameter("bHapticsOSC_AudioLink_Amplitude")]
+        private static void OnAudioLink(int amplitude)
+            => AudioLink = amplitude;
 
         private static void OnNode(OscMessage msg, int node, bHaptics.PositionType position)
         {
@@ -89,8 +92,9 @@ namespace bHapticsOSC
         internal static void SubmitPackets()
         {
             if ((AFK && !ConfigManager.VRChat.vrchat.Value.AFK) 
-                || (InStation && !ConfigManager.VRChat.vrchat.Value.InStation)
-                || (Seated && !ConfigManager.VRChat.vrchat.Value.Seated)
+                || ((AudioLink <= 0) && 
+                    ((InStation && !ConfigManager.VRChat.vrchat.Value.InStation) 
+                        || (Seated && !ConfigManager.VRChat.vrchat.Value.Seated)))
                 || (Devices.Count <= 0))
                 return;
             foreach (Device device in Devices.Values)
@@ -145,11 +149,12 @@ namespace bHapticsOSC
                         break;
                 }
 
-                if (AudioLink > 0)
+                if (ConfigManager.AudioLink.PositionTypeToEnabled(Position) && (AudioLink > 0))
                 {
+                    int audioLinkIntensity = (ConfigManager.AudioLink.PositionTypeToIntensity(Position) * (AudioLink / 100));
                     for (int i = 0; i < Value.Length; i++)
-                        if (Value[i] < AudioLink)
-                            Value[i] = (byte)AudioLink;
+                        if (ConfigManager.AudioLink.audioLink.Value.OverrideTouch || (Value[i] < audioLinkIntensity))
+                            Value[i] = (byte)audioLinkIntensity;
                 }
 
                 bHaptics.Submit($"{BuildInfo.Name}_{Position}", Position, Value, ThreadedTask.UpdateRate + DurationOffset);
