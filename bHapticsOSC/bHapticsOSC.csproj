@@ -22,6 +22,10 @@
     <ProjectReference Include="..\bOscLib\bOscLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="cd $(OutputPath)&#xD;&#xA;del Rug.Osc.dll&#xD;&#xA;del Tomlet.dll&#xD;&#xA;del bHapticsOSC.pdb&#xD;&#xA;del bHapticsOSC.exe.config" />
   </Target>

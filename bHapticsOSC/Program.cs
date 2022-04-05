@@ -3,6 +3,7 @@ using System.Threading;
 using bHapticsOSC.Config;
 using bHapticsOSC.Utils;
 using bHapticsOSC.OpenSoundControl;
+using System.Windows.Forms;
 
 namespace bHapticsOSC
 {
@@ -18,77 +19,80 @@ namespace bHapticsOSC
                 return 0;
 
             WelcomeMessage();
-
-            ConfigManager.LoadAll();
-
-            ConfigManager.Connection.OnFileModified = () =>
+            try
             {
-                Console.WriteLine();
-                Console.WriteLine("Connection.cfg Reloaded!");
-                Console.WriteLine();
+                ConfigManager.LoadAll();
+
+                ConfigManager.Connection.OnFileModified = () =>
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Connection.cfg Reloaded!");
+                    Console.WriteLine();
+                    PrintConnection();
+                    OscManager.Connect();
+                };
+
+                ConfigManager.Devices.OnFileModified += () =>
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Devices.cfg Reloaded!");
+                    Console.WriteLine();
+                    PrintDevices(true);
+                };
+
+                ConfigManager.VRChat.OnFileModified += () =>
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("VRChat.cfg Reloaded!");
+                    Console.WriteLine();
+                    PrintVRChat();
+                };
+
+                ConfigManager.UdonAudioLink.OnFileModified += () =>
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("UdonAudioLink.cfg Reloaded!");
+                    Console.WriteLine();
+                    PrintUdonAudioLink();
+                };
+
                 PrintConnection();
-                OscManager.Connect();
-            };
-
-            ConfigManager.Devices.OnFileModified += () =>
-            {
-                Console.WriteLine();
-                Console.WriteLine("Devices.cfg Reloaded!");
-                Console.WriteLine();
-                PrintDevices(true);
-            };
-
-            ConfigManager.VRChat.OnFileModified += () =>
-            {
-                Console.WriteLine();
-                Console.WriteLine("VRChat.cfg Reloaded!");
-                Console.WriteLine();
-                PrintVRChat();
-            };
-            
-            ConfigManager.UdonAudioLink.OnFileModified += () =>
-            {
-                Console.WriteLine();
-                Console.WriteLine("UdonAudioLink.cfg Reloaded!");
-                Console.WriteLine();
+                PrintDevices(false);
                 PrintUdonAudioLink();
-            };
+                PrintVRChat();
 
-            PrintConnection();
-            PrintDevices(false);
-            PrintUdonAudioLink();
-            PrintVRChat();
+                bHaptics.Load();
+                OscManager.Connect();
 
-            bHaptics.Load();
-            OscManager.Connect();
+                Console.WriteLine();
+                Console.WriteLine("Awaiting Packets...");
+                Console.WriteLine();
+                Console.WriteLine("Please leave ths application open to handle OSC Communication.");
+                Console.WriteLine("Press ESC to Exit.");
+                Console.WriteLine();
 
-            Console.WriteLine();
-            Console.WriteLine("Awaiting Packets...");
-            Console.WriteLine();
-            Console.WriteLine("Please leave ths application open to handle OSC Communication.");
-            Console.WriteLine("Press ESC to Exit.");
-            Console.WriteLine();
-
-            ConsoleKeyInfo keyInfo;
-            while (((keyInfo = Console.ReadKey(true)) == null) || (keyInfo.Key != ConsoleKey.Escape))
-                Thread.Sleep(ThreadedTask.UpdateRate);
+                ConsoleKeyInfo keyInfo;
+                while (((keyInfo = Console.ReadKey(true)) == null) || (keyInfo.Key != ConsoleKey.Escape))
+                    Thread.Sleep(ThreadedTask.UpdateRate);
+            }
+            catch (Exception ex) { ErrorMessageBox(ex.ToString()); }
 
             Environment.Exit(0);
             return 0;
         }
 
+        private static void ErrorMessageBox(string msg)
+            => MessageBox.Show(msg, "bHapticsOSC ~ ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
         private static void ProcessExit(object sender, EventArgs e)
         {
-            OscManager.Disconnect();
-            bHaptics.Quit();
-            ConfigManager.SaveAll();
-        }
-
-        private static void OnQuit()
-        {
-            OscManager.Disconnect();
-            bHaptics.Quit();
-            ConfigManager.SaveAll();
+            try
+            {
+                OscManager.Disconnect();
+                bHaptics.Quit();
+                ConfigManager.SaveAll();
+            }
+            catch (Exception ex) { ErrorMessageBox(ex.ToString()); }
         }
 
         private static void WelcomeMessage()
