@@ -41,6 +41,9 @@ namespace bHapticsOSC.Config
             [TomlPrecedingComment("Port for the OSC Sender.  (0 - 65535)")]
             public int Port = 9000;
 
+            [TomlPrecedingComment("If the OSC Sender should pipe ALL packets and not just the ones bHapticsOSC understands.")]
+            public bool PipeAllPackets = false;
+
             public override void Clamp()
             {
                 Port = Port.Clamp(0, 65535);
