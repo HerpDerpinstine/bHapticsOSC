@@ -16,7 +16,7 @@ namespace bHapticsOSC
         private static bool AFK = false;
         private static bool InStation = false;
         private static bool Seated = false;
-        private static int AudioLink = 0;
+        private static int UdonAudioLink = 0;
 
         internal static void SetupDevices()
         {
@@ -73,9 +73,9 @@ namespace bHapticsOSC
                 device.Reset();
         }
 
-        [VRC_AvatarParameter("bHapticsOSC_AudioLink_Amplitude")]
-        private static void OnAudioLink(int amplitude)
-            => AudioLink = amplitude;
+        [VRC_AvatarParameter("bHapticsOSC_UdonAudioLink")]
+        private static void OnUdonAudioLink(int amplitude)
+            => UdonAudioLink = amplitude;
 
         private static void OnNode(OscMessage msg, int node, bHaptics.PositionType position)
         {
@@ -90,7 +90,7 @@ namespace bHapticsOSC
         internal static void SubmitPackets()
         {
             if ((AFK && !ConfigManager.VRChat.vrchat.Value.AFK) 
-                || ((AudioLink <= 0) && 
+                || ((UdonAudioLink <= 0) && 
                     ((InStation && !ConfigManager.VRChat.vrchat.Value.InStation) 
                         || (Seated && !ConfigManager.VRChat.vrchat.Value.Seated)))
                 || (Devices.Count <= 0))
@@ -139,9 +139,9 @@ namespace bHapticsOSC
                         break;
                 }
 
-                if (ConfigManager.UdonAudioLink.PositionTypeToEnabled(Position) && (AudioLink > 0))
+                if (ConfigManager.UdonAudioLink.PositionTypeToEnabled(Position) && (UdonAudioLink > 0))
                 {
-                    int audioLinkIntensity = (ConfigManager.UdonAudioLink.PositionTypeToIntensity(Position) * (AudioLink / 100));
+                    int audioLinkIntensity = (ConfigManager.UdonAudioLink.PositionTypeToIntensity(Position) * (UdonAudioLink / 100));
                     for (int i = 0; i < Value.Length; i++)
                         if (ConfigManager.UdonAudioLink.udonAudioLink.Value.OverrideTouch || (Value[i] < audioLinkIntensity))
                             Value[i] = (byte)audioLinkIntensity;
