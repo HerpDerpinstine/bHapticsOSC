@@ -30,7 +30,7 @@ You can switch to this branch in VRChat's Properties in Steam or Oculus.
   
 **VRCHAT AVATAR CREATION ONLY**
 
-- VRChat's Open-Beta SDK  
+- [VRChat's Open-Beta SDK](https://files.vrchat.cloud/sdk/VRCSDK3-AVATAR-2022.04.02.00.45_Public.unitypackage)  
 Currently Avatar Dynamics is only available on the Open-Beta SDK of VRChat.
 
 - A Custom Avatar with an FX Layer and Expression Parameters.  
