@@ -50,8 +50,6 @@ namespace bHapticsOSC
                     OscManager.Attach($"{device.Item3}_{i}_bool", (OscMessage msg) => OnNode(msg, i, device.Item2));
                 }
             }
-
-            ConfigManager.Devices.OnFileModified += RefreshNodeIntensity;
         }
 
         [VRC_AFK]
@@ -99,14 +97,6 @@ namespace bHapticsOSC
                 return;
             foreach (Device device in Devices.Values)
                 device.SubmitPacket();
-        }
-
-        private static void RefreshNodeIntensity()
-        {
-            if (Devices.Count <= 0)
-                return;
-            foreach (Device device in Devices.Values)
-                device.RefreshNodeIntensity();
         }
 
         private static void SetDeviceNodeIntensity(bHaptics.PositionType positionType, int node, int intensity)
@@ -165,14 +155,6 @@ namespace bHapticsOSC
 
             internal void SetNodeIntensity(int node, int intensity)
                 => Packet[node - 1] = (byte)intensity;
-
-            internal void RefreshNodeIntensity()
-            {
-                int intensity = ConfigManager.Devices.PositionTypeToIntensity(Position);
-                for (int i = 0; i < Packet.Length; i++)
-                    if (Packet[i] > 0)
-                        Packet[i] = (byte)intensity;
-            }
 
             internal void Reset()
             {
