@@ -46,17 +46,17 @@ namespace bHapticsOSC
                 PrintVRChat();
             };
             
-            ConfigManager.AudioLink.OnFileModified += () =>
+            ConfigManager.UdonAudioLink.OnFileModified += () =>
             {
                 Console.WriteLine();
-                Console.WriteLine("AudioLink.cfg Reloaded!");
+                Console.WriteLine("UdonAudioLink.cfg Reloaded!");
                 Console.WriteLine();
-                PrintAudioLink();
+                PrintUdonAudioLink();
             };
 
             PrintConnection();
             PrintDevices(false);
-            PrintAudioLink();
+            PrintUdonAudioLink();
             PrintVRChat();
 
             bHaptics.Load();
@@ -64,6 +64,7 @@ namespace bHapticsOSC
 
             Console.WriteLine();
             Console.WriteLine("Awaiting Packets...");
+            Console.WriteLine();
             Console.WriteLine("Please leave ths application open to handle OSC Communication.");
             Console.WriteLine("Press ESC to Exit.");
             Console.WriteLine();
@@ -111,13 +112,13 @@ namespace bHapticsOSC
 
         private static void PrintConnection()
         {
-            Console.WriteLine($"===== OscReceiver =====");
+            Console.WriteLine($"===== OSC Receiver =====");
             Console.WriteLine();
             Console.WriteLine($"[Port] = {ConfigManager.Connection.receiver.Value.Port}");
             Console.WriteLine();
             Console.WriteLine();
 
-            Console.WriteLine($"===== OscSender =====");
+            Console.WriteLine($"===== OSC Sender =====");
             Console.WriteLine();
             Console.WriteLine($"[Enabled] = {ConfigManager.Connection.sender.Value.Enabled}");
             Console.WriteLine($"[IP] = {ConfigManager.Connection.sender.Value.IP}");
@@ -126,11 +127,11 @@ namespace bHapticsOSC
             Console.WriteLine();
         }
 
-        private static void PrintAudioLink()
+        private static void PrintUdonAudioLink()
         {
-            Console.WriteLine($"===== AudioLink =====");
+            Console.WriteLine($"===== Udon AudioLink =====");
             Console.WriteLine();
-            Console.WriteLine($"[OverrideTouch] = {ConfigManager.AudioLink.audioLink.Value.OverrideTouch}");
+            Console.WriteLine($"[OverrideTouch] = {ConfigManager.UdonAudioLink.udonAudioLink.Value.OverrideTouch}");
             Console.WriteLine();
             PrintDevices(true);
         }
@@ -161,8 +162,8 @@ namespace bHapticsOSC
 
         private static void PrintDevice(string name, bHaptics.PositionType positionType, bool isAudioLink)
         {
-            Console.WriteLine($"[{name}  |  Enabled] = {(isAudioLink ? ConfigManager.AudioLink.PositionTypeToEnabled(positionType) : ConfigManager.Devices.PositionTypeToEnabled(positionType))}");
-            Console.WriteLine($"[{name}  |  Intensity] = {(isAudioLink ? ConfigManager.AudioLink.PositionTypeToIntensity(positionType) : ConfigManager.Devices.PositionTypeToIntensity(positionType))}");
+            Console.WriteLine($"[{name}  |  Enabled] = {(isAudioLink ? ConfigManager.UdonAudioLink.PositionTypeToEnabled(positionType) : ConfigManager.Devices.PositionTypeToEnabled(positionType))}");
+            Console.WriteLine($"[{name}  |  Intensity] = {(isAudioLink ? ConfigManager.UdonAudioLink.PositionTypeToIntensity(positionType) : ConfigManager.Devices.PositionTypeToIntensity(positionType))}");
             Console.WriteLine();
         }
     }
