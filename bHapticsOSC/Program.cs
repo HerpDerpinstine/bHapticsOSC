@@ -3,7 +3,7 @@ using System.Threading;
 using bHapticsOSC.Config;
 using bHapticsOSC.Utils;
 using bHapticsOSC.OpenSoundControl;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 
 namespace bHapticsOSC
 {
@@ -65,8 +65,7 @@ namespace bHapticsOSC
                 Console.WriteLine("Press ESC to Exit.");
                 Console.WriteLine();
 
-                ConsoleKeyInfo keyInfo;
-                while (((keyInfo = Console.ReadKey(true)) == null) || (keyInfo.Key != ConsoleKey.Escape))
+                while (Console.ReadKey(true).Key != ConsoleKey.Escape)
                     Thread.Sleep(ThreadedTask.UpdateRate);
             }
             catch (Exception ex) { ErrorMessageBox(ex.ToString()); }
@@ -76,7 +75,10 @@ namespace bHapticsOSC
         }
 
         private static void ErrorMessageBox(string msg)
-            => MessageBox.Show(msg, "bHapticsOSC ~ ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        {
+
+        }
+           // => MessageBox.Show(msg, "bHapticsOSC ~ ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         private static void ProcessExit(object sender, EventArgs e)
         {
