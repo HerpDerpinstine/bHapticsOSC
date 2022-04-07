@@ -46,8 +46,10 @@ namespace bHapticsOSC
                 Devices[device.Item2] = new Device(device.Item2);
                 for (int i = 1; i < device.Item1 + 1; i++)
                 {
-                    OscManager.Attach($"{device.Item3}_{i}", (OscMessage msg) => OnNode(msg, i, device.Item2));
-                    OscManager.Attach($"{device.Item3}_{i}_bool", (OscMessage msg) => OnNode(msg, i, device.Item2));
+                    int motorIndex = i;
+                    string path = $"{device.Item3}_{motorIndex}";
+                    OscManager.Attach(path, (OscMessage msg) => OnNode(msg, motorIndex, device.Item2));
+                    OscManager.Attach($"{path}_bool", (OscMessage msg) => OnNode(msg, motorIndex, device.Item2));
                 }
             }
         }
