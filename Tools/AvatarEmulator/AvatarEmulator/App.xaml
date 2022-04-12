@@ -1,0 +1,11 @@
+﻿<Application x:Class="AvatarEmulator.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:AvatarEmulator"
+             xmlns:viewModel="clr-namespace:AvatarEmulator.ViewModel"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+         <viewModel:MotorValueViewModel x:Key="MotorValueViewModel" />
+         <viewModel:SettingsViewModel x:Key="SettingsViewModel" />
+    </Application.Resources>
+</Application>

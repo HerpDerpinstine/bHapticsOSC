@@ -1,0 +1,25 @@
+<UserControl x:Class="AvatarEmulator.View.MotorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:AvatarEmulator.View"
+             xmlns:viewModel="clr-namespace:AvatarEmulator.ViewModel"
+             xmlns:converters="clr-namespace:AvatarEmulator.Converters"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModel:MotorValue,
+                                     IsDesignTimeCreatable=True}"
+             d:DesignHeight="50" d:DesignWidth="50">
+    <UserControl.Resources>
+        <converters:BoolToBrushConverter x:Key="Converter" True="Green" False="Gray"></converters:BoolToBrushConverter>
+    </UserControl.Resources>
+    <Grid>
+        <Button
+            Margin="10"
+            Width="30"
+            Height="30"
+            Background="{Binding On, Converter={StaticResource Converter}}"
+            Command="{Binding ToggleCommand}" 
+            Content="{Binding Index}" />
+    </Grid>
+</UserControl>
