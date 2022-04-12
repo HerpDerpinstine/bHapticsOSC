@@ -1,0 +1,26 @@
+﻿<Window
+    x:Class="AvatarEmulator.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:AvatarEmulator"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="clr-namespace:AvatarEmulator.View"
+    Title="VRChat bHaptics OSC Avatar Emulator"
+    Width="800"
+    Height="550"
+    mc:Ignorable="d">
+    <StackPanel Margin="10">
+        <view:SettingView />
+        <WrapPanel Margin="0,10">
+            <Button
+                Margin="0,0,10,0"
+                Padding="10,5"
+                Click="ClickAvatarChange">
+                /avatar/change
+            </Button>
+            <Button Padding="10,5" Click="ClickInStation">/avatar/parameters/InStation</Button>
+        </WrapPanel>
+        <view:MotorLayout />
+    </StackPanel>
+</Window>

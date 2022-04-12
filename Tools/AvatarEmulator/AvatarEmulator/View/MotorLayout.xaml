@@ -1,0 +1,103 @@
+<UserControl
+    x:Class="AvatarEmulator.View.MotorLayout"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:AvatarEmulator.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="clr-namespace:AvatarEmulator.ViewModel"
+    d:DesignHeight="400"
+    d:DesignWidth="800"
+    DataContext="{StaticResource MotorValueViewModel}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <DataTemplate x:Key="VestFrontTemplate" DataType="{x:Type viewModel:MotorValue}">
+            <WrapPanel
+                Width="50"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <local:MotorView DataContext="{Binding .}" />
+            </WrapPanel>
+        </DataTemplate>
+        <ItemsPanelTemplate x:Key="VestPanel">
+            <WrapPanel IsItemsHost="True" />
+        </ItemsPanelTemplate>
+    </UserControl.Resources>
+    <Grid
+        Width="750"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top">
+        <StackPanel HorizontalAlignment="Center">
+            <TextBlock FontWeight="Bold" TextAlignment="Center">Head</TextBlock>
+            <ItemsControl
+                Width="300"
+                ItemTemplate="{StaticResource VestFrontTemplate}"
+                ItemsPanel="{StaticResource VestPanel}"
+                ItemsSource="{Binding HeadMotors}" />
+        </StackPanel>
+        <StackPanel Margin="160,70,0,0" HorizontalAlignment="Left">
+            <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Vest_Front</TextBlock>
+            <ItemsControl
+                Width="200"
+                ItemTemplate="{StaticResource VestFrontTemplate}"
+                ItemsPanel="{StaticResource VestPanel}"
+                ItemsSource="{Binding VestFrontMotors}" />
+        </StackPanel>
+        <StackPanel Margin="0,70,160,0" HorizontalAlignment="Right">
+            <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Vest_Back</TextBlock>
+            <ItemsControl
+                Width="200"
+                ItemTemplate="{StaticResource VestFrontTemplate}"
+                ItemsPanel="{StaticResource VestPanel}"
+                ItemsSource="{Binding VestBackMotors}" />
+        </StackPanel>
+        <StackPanel Margin="0,50,0,0" HorizontalAlignment="Right">
+            <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Right_Arm</TextBlock>
+            <ItemsControl
+                Width="150"
+                ItemTemplate="{StaticResource VestFrontTemplate}"
+                ItemsPanel="{StaticResource VestPanel}"
+                ItemsSource="{Binding RightArmMotors}" />
+        </StackPanel>
+        <StackPanel Margin="0,180,0,0" HorizontalAlignment="Right">
+            <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Right_Hand</TextBlock>
+            <ItemsControl
+                Width="150"
+                ItemTemplate="{StaticResource VestFrontTemplate}"
+                ItemsPanel="{StaticResource VestPanel}"
+                ItemsSource="{Binding RightHandMotors}" />
+        </StackPanel>
+        <StackPanel Margin="0,260,0,0" HorizontalAlignment="Right">
+            <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Right_Foot</TextBlock>
+            <ItemsControl
+                Width="150"
+                ItemTemplate="{StaticResource VestFrontTemplate}"
+                ItemsPanel="{StaticResource VestPanel}"
+                ItemsSource="{Binding RightFootMotors}" />
+        </StackPanel>
+        <StackPanel Margin="0,50,0,0" HorizontalAlignment="Left">
+            <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Left_Arm</TextBlock>
+            <ItemsControl
+                Width="150"
+                ItemTemplate="{StaticResource VestFrontTemplate}"
+                ItemsPanel="{StaticResource VestPanel}"
+                ItemsSource="{Binding LeftArmMotors}" />
+        </StackPanel>
+        <StackPanel Margin="0,180,0,0" HorizontalAlignment="Left">
+            <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Left_Hand</TextBlock>
+            <ItemsControl
+                Width="150"
+                ItemTemplate="{StaticResource VestFrontTemplate}"
+                ItemsPanel="{StaticResource VestPanel}"
+                ItemsSource="{Binding LeftHandMotors}" />
+        </StackPanel>
+        <StackPanel Margin="0,260,0,0" HorizontalAlignment="Left">
+            <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Left_Foot</TextBlock>
+            <ItemsControl
+                Width="150"
+                ItemTemplate="{StaticResource VestFrontTemplate}"
+                ItemsPanel="{StaticResource VestPanel}"
+                ItemsSource="{Binding LeftFootMotors}" />
+        </StackPanel>
+    </Grid>
+</UserControl>
