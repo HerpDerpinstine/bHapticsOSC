@@ -49,7 +49,7 @@ namespace bHapticsOSC
                     int motorIndex = i;
                     string path = $"{device.Item3}_{motorIndex}";
                     OscManager.Attach(path, (OscMessage msg) => OnNode(msg, motorIndex, device.Item2));
-                    OscManager.Attach(path.Replace("bHapticsOSC_", "bHaptics_"), (OscMessage msg) => OnNode(msg, motorIndex, device.Item2));
+                    OscManager.Attach($"{path.Replace("bHapticsOSC_", "bHaptics_")}_bool", (OscMessage msg) => OnNode(msg, motorIndex, device.Item2));
                 }
             }
         }
