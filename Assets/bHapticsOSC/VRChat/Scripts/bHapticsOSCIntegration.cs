@@ -4,58 +4,58 @@ using UnityEditor;
 using UnityEditor.Animations;
 using AnimatorAsCode.V0;
 using VRC.SDK3.Avatars.Components;
+using System.Collections.Generic;
 
-namespace bHapticsOSC
+namespace bHapticsOSC.VRChat
 {
     [AddComponentMenu("bHapticsOSC Integration")]
     [ExecuteInEditMode]
+    [System.Serializable]
     public class bHapticsOSCIntegration : MonoBehaviour
     {
+        public static string SystemName = "bHapticsOSC";
+
+        [SerializeField]
         public VRCAvatarDescriptor avatar;
+        [SerializeField]
+        public Animator avatarAnimator;
+        [SerializeField]
         public string assetKey;
 
-		public bool ToggleHead = false;
-		public GameObject HeadObj;
+        [SerializeField]
+        public bDeviceTemplate CurrentTemplate;
+        [SerializeField]
+        public Dictionary<bDeviceTemplate, bUserSettings> AllUserSettings;
 
-		public bool ToggleVest = false;
-		public GameObject VestObj;
+        public VRCAvatarDescriptor.CustomAnimLayer fx_layer;
+        public AnimatorController animatorControllerClone;
 
-		public bool ToggleArmL = false;
-		public GameObject ArmLeftObj;
+        //private static int AudioLinkCost = 8;
+        //[SerializeField]
+        //public bool AudioLink = false;
 
-		public bool ToggleArmR = false;
-		public GameObject ArmRightObj;
-
-		public bool ToggleHandL = false;
-		public GameObject HandLeftObj;
-		public bool HandLeftParentConstraint = true;
-
-		public bool ToggleHandR = false;
-		public GameObject HandRightObj;
-		public bool HandRightParentConstraint = true;
-
-		public bool ToggleFootL = false;
-		public GameObject FootLeftObj;
-
-		public bool ToggleFootR = false;
-		public GameObject FootRightObj;
-
-		public bool IsAnyDeviceSelected()
-			=> ToggleHead
-				|| ToggleVest
-				|| ToggleArmL
-				|| ToggleArmR
-				|| ToggleHandL
-				|| ToggleHandR
-				|| ToggleFootL
-				|| ToggleFootR;
-
-		public void Awake()
-        {
+        public void Validate()
+	    {
             avatar = gameObject.GetComponent<VRCAvatarDescriptor>();
             if (avatar == null)
             {
-                GameObject.DestroyImmediate(this);
+                Debug.LogError("No VRCAvatarDescriptor Detected!");
+                DestroyImmediate(this);
+                return;
+            }
+            
+            if (gameObject.GetComponentsInChildren<bHapticsOSCIntegration>(true).Length > 1)
+            {
+                Debug.LogError("Only 1 bHapticsOSC Integration component can be used at a time!");
+                DestroyImmediate(this);
+                return;
+            }
+
+            avatarAnimator = gameObject.GetComponent<Animator>();
+            if (avatarAnimator == null)
+            {
+                Debug.LogError("Avatar must have an Animator!");
+                DestroyImmediate(this);
                 return;
             }
 
@@ -63,20 +63,34 @@ namespace bHapticsOSC
                 assetKey = GUID.Generate().ToString();
         }
 
-		public AacFlBase CreateAnimatorAsCode(string name, AnimatorController animatorController)
+		public AacFlBase CreateAnimatorAsCode()
 		{
 			AacFlBase aac = AacV0.Create(new AacConfiguration
 			{
-				SystemName = name,
+				SystemName = SystemName,
 				AvatarDescriptor = avatar,
 				AnimatorRoot = transform,
 				DefaultValueRoot = transform,
-				AssetContainer = animatorController,
+				AssetContainer = animatorControllerClone,
 				AssetKey = assetKey,
 				DefaultsProvider = new AacDefaultsProvider(false)
 			});
 			return aac;
 		}
-	}
+
+        public bool IsReadyToApply()
+        {
+            //if (AudioLink)
+            //    return true;
+            foreach (bUserSettings settings in AllUserSettings.Values)
+                if (settings.CurrentPrefab != null)
+                    return true;
+            return false;
+        }
+
+        //public void ResetExtras()
+        //{
+        //}
+    }
 }
 #endif

@@ -92,8 +92,7 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Foot_Left_3
-  value: 1
+  parameter: bHapticsOSC_Foot_Left_3
   minVelocity: 0.05
 --- !u!1 &2461792716651725412
 GameObject:
@@ -153,8 +152,7 @@ MonoBehaviour:
   allowOthers: 0
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Foot_Left_1
-  value: 1
+  parameter: bHapticsOSC_Foot_Left_1
   minVelocity: 0.05
 --- !u!1 &3868652155359519795
 GameObject:
@@ -247,8 +245,7 @@ MonoBehaviour:
   allowOthers: 0
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Foot_Left_2
-  value: 1
+  parameter: bHapticsOSC_Foot_Left_2
   minVelocity: 0.05
 --- !u!1 &4433326330198993813
 GameObject:
@@ -390,7 +387,7 @@ Transform:
   m_GameObject: {fileID: 5963262431242962074}
   m_LocalRotation: {x: -0.86602545, y: 0, z: 0, w: 0.49999994}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2288844841814853928}
   - {fileID: 2639805173114599972}
@@ -522,8 +519,7 @@ MonoBehaviour:
   allowOthers: 0
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Foot_Left_3
-  value: 1
+  parameter: bHapticsOSC_Foot_Left_3
   minVelocity: 0.05
 --- !u!1 &7552938312226077569
 GameObject:
@@ -585,8 +581,7 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Foot_Left_2
-  value: 1
+  parameter: bHapticsOSC_Foot_Left_2
   minVelocity: 0.05
 --- !u!1 &7975832633213621602
 GameObject:
@@ -648,6 +643,5 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Foot_Left_1
-  value: 1
+  parameter: bHapticsOSC_Foot_Left_1
   minVelocity: 0.05

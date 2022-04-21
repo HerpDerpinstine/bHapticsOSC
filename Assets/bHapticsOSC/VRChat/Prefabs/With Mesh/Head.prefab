@@ -57,8 +57,7 @@ MonoBehaviour:
   allowOthers: 0
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Head_3
-  value: 1
+  parameter: bHapticsOSC_Head_3
   minVelocity: 0.05
 --- !u!1 &1339877245001300911
 GameObject:
@@ -117,8 +116,7 @@ MonoBehaviour:
   allowOthers: 0
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Head_2
-  value: 1
+  parameter: bHapticsOSC_Head_2
   minVelocity: 0.05
 --- !u!1 &2708982493337527073
 GameObject:
@@ -180,8 +178,7 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Head_4
-  value: 1
+  parameter: bHapticsOSC_Head_4
   minVelocity: 0.05
 --- !u!1 &2708982493469697889
 GameObject:
@@ -243,8 +240,7 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Head_5
-  value: 1
+  parameter: bHapticsOSC_Head_5
   minVelocity: 0.05
 --- !u!1 &2708982494413431953
 GameObject:
@@ -306,8 +302,7 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Head_2
-  value: 1
+  parameter: bHapticsOSC_Head_2
   minVelocity: 0.05
 --- !u!1 &2708982494542609705
 GameObject:
@@ -401,8 +396,7 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Head_3
-  value: 1
+  parameter: bHapticsOSC_Head_3
   minVelocity: 0.05
 --- !u!1 &2708982494637455850
 GameObject:
@@ -464,8 +458,7 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Head_1
-  value: 1
+  parameter: bHapticsOSC_Head_1
   minVelocity: 0.05
 --- !u!1 &2708982495086096761
 GameObject:
@@ -531,7 +524,7 @@ Transform:
   m_GameObject: {fileID: 2950192855039537019}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1030024093417142178}
   - {fileID: 2708982494542609706}
@@ -661,8 +654,7 @@ MonoBehaviour:
   allowOthers: 0
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Head_4
-  value: 1
+  parameter: bHapticsOSC_Head_4
   minVelocity: 0.05
 --- !u!1 &4740541445359107519
 GameObject:
@@ -800,8 +792,7 @@ MonoBehaviour:
   allowOthers: 0
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Head_1
-  value: 1
+  parameter: bHapticsOSC_Head_1
   minVelocity: 0.05
 --- !u!1 &5847688542258549884
 GameObject:
@@ -896,8 +887,7 @@ MonoBehaviour:
   allowOthers: 0
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Head_6
-  value: 1
+  parameter: bHapticsOSC_Head_6
   minVelocity: 0.05
 --- !u!1 &8165823526353901862
 GameObject:
@@ -959,8 +949,7 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Head_6
-  value: 1
+  parameter: bHapticsOSC_Head_6
   minVelocity: 0.05
 --- !u!1 &8783275058981568020
 GameObject:
@@ -1019,6 +1008,5 @@ MonoBehaviour:
   allowOthers: 0
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Head_5
-  value: 1
+  parameter: bHapticsOSC_Head_5
   minVelocity: 0.05

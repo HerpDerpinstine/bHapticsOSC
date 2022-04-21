@@ -4,10 +4,11 @@
 	{
 		_MainTex("Albedo (RGB)", 2D) = "white" {}
 
-		_TouchColor("Touch Color", Color) = (0,0,0,1)
 		_Device("Device", Float) = 0
-
+		_TouchColor("Touch Color", Color) = (0,0,0,1)
+		_AudioLink("AudioLink", Int) = 0
 		[MaterialToggle] _SingularNode("Singular Node", Int) = 0
+		
 		[MaterialToggle] _Node1("Node 1", Int) = 0
 		[MaterialToggle] _Node2("Node 2", Int) = 0
 		[MaterialToggle] _Node3("Node 3", Int) = 0
@@ -44,6 +45,7 @@
 
 		uniform float _Device;
 		uniform float4 _TouchColor;
+		uniform int _AudioLink;
 		uniform int _SingularNode;
 
 		uniform int _Node1;
@@ -201,7 +203,7 @@
 				return GetCurrentNodeHead(IN);
 			else if ((_Device == 2) || (_Device == 3))
 				return GetCurrentNodeArms(IN);
-			else if ((_Device == 6) || (_Device == 7))
+			else if ((_Device == 8) || (_Device == 9))
 				return GetCurrentNodeFeet(IN);
 			return GetCurrentNodeDefault(IN);
 		}

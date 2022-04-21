@@ -60,7 +60,7 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Arm_Right_5
+  parameter: bHapticsOSC_Arm_Right_5
   value: 1
   minVelocity: 0.05
 --- !u!1 &4451465907853509564
@@ -123,7 +123,7 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Arm_Right_4
+  parameter: bHapticsOSC_Arm_Right_4
   value: 1
   minVelocity: 0.05
 --- !u!1 &4451465907861563900
@@ -186,7 +186,7 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Arm_Right_2
+  parameter: bHapticsOSC_Arm_Right_2
   value: 1
   minVelocity: 0.05
 --- !u!1 &4451465908702452921
@@ -282,7 +282,7 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Arm_Right_3
+  parameter: bHapticsOSC_Arm_Right_3
   value: 1
   minVelocity: 0.05
 --- !u!1 &4451465909031726362
@@ -378,7 +378,7 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Arm_Right_6
+  parameter: bHapticsOSC_Arm_Right_6
   value: 1
   minVelocity: 0.05
 --- !u!1 &4451465909150658265
@@ -505,7 +505,7 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Arm_Right_1
+  parameter: bHapticsOSC_Arm_Right_1
   value: 1
   minVelocity: 0.05
 --- !u!1 &6927388288340661185
@@ -567,7 +567,7 @@ MonoBehaviour:
   allowOthers: 0
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Arm_Right_5
+  parameter: bHapticsOSC_Arm_Right_5
   value: 1
   minVelocity: 0.05
 --- !u!1 &6927388289127651932
@@ -629,7 +629,7 @@ MonoBehaviour:
   allowOthers: 0
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Arm_Right_6
+  parameter: bHapticsOSC_Arm_Right_6
   value: 1
   minVelocity: 0.05
 --- !u!1 &6927388289168194581
@@ -757,7 +757,7 @@ MonoBehaviour:
   allowOthers: 0
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Arm_Right_3
+  parameter: bHapticsOSC_Arm_Right_3
   value: 1
   minVelocity: 0.05
 --- !u!1 &6927388289517502705
@@ -819,7 +819,7 @@ MonoBehaviour:
   allowOthers: 0
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Arm_Right_2
+  parameter: bHapticsOSC_Arm_Right_2
   value: 1
   minVelocity: 0.05
 --- !u!1 &6927388290087281125
@@ -881,7 +881,7 @@ MonoBehaviour:
   allowOthers: 0
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Arm_Right_1
+  parameter: bHapticsOSC_Arm_Right_1
   value: 1
   minVelocity: 0.05
 --- !u!1 &6927388290183955358
@@ -943,7 +943,7 @@ MonoBehaviour:
   allowOthers: 0
   localOnly: 0
   receiverType: 0
-  parameter: bHaptics_Arm_Right_4
+  parameter: bHapticsOSC_Arm_Right_4
   value: 1
   minVelocity: 0.05
 --- !u!1 &6927388290412748429
