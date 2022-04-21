@@ -23,22 +23,22 @@ namespace bHapticsOSC
             string Prefix = "/avatar/parameters";
             foreach (Tuple<int, bHaptics.PositionType, string> device in new Tuple<int, bHaptics.PositionType, string>[]
             {
-                new Tuple<int, bHaptics.PositionType, string>(6, bHaptics.PositionType.Head, $"{Prefix}/bHaptics_Head"),
+                new Tuple<int, bHaptics.PositionType, string>(6, bHaptics.PositionType.Head, $"{Prefix}/bHapticsOSC_Head"),
 
-                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestFront, $"{Prefix}/bHaptics_Vest_Front"),
-                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestBack, $"{Prefix}/bHaptics_Vest_Back"),
+                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestFront, $"{Prefix}/bHapticsOSC_Vest_Front"),
+                new Tuple<int, bHaptics.PositionType, string>(20, bHaptics.PositionType.VestBack, $"{Prefix}/bHapticsOSC_Vest_Back"),
 
-                new Tuple<int, bHaptics.PositionType, string>(6, bHaptics.PositionType.ForearmL, $"{Prefix}/bHaptics_Arm_Left"),
-                new Tuple<int, bHaptics.PositionType, string>(6, bHaptics.PositionType.ForearmR, $"{Prefix}/bHaptics_Arm_Right"),
+                new Tuple<int, bHaptics.PositionType, string>(6, bHaptics.PositionType.ForearmL, $"{Prefix}/bHapticsOSC_Arm_Left"),
+                new Tuple<int, bHaptics.PositionType, string>(6, bHaptics.PositionType.ForearmR, $"{Prefix}/bHapticsOSC_Arm_Right"),
 
-                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.HandL, $"{Prefix}/bHaptics_Hand_Left"),
-                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.HandR, $"{Prefix}/bHaptics_Hand_Right"),
+                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.HandL, $"{Prefix}/bHapticsOSC_Hand_Left"),
+                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.HandR, $"{Prefix}/bHapticsOSC_Hand_Right"),
 
-                //new Tuple<int, bHaptics.PositionType, string>(0, bHaptics.PositionType.GloveLeft, $"{Prefix}/bHaptics_Glove_Left"),
-                //new Tuple<int, bHaptics.PositionType, string>(0, bHaptics.PositionType.GloveRight, $"{Prefix}/bHaptics_Glove_Right"),
+                //new Tuple<int, bHaptics.PositionType, string>(0, bHaptics.PositionType.GloveLeft, $"{Prefix}/bHapticsOSC_Glove_Left"),
+                //new Tuple<int, bHaptics.PositionType, string>(0, bHaptics.PositionType.GloveRight, $"{Prefix}/bHapticsOSC_Glove_Right"),
 
-                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.FootL, $"{Prefix}/bHaptics_Foot_Left"),
-                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.FootR, $"{Prefix}/bHaptics_Foot_Right"),
+                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.FootL, $"{Prefix}/bHapticsOSC_Foot_Left"),
+                new Tuple<int, bHaptics.PositionType, string>(3, bHaptics.PositionType.FootR, $"{Prefix}/bHapticsOSC_Foot_Right"),
             })
             {
                 if (device.Item1 <= 0)
@@ -49,7 +49,7 @@ namespace bHapticsOSC
                     int motorIndex = i;
                     string path = $"{device.Item3}_{motorIndex}";
                     OscManager.Attach(path, (OscMessage msg) => OnNode(msg, motorIndex, device.Item2));
-                    OscManager.Attach($"{path}_bool", (OscMessage msg) => OnNode(msg, motorIndex, device.Item2));
+                    OscManager.Attach(path.Replace("bHapticsOSC_", "bHaptics_"), (OscMessage msg) => OnNode(msg, motorIndex, device.Item2));
                 }
             }
         }
@@ -75,9 +75,9 @@ namespace bHapticsOSC
                 device.Reset();
         }
 
-        [VRC_AvatarParameter("bHapticsOSC_UdonAudioLink")]
-        private static void OnUdonAudioLink(int amplitude)
-            => UdonAudioLink = amplitude;
+        //[VRC_AvatarParameter("bHapticsOSC_UdonAudioLink")]
+        //private static void OnUdonAudioLink(int amplitude)
+        //    => UdonAudioLink = amplitude;
 
         private static void OnNode(OscMessage msg, int node, bHaptics.PositionType position)
         {
@@ -141,13 +141,15 @@ namespace bHapticsOSC
                         break;
                 }
 
-                if (ConfigManager.VRChat.PositionTypeToUALEnabled(Position) && (UdonAudioLink > 0))
+                /*
+                if (ConfigManager.UdonAudioLink.PositionTypeToUALEnabled(Position) && (UdonAudioLink > 0))
                 {
                     int audioLinkIntensity = (ConfigManager.VRChat.PositionTypeToUALIntensity(Position) * (UdonAudioLink / 100));
                     for (int i = 0; i < Value.Length; i++)
-                        if (ConfigManager.VRChat.udonAudioLink.Value.OverrideTouch || (Value[i] < audioLinkIntensity))
+                        if (ConfigManager.UdonAudioLink.udonAudioLink.Value.OverrideTouch || (Value[i] < audioLinkIntensity))
                             Value[i] = (byte)audioLinkIntensity;
                 }
+                */
 
                 bHaptics.Submit($"{BuildInfo.Name}_{Position}", Position, Value, ThreadedTask.UpdateRate + DurationOffset);
             }
