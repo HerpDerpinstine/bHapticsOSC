@@ -14,7 +14,7 @@ Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics G
 
 - VRChat Avatar World: https://vrchat.com/home/world/wrld_84e1a940-c139-44dc-8ddf-e2a3c5b2a4d9
 
---
+---
 
 ### LICENSING & CREDITS:
 
