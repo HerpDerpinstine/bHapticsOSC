@@ -16,6 +16,14 @@ Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics G
 
 ---
 
+### REQUIREMENTS:
+
+- A Windows PC
+- [.NET Framework 4.8 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net48)  
+- [bHaptics Player](https://www.bhaptics.com/support/download)
+
+---
+
 ### LICENSING & CREDITS:
 
 bHapticsOSC is licensed under the GPL-3.0 License. See [LICENSE](https://github.com/HerpDerpinstine/bHapticsOSC/blob/master/LICENSE.md) for the full License.
