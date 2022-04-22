@@ -33,17 +33,19 @@ namespace bHapticsOSC.VRChat
 
 		private static void CreateAnimatorLayerStates(int node, string nodeName, AacFlBase aac, bHapticsOSCIntegration editorComp, KeyValuePair<bDeviceType, bDeviceTemplate> keyValuePair)
 		{
+			string layer_name = $"{keyValuePair.Value.Name.Replace(' ', '_')}_{node}";
+
+			aac.RemoveAllSupportingLayers(layer_name);
+			AacFlLayer layer = aac.CreateSupportingFxLayer("ParameterCreation");
+			AacFlBoolParameter boolParam = layer.BoolParameter(nodeName);
+			aac.RemoveAllSupportingLayers("ParameterCreation");
+
 			float shaderDeviceIndex = bShader.GetShaderIndex(keyValuePair.Key, node);
 			Renderer[] renderers = bShader.FindRenderersFromIndex(shaderDeviceIndex, editorComp.avatar.gameObject);
 			if (renderers.Length <= 0)
 				return;
 
-			string layer_name = $"{keyValuePair.Value.Name.Replace(' ', '_')}_{node}";
-
-			aac.RemoveAllSupportingLayers(layer_name);
-			AacFlLayer layer = aac.CreateSupportingFxLayer(layer_name);
-
-			AacFlBoolParameter boolParam = layer.BoolParameter(nodeName);
+			layer = aac.CreateSupportingFxLayer(layer_name);
 
 			AacFlState falseState = layer.NewState("False").WithWriteDefaultsSetTo(false);
 			falseState.TransitionsFromEntry().When(boolParam.IsFalse());
