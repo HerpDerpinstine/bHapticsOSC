@@ -1,6 +1,7 @@
 # bHapticsOSC
 Application to allow the bHaptics Player to interface over OSC.  
-Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics Gear as well as supporting me wherever needed! :D
+Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics Gear as well as supporting me wherever needed! :D  
+Please read through the [Documentation / Wiki](https://github.com/HerpDerpinstine/bHapticsOSC/wiki) before attempting to use.
 
 - All Connection based Settings are located in ``Connection.cfg``
 
@@ -13,14 +14,6 @@ Special Thanks to [bHaptics](https://www.bhaptics.com) for making the bHaptics G
 - Discord: https://discord.gg/JDw423Wskf
 
 - VRChat Avatar World: https://vrchat.com/home/world/wrld_84e1a940-c139-44dc-8ddf-e2a3c5b2a4d9
-
----
-
-### REQUIREMENTS:
-
-- A Windows PC
-- [.NET Framework 4.8 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net48)  
-- [bHaptics Player](https://www.bhaptics.com/support/download)
 
 ---
 
