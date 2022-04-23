@@ -5,7 +5,7 @@ using UnityEngine;
 namespace bHapticsOSC.VRChat
 {
     [System.Serializable]
-    public class bUserSettings : Object
+    public class bUserSettings : ScriptableObject
     {
         [SerializeField]
         public HumanBodyBones Bone;
@@ -33,6 +33,8 @@ namespace bHapticsOSC.VRChat
 
         public void FindExistingPrefab(bDeviceTemplate device)
         {
+            if (CurrentPrefab != null)
+                return;
             foreach (GameObject obj in (GameObject[])FindObjectsOfType(typeof(GameObject)))
             {
                 if (!PrefabUtility.IsPartOfAnyPrefab(obj))
@@ -48,13 +50,19 @@ namespace bHapticsOSC.VRChat
             }
         }
 
-        public void SwapPrefabs(Animator animator, GameObject newPrefab)
+        public void SwapPrefabs(Animator animator, GameObject newPrefab, bool resetTransform = false)
         {
+            if (CurrentPrefab != null)
+                Undo.RecordObject(CurrentPrefab, $"[{bHapticsOSCIntegration.SystemName}] Swapped Prefabs");
+
             Transform parent = animator.GetBoneTransform(Bone);
             GameObject spawnedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(newPrefab);
-            spawnedPrefab.transform.SetParent(parent);
+
+            Undo.RegisterCreatedObjectUndo(spawnedPrefab, $"[{bHapticsOSCIntegration.SystemName}] Swapped Prefabs");
+            Undo.SetTransformParent(spawnedPrefab.transform, parent, $"[{bHapticsOSCIntegration.SystemName}] Swapped Prefabs");
+
             GameObject baseObj = newPrefab;
-            if (CurrentPrefab != null)
+            if (!resetTransform && (CurrentPrefab != null))
                 baseObj = CurrentPrefab;
 
             spawnedPrefab.transform.localPosition = baseObj.transform.localPosition;
@@ -62,6 +70,7 @@ namespace bHapticsOSC.VRChat
             spawnedPrefab.transform.localScale = baseObj.transform.localScale;
 
             DestroyCurrentPrefab();
+            Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
             CurrentPrefab = spawnedPrefab;
         }
 
@@ -72,18 +81,16 @@ namespace bHapticsOSC.VRChat
         {
             if (CurrentPrefab == null)
                 return;
-            DestroyImmediate(CurrentPrefab);
+            Undo.DestroyObjectImmediate(CurrentPrefab);
             CurrentPrefab = null;
         }
 
         public void Reset()
         {
             DestroyCurrentPrefab();
-            OnShowMeshChange?.Invoke(this);
+            _showMesh = false;
             ShowMesh = true;
             ApplyParentConstraints = true;
-
-            //CustomContactTags.Clear();
         }
     }
 }
