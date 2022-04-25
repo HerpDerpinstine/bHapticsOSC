@@ -3,6 +3,7 @@ using System.Threading;
 using Rug.Osc;
 using bHapticsOSC.Config;
 using bHapticsOSC.Utils;
+using System.Net;
 
 namespace bHapticsOSC.OpenSoundControl
 {
@@ -17,7 +18,7 @@ namespace bHapticsOSC.OpenSoundControl
                 EndInitInternal();
             
             ShouldRun = true;
-            Receiver = new OscReceiver(System.Net.IPAddress.Any, ConfigManager.Connection.receiver.Value.Port);
+            Receiver = new OscReceiver(IPAddress.Parse(ConfigManager.Connection.receiver.Value.IP), ConfigManager.Connection.receiver.Value.Port);
             Receiver.Connect();
             Console.WriteLine("[OscReceiver] Connected!");
 
