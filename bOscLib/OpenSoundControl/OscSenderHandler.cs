@@ -17,7 +17,7 @@ namespace bHapticsOSC.OpenSoundControl
             if (!ConfigManager.Connection.sender.Value.Enabled)
                 return;
 
-            Sender = new OscSender(IPAddress.Parse(ConfigManager.Connection.sender.Value.IP), 0, ConfigManager.Connection.sender.Value.Port);
+            Sender = new OscSender(IPAddress.Parse(ConfigManager.Connection.sender.Value.IP), ConfigManager.Connection.sender.Value.Port, ConfigManager.Connection.sender.Value.Port);
             Sender.Connect();
             Console.WriteLine("[OscSender] Connected!");
         }

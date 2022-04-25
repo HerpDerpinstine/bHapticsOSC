@@ -17,7 +17,7 @@ namespace bHapticsOSC.OpenSoundControl
                 EndInitInternal();
             
             ShouldRun = true;
-            Receiver = new OscReceiver(ConfigManager.Connection.receiver.Value.Port);
+            Receiver = new OscReceiver(System.Net.IPAddress.Any, ConfigManager.Connection.receiver.Value.Port);
             Receiver.Connect();
             Console.WriteLine("[OscReceiver] Connected!");
 

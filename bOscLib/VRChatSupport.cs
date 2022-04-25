@@ -69,6 +69,7 @@ namespace bHapticsOSC
         [VRC_AvatarChange]
         private static void OnAvatarChange(string avatarId)
         {
+            Console.WriteLine("Avatar Changed");
             if (Devices.Count <= 0)
                 return;
             foreach (Device device in Devices.Values)
