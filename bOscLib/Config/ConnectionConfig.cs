@@ -22,18 +22,11 @@ namespace bHapticsOSC.Config
         [TomlDoNotInlineObject]
         public class Receiver : ConfigCategoryValue
         {
-            [TomlPrecedingComment("IP Address for the OSC Receiver.")]
-            public string IP = "127.0.0.1";
-
             [TomlPrecedingComment("Port for the OSC Receiver.  (0 - 65535)")]
             public int Port = 9001;
 
             public override void Clamp()
-            {
-                Port = Port.Clamp(0, 65535);
-                if (!IPAddress.TryParse(IP, out IPAddress address))
-                    IP = "127.0.0.1";
-            }
+                => Port = Port.Clamp(0, 65535);
         }
 
         [TomlDoNotInlineObject]
