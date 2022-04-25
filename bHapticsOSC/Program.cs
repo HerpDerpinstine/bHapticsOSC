@@ -59,7 +59,7 @@ namespace bHapticsOSC
                 Console.WriteLine();
                 Console.WriteLine("Awaiting Packets...");
                 Console.WriteLine();
-                Console.WriteLine("Please leave ths application open to handle OSC Communication.");
+                Console.WriteLine("Please leave this application open to handle OSC Communication.");
                 Console.WriteLine("Press ESC to Exit.");
                 Console.WriteLine();
 
