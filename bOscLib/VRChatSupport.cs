@@ -12,7 +12,6 @@ namespace bHapticsOSC
     internal static class VRChatSupport
     {
         private static Dictionary<bHaptics.PositionType, Device> Devices = new Dictionary<bHaptics.PositionType, Device>();
-        private static int DurationOffset = 50; // ms
         private static bool AFK = false;
         private static bool InStation = false;
         private static bool Seated = false;
