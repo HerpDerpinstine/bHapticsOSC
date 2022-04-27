@@ -3,6 +3,7 @@ using System.Threading;
 using bHapticsOSC.Config;
 using bHapticsOSC.Utils;
 using bHapticsOSC.OpenSoundControl;
+using Bhaptics.Tact;
 
 namespace bHapticsOSC
 {
@@ -54,6 +55,7 @@ namespace bHapticsOSC
                 //PrintUdonAudioLink();
 
                 bHaptics.Load();
+
                 OscManager.Connect();
 
                 Console.WriteLine();
@@ -84,7 +86,7 @@ namespace bHapticsOSC
             try
             {
                 OscManager.Disconnect();
-                bHaptics.Quit();
+                //bHaptics.Quit();
                 ConfigManager.SaveAll();
             }
             catch (Exception ex) { ErrorMessageBox(ex.ToString()); }
@@ -145,23 +147,23 @@ namespace bHapticsOSC
                 Console.WriteLine();
             }
 
-            PrintDevice("Head", bHaptics.PositionType.Head, isAudioLink);
+            PrintDevice("Head", PositionType.Head, isAudioLink);
 
-            PrintDevice("Vest", bHaptics.PositionType.Vest, isAudioLink);
+            PrintDevice("Vest", PositionType.Vest, isAudioLink);
 
-            PrintDevice("Arm Left", bHaptics.PositionType.ForearmL, isAudioLink);
-            PrintDevice("Arm Right", bHaptics.PositionType.ForearmR, isAudioLink);
+            PrintDevice("Arm Left", PositionType.ForearmL, isAudioLink);
+            PrintDevice("Arm Right", PositionType.ForearmR, isAudioLink);
 
-            PrintDevice("Hand Left", bHaptics.PositionType.HandL, isAudioLink);
-            PrintDevice("Hand Right", bHaptics.PositionType.HandR, isAudioLink);
+            PrintDevice("Hand Left", PositionType.HandL, isAudioLink);
+            PrintDevice("Hand Right", PositionType.HandR, isAudioLink);
 
-            PrintDevice("Foot Left", bHaptics.PositionType.FootL, isAudioLink);
-            PrintDevice("Foot Right", bHaptics.PositionType.FootR, isAudioLink);
+            PrintDevice("Foot Left", PositionType.FootL, isAudioLink);
+            PrintDevice("Foot Right", PositionType.FootR, isAudioLink);
 
             Console.WriteLine();
         }
 
-        private static void PrintDevice(string name, bHaptics.PositionType positionType, bool isAudioLink)
+        private static void PrintDevice(string name, PositionType positionType, bool isAudioLink)
         {
             //Console.WriteLine($"[{name}  |  Enabled] = {(isAudioLink ? ConfigManager.VRChat.PositionTypeToUALEnabled(positionType) : ConfigManager.Devices.PositionTypeToEnabled(positionType))}");
             //Console.WriteLine($"[{name}  |  Intensity] = {(isAudioLink ? ConfigManager.VRChat.PositionTypeToUALIntensity(positionType) : ConfigManager.Devices.PositionTypeToIntensity(positionType))}");

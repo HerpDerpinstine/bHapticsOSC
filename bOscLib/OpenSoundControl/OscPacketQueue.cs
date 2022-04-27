@@ -56,10 +56,10 @@ namespace bHapticsOSC.OpenSoundControl
                     }
                 }
 
-                //VRChatSupport.SubmitPackets();
+                VRChatSupport.SubmitPackets();
 
                 if (ShouldRun)
-                    Thread.Sleep(1);
+                    Thread.Sleep(100);
             }
         }
     }
