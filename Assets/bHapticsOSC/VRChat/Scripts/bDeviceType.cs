@@ -1,4 +1,5 @@
-﻿namespace bHapticsOSC.VRChat
+﻿#if UNITY_EDITOR
+namespace bHapticsOSC.VRChat
 {
     public enum bDeviceType
     {
@@ -21,3 +22,4 @@
         FOOT_RIGHT,
     }
 }
+#endif

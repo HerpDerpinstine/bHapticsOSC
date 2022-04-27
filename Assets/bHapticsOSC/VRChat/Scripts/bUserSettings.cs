@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,8 +14,8 @@ namespace bHapticsOSC.VRChat
         public bool ApplyParentConstraints = true;
         [SerializeField]
         public GameObject CurrentPrefab;
-        //[SerializeField]
-        //public string[] CustomContactTags = new string[0];
+        [SerializeField]
+        public List<string> CustomContactTags = new List<string>();
 
         [SerializeField]
         private bool _showMesh = true;

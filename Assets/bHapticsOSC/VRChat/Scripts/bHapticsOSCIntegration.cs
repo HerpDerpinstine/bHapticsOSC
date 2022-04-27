@@ -27,6 +27,8 @@ namespace bHapticsOSC.VRChat
         public bDeviceType CurrentDevice = bDeviceType.VEST;
         [SerializeField]
         public Dictionary<bDeviceTemplate, bUserSettings> AllUserSettings;
+        [SerializeField]
+        public Dictionary<bUserSettings, bReorderableListContainer<string>> AllCustomContactTagsContainers;
 
         public VRCAvatarDescriptor.CustomAnimLayer fx_layer;
         public AnimatorController animatorControllerClone;

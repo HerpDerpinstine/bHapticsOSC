@@ -15,6 +15,7 @@ namespace bHapticsOSC.VRChat
 
 		public override void OnInspectorGUI()
 		{
+			serializedObject.Update();
 			EditorGUILayout.Space();
 
 			editorComp = (bHapticsOSCIntegration)target;
@@ -38,16 +39,27 @@ namespace bHapticsOSC.VRChat
 					if (!template.HasBone)
 						continue;
 
-					bUserSettings newSettings = ScriptableObject.CreateInstance<bUserSettings>();
+					bUserSettings newSettings = CreateInstance<bUserSettings>();
 					newSettings.Bone = template.Bone;
 					newSettings.OnShowMeshChange = (bUserSettings thisSettings) => thisSettings.SwapPrefabs(editorComp.avatarAnimator, thisSettings.ShowMesh ? template.PrefabMesh : template.Prefab);
 					editorComp.AllUserSettings[template] = newSettings;
 				}
 			}
+
+			if (editorComp.AllCustomContactTagsContainers == null)
+			{
+				editorComp.AllCustomContactTagsContainers = new Dictionary<bUserSettings, bReorderableListContainer<string>>();
+				foreach (bUserSettings settings in editorComp.AllUserSettings.Values)
+					editorComp.AllCustomContactTagsContainers[settings] = new bReorderableListContainer<string>("Custom Contact Tags", "New Tag", bGUI.LabelStyle, new SerializedObject(settings).FindProperty("CustomContactTags"));
+			}
+
 			editorComp.FindExistingPrefabs(bDevice.AllTemplates);
+
+			// Scan all Existing Prefabs for Tags
 
 			bDeviceTemplate CurrentTemplate = bDevice.AllTemplates[editorComp.CurrentDevice];
 			bUserSettings userSettings = editorComp.AllUserSettings[CurrentTemplate];
+			bReorderableListContainer<string> CustomContactTagsContainer = editorComp.AllCustomContactTagsContainers[userSettings];
 			
 			bGUI.DrawSection(string.Empty, () =>
 			{
@@ -111,10 +123,13 @@ namespace bHapticsOSC.VRChat
 					userSettings.CurrentPrefab.transform.localPosition = bGUI.DrawVector3Field("Position", userSettings.CurrentPrefab.transform.localPosition, userSettings.CurrentPrefab.transform);
 					userSettings.CurrentPrefab.transform.localEulerAngles = bGUI.DrawVector3Field("Rotation", userSettings.CurrentPrefab.transform.localEulerAngles, userSettings.CurrentPrefab.transform);
 					userSettings.CurrentPrefab.transform.localScale = bGUI.DrawVector3Field("Scale", userSettings.CurrentPrefab.transform.localScale, userSettings.CurrentPrefab.transform);
+					GUILayout.Space(10);
 
 					// Custom Contact Tags
-					//GUILayout.Space(12);
+					CustomContactTagsContainer.Draw();
 
+					// END
+					bGUI.DrawSeparator();
 					GUILayout.BeginHorizontal();
 					if (bGUI.DrawButton("SELECT IN SCENE"))
 						userSettings.SelectCurrentPrefab();
@@ -144,7 +159,6 @@ namespace bHapticsOSC.VRChat
 
 				GUILayout.Space(-4);
 			});
-
 			bGUI.DrawSeparator();
 
 			/*
@@ -208,6 +222,8 @@ namespace bHapticsOSC.VRChat
 
 			if (GUI.changed)
 				EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+
+			serializedObject.ApplyModifiedProperties();
 		}
 
 		private bool CloneAnimatorAsset()

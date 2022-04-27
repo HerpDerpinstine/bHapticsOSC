@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Sprites;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace bHapticsOSC.VRChat
@@ -13,6 +14,7 @@ namespace bHapticsOSC.VRChat
 
         private static GUIStyle ButtonStyle;
         private static GUIStyle HeaderButtonStyle;
+        public static GUIStyle LabelStyle;
 
         public static Sprite Rig;
         private static GUIStyle RigStyle;
@@ -31,6 +33,8 @@ namespace bHapticsOSC.VRChat
 
             ButtonStyle = new GUIStyle(GUI.skin.button) { alignment = TextAnchor.MiddleCenter };
             HeaderButtonStyle = new GUIStyle(ButtonStyle) { contentOffset = new Vector2(-5, 1) };
+
+            LabelStyle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter };
 
             Rig = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/bHapticsOSC/VRChat/Textures/UI/rig.png", typeof(Sprite));
             RigStyle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.UpperCenter };
