@@ -10,6 +10,7 @@ namespace bHapticsOSC.OpenSoundControl
         private static OscAddressManager AddressBook = new OscAddressManager();
         private static OscReceiverHandler oscReceiver = new OscReceiverHandler();
         private static OscSenderHandler oscSender = new OscSenderHandler();
+        internal static OscPacketQueue oscPacketQueue = new OscPacketQueue();
         public delegate void OscAddressMethod(string address, OscMessage msg);
         public delegate void dOnOscPacketArgumentMismatch(string address, OscMessage msg);
         public delegate void dOnOscPacketError();
@@ -26,12 +27,14 @@ namespace bHapticsOSC.OpenSoundControl
         {
             oscSender.BeginInit();
             oscReceiver.BeginInit();
+            oscPacketQueue.BeginInit();
         }
 
         public static void Disconnect()
         {
             oscReceiver.EndInit();
             oscSender.EndInit();
+            oscPacketQueue.EndInit();
         }
 
         public static void Send(OscPacket packet)

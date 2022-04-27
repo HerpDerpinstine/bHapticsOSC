@@ -152,7 +152,7 @@ namespace bHapticsOSC
                 }
                 */
 
-                bHaptics.Submit($"{BuildInfo.Name}_{Position}", Position, Value, ThreadedTask.UpdateRate + DurationOffset);
+                bHaptics.Submit($"{BuildInfo.Name}_{Position}", Position, Value, 100);
             }
 
             internal int GetNodeIntensity(int node)

@@ -12,6 +12,7 @@ namespace bHapticsOSC.Config.Interface
 {
     public class ConfigFile
     {
+        private static int UpdateRate = 100; // ms
         private ConfigFileWatcher Watcher;
         private TomlDocument Document = TomlDocument.CreateEmpty();
         internal List<ConfigCategory> Categories = new List<ConfigCategory>();
@@ -48,12 +49,12 @@ namespace bHapticsOSC.Config.Interface
 
             if (Watcher != null)
                 Watcher.IgnoreEvents = true;
-            Thread.Sleep(ThreadedTask.UpdateRate);
+            Thread.Sleep(UpdateRate);
 
             // Exception Catching
             Document = TomlParser.ParseFile(FilePath);
 
-            Thread.Sleep(ThreadedTask.UpdateRate);
+            Thread.Sleep(UpdateRate);
             if (Watcher != null)
                 Watcher.IgnoreEvents = false;
 
@@ -81,9 +82,9 @@ namespace bHapticsOSC.Config.Interface
 
             if (Watcher != null)
                 Watcher.IgnoreEvents = true;
-            Thread.Sleep(ThreadedTask.UpdateRate);
+            Thread.Sleep(UpdateRate);
             File.WriteAllText(FilePath, Document.SerializedValue);
-            Thread.Sleep(ThreadedTask.UpdateRate);
+            Thread.Sleep(UpdateRate);
             if (Watcher != null)
                 Watcher.IgnoreEvents = false;
         }

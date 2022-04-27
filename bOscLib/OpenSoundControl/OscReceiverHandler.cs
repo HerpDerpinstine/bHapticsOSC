@@ -30,7 +30,7 @@ namespace bHapticsOSC.OpenSoundControl
                 return false;
             
             ShouldRun = false;
-            while(IsAlive()) { Thread.Sleep(UpdateRate); }
+            while(IsAlive()) { Thread.Sleep(1); }
             return true;
         }
 
@@ -41,34 +41,16 @@ namespace bHapticsOSC.OpenSoundControl
                 try
                 {
                     while (Receiver.TryReceive(out OscPacket packet) && (packet != null))
-                    {
-                        if (ConfigManager.Connection.sender.Value.PipeAllPackets)
-                            OscManager.Send(packet);
-                        switch (OscManager.ShouldInvoke(packet))
-                        {
-                            case OscPacketInvokeAction.Pospone:
-                            case OscPacketInvokeAction.Invoke:
-                                if (!ConfigManager.Connection.sender.Value.PipeAllPackets)
-                                    OscManager.Send(packet);
-                                OscManager.Invoke(packet);
-                                goto default;
-                            case OscPacketInvokeAction.HasError:
-                                throw new Exception($"Error while reading OscPacket: {packet.Error}");
-                            case OscPacketInvokeAction.DontInvoke:
-                            default:
-                                break;
-                        }
-                    }
+                        OscManager.oscPacketQueue.PacketQueue.Enqueue(packet);
+
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Exception in OscReceiver Thread: {ex}");
                 }
 
-                VRChatSupport.SubmitPackets();
-
                 if (ShouldRun)
-                    Thread.Sleep(UpdateRate);
+                    Thread.Sleep(1);
                 else
                 {
                     if ((Receiver.State != OscSocketState.Closing) && (Receiver.State != OscSocketState.Closed))

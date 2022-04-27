@@ -64,7 +64,7 @@ namespace bHapticsOSC
                 Console.WriteLine();
 
                 while (Console.ReadKey(true).Key != ConsoleKey.Escape)
-                    Thread.Sleep(ThreadedTask.UpdateRate);
+                    Thread.Sleep(1);
             }
             catch (Exception ex) { ErrorMessageBox(ex.ToString()); }
 

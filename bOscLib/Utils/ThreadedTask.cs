@@ -4,7 +4,6 @@ namespace bHapticsOSC.Utils
 {
     public abstract class ThreadedTask
     {
-        public static readonly int UpdateRate = 100; // ms
         private Thread thread;
 
         public bool IsAlive()
