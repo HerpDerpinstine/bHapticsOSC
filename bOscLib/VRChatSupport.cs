@@ -152,7 +152,7 @@ namespace bHapticsOSC
                 }
                 */
 
-                bHaptics.Submit($"{BuildInfo.Name}_{Position}", Position, Value, 100);
+                bHaptics.Submit($"{BuildInfo.Name}_{Position}", Position, Value, 1);
             }
 
             internal int GetNodeIntensity(int node)
