@@ -96,7 +96,14 @@ namespace bHapticsOSC
             }
         }
 
-        public override bool BeginInitInternal() => ShouldRun = true;
+        public override bool BeginInitInternal()
+        {
+            if (ShouldRun)
+                EndInit();
+
+            ShouldRun = true;
+            return true;
+        }
 
         public override void WithinThread()
         {

@@ -10,12 +10,12 @@ namespace bHapticsOSC.OpenSoundControl
     public class OscPacketQueue : ThreadedTask
     {
         public ConcurrentQueue<OscPacket> PacketQueue = new ConcurrentQueue<OscPacket>();
-        private bool ShouldRun = true;
+        private bool ShouldRun;
 
         public override bool BeginInitInternal()
         {
             if (ShouldRun)
-                EndInitInternal();
+                EndInit();
 
             ShouldRun = true;
             return true;

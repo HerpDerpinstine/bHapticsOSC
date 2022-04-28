@@ -9,12 +9,12 @@ namespace bHapticsOSC.OpenSoundControl
     internal class OscReceiverHandler : ThreadedTask
     {
         private OscReceiver Receiver;
-        private bool ShouldRun = true;
+        private bool ShouldRun;
 
         public override bool BeginInitInternal()
         {
             if (Receiver != null)
-                EndInitInternal();
+                EndInit();
             
             ShouldRun = true;
             Receiver = new OscReceiver(System.Net.IPAddress.Any, ConfigManager.Connection.receiver.Value.Port);
