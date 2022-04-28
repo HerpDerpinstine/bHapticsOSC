@@ -21,7 +21,7 @@ namespace bHapticsOSC
         //private int UdonAudioLink;
 
         private class VRChatPacket { }
-        private class VRChatPacketAvatarChange : VRChatPacket { }
+        private class VRChatPacketAvatarChange : VRChatPacket { internal string id; }
         private class VRChatPacketAFK : VRChatPacket { internal bool value; }
         private class VRChatPacketInStation : VRChatPacket { internal bool value; }
         private class VRChatPacketSeated : VRChatPacket { internal bool value; }
@@ -149,7 +149,7 @@ namespace bHapticsOSC
         private void OnAvatarChange(string avatarId)
         {
             Console.WriteLine("Avatar Changed");
-            PacketQueue.Enqueue(new VRChatPacketAvatarChange());
+            PacketQueue.Enqueue(new VRChatPacketAvatarChange { id = avatarId });
         }
 
         //[VRC_AvatarParameter("bHapticsOSC_UdonAudioLink")]
