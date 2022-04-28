@@ -6,18 +6,34 @@ using bHapticsOSC.OpenSoundControl;
 using bHapticsOSC.VRChat;
 using Rug.Osc;
 using Bhaptics.Tact;
+using System.Collections.Concurrent;
+using System.Threading;
 
 namespace bHapticsOSC
 {
-    internal static class VRChatSupport
+    internal class VRChatSupport : ThreadedTask
     {
-        private static Dictionary<PositionType, Device> Devices = new Dictionary<PositionType, Device>();
-        private static bool AFK = false;
-        private static bool InStation = false;
-        private static bool Seated = false;
-        private static int UdonAudioLink = 0;
+        private bool ShouldRun;
+        private Dictionary<PositionType, Device> Devices = new Dictionary<PositionType, Device>();
+        private bool AFK;
+        private bool InStation;
+        private bool Seated;
+        //private int UdonAudioLink;
 
-        internal static void SetupDevices()
+        private class VRChatPacket { }
+        private class VRChatPacketAvatarChange : VRChatPacket { }
+        private class VRChatPacketAFK : VRChatPacket { internal bool value; }
+        private class VRChatPacketInStation : VRChatPacket { internal bool value; }
+        private class VRChatPacketSeated : VRChatPacket { internal bool value; }
+        private class VRChatNodePacket : VRChatPacket
+        {
+            internal PositionType position;
+            internal int node;
+            internal int intensity;
+        }
+        private ConcurrentQueue<VRChatPacket> PacketQueue = new ConcurrentQueue<VRChatPacket>();
+
+        internal VRChatSupport() : base()
         {
             string Prefix = "/avatar/parameters";
             foreach (Tuple<int, PositionType, string, string> device in new Tuple<int, PositionType, string, string>[]
@@ -80,55 +96,109 @@ namespace bHapticsOSC
             }
         }
 
+        public override bool BeginInitInternal() => ShouldRun = true;
+
+        public override void WithinThread()
+        {
+            while (ShouldRun)
+            {
+                while (PacketQueue.TryDequeue(out VRChatPacket packet))
+                {
+                    if (packet is VRChatPacketAvatarChange)
+                        ResetDevices();
+                    else if (packet is VRChatPacketAFK)
+                        AFK = ((VRChatPacketAFK)packet).value;
+                    else if (packet is VRChatPacketInStation)
+                        InStation = ((VRChatPacketInStation)packet).value;
+                    else if (packet is VRChatPacketSeated)
+                        Seated = ((VRChatPacketSeated)packet).value;
+                    else if (packet is VRChatNodePacket)
+                    {
+                        VRChatNodePacket nodePacket = (VRChatNodePacket)packet;
+                        SetDeviceNodeIntensity(nodePacket.position, nodePacket.node, nodePacket.intensity);
+                    }
+                }
+
+                SubmitDevices();
+
+                if (ShouldRun)
+                    Thread.Sleep(100);
+            }
+        }
+
+        public override bool EndInitInternal()
+        {
+            ShouldRun = false;
+            while (IsAlive()) { Thread.Sleep(100); }
+            return true;
+        }
+
         [VRC_AFK]
-        private static void OnAFK(bool status)
-            => AFK = status;
+        private void OnAFK(bool status)
+            => PacketQueue.Enqueue(new VRChatPacketAFK { value = status });
 
         [VRC_InStation]
-        private static void OnInStation(bool status)
-            => InStation = status;
+        private void OnInStation(bool status)
+            => PacketQueue.Enqueue(new VRChatPacketInStation { value = status });
 
         [VRC_Seated]
-        private static void OnSeated(bool status)
-            => Seated = status;
+        private void OnSeated(bool status)
+            => PacketQueue.Enqueue(new VRChatPacketSeated { value = status });
 
         [VRC_AvatarChange]
-        private static void OnAvatarChange(string avatarId)
+        private void OnAvatarChange(string avatarId)
         {
             Console.WriteLine("Avatar Changed");
-            if (Devices.Count <= 0)
-                return;
-            foreach (Device device in Devices.Values)
-                device.Reset();
+            PacketQueue.Enqueue(new VRChatPacketAvatarChange());
         }
 
         //[VRC_AvatarParameter("bHapticsOSC_UdonAudioLink")]
-        //private static void OnUdonAudioLink(int amplitude)
+        //private void OnUdonAudioLink(int amplitude)
         //    => UdonAudioLink = amplitude;
 
-        private static void OnNode(OscMessage msg, int node, PositionType position)
+        private void OnNode(OscMessage msg, int node, PositionType position)
         {
             if ((msg == null) || (!(msg[0] is bool)))
                 return;
-            if ((bool)msg[0])
-                SetDeviceNodeIntensity(position, node, ConfigManager.Devices.PositionTypeToIntensity(position));
-            else
-                SetDeviceNodeIntensity(position, node, 0);
+            PacketQueue.Enqueue(new VRChatNodePacket
+            {
+                position = position,
+                node = node,
+                intensity = ((bool)msg[0]) ? ConfigManager.Devices.PositionTypeToIntensity(position) : 0,
+            });
         }
 
-        internal static void SubmitPackets()
+        private void SubmitDevices()
         {
+            /*
             if ((AFK && !ConfigManager.VRChat.vrchat.Value.AFK) 
                 || ((UdonAudioLink <= 0) && 
                     ((InStation && !ConfigManager.VRChat.vrchat.Value.InStation) 
                         || (Seated && !ConfigManager.VRChat.vrchat.Value.Seated)))
                 || (Devices.Count <= 0))
                 return;
+            */
+
+            if ((AFK && !ConfigManager.VRChat.vrchat.Value.AFK)
+                || (InStation && !ConfigManager.VRChat.vrchat.Value.InStation)
+                || (Seated && !ConfigManager.VRChat.vrchat.Value.Seated))
+                return;
+
+            if (Devices.Count <= 0)
+                return;
             foreach (Device device in Devices.Values)
-                device.SubmitPacket();
+                device.Submit();
         }
 
-        private static void SetDeviceNodeIntensity(PositionType positionType, int node, int intensity)
+        private void ResetDevices()
+        {
+            if (Devices.Count <= 0)
+                return;
+            foreach (Device device in Devices.Values)
+                device.Reset();
+        }
+
+        private void SetDeviceNodeIntensity(PositionType positionType, int node, int intensity)
         {
             if ((Devices.Count <= 0) || !Devices.TryGetValue(positionType, out Device device))
                 return;
@@ -138,12 +208,12 @@ namespace bHapticsOSC
         private class Device
         {
             private PositionType Position;
-            private byte[] Packet = new byte[bHaptics.MaxBufferSize];
+            private byte[] Buffer = new byte[bHaptics.MaxBufferSize];
 
             internal Device(PositionType position)
                 => Position = position;
 
-            internal void SubmitPacket()
+            internal void Submit()
             {
                 if (!ConfigManager.Devices.PositionTypeToEnabled(Position))
                     return;
@@ -161,18 +231,18 @@ namespace bHapticsOSC
                 }
                 */
 
-                bHaptics.Submit($"{BuildInfo.Name}_{Position}", Position, Packet, 100);
+                bHaptics.Submit($"{BuildInfo.Name}_{Position}", Position, Buffer, 100);
             }
 
             internal int GetNodeIntensity(int node)
-                => Packet[node - 1];
+                => Buffer[node - 1];
 
             internal void SetNodeIntensity(int node, int intensity)
-                => Packet[node - 1] = (byte)intensity;
+                => Buffer[node - 1] = (byte)intensity;
 
             internal void Reset()
             {
-                for (int i = 1; i < Packet.Length + 1; i++)
+                for (int i = 1; i < Buffer.Length + 1; i++)
                     SetNodeIntensity(i, 0);
             }
         }

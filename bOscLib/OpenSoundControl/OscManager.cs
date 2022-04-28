@@ -11,6 +11,7 @@ namespace bHapticsOSC.OpenSoundControl
         private static OscReceiverHandler oscReceiver = new OscReceiverHandler();
         private static OscSenderHandler oscSender = new OscSenderHandler();
         internal static OscPacketQueue oscPacketQueue = new OscPacketQueue();
+        private static VRChatSupport vrchatSupport = new VRChatSupport();
         public delegate void OscAddressMethod(string address, OscMessage msg);
         public delegate void dOnOscPacketArgumentMismatch(string address, OscMessage msg);
         public delegate void dOnOscPacketError();
@@ -18,16 +19,14 @@ namespace bHapticsOSC.OpenSoundControl
         public delegate void dOnOscSenderError();
 
         static OscManager()
-        {
-            AttachOscAttributesFromAssembly(typeof(OscManager).Assembly);
-            VRChatSupport.SetupDevices();
-        }
+            => AttachOscAttributesFromAssembly(typeof(OscManager).Assembly);
 
         public static void Connect()
         {
             oscSender.BeginInit();
             oscReceiver.BeginInit();
             oscPacketQueue.BeginInit();
+            vrchatSupport.BeginInit();
         }
 
         public static void Disconnect()
@@ -35,6 +34,7 @@ namespace bHapticsOSC.OpenSoundControl
             oscReceiver.EndInit();
             oscSender.EndInit();
             oscPacketQueue.EndInit();
+            vrchatSupport.EndInit();
         }
 
         public static void Send(OscPacket packet)

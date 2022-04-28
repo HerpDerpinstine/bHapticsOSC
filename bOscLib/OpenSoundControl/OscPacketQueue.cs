@@ -36,17 +36,13 @@ namespace bHapticsOSC.OpenSoundControl
                 {
                     if (ConfigManager.Connection.sender.Value.PipeAllPackets)
                         OscManager.Send(packet);
-
                     switch (OscManager.ShouldInvoke(packet))
                     {
                         case OscPacketInvokeAction.Pospone:
                         case OscPacketInvokeAction.Invoke:
-
                             if (!ConfigManager.Connection.sender.Value.PipeAllPackets)
                                 OscManager.Send(packet);
-
                             OscManager.Invoke(packet);
-
                             goto default;
                         case OscPacketInvokeAction.HasError:
                             throw new Exception($"Error while reading OscPacket: {packet.Error}");
@@ -56,10 +52,8 @@ namespace bHapticsOSC.OpenSoundControl
                     }
                 }
 
-                VRChatSupport.SubmitPackets();
-
                 if (ShouldRun)
-                    Thread.Sleep(100);
+                    Thread.Sleep(1);
             }
         }
     }
