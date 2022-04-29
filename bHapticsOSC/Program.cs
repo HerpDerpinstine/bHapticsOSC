@@ -98,7 +98,7 @@ namespace bHapticsOSC
             try
             {
                 OscManager.Disconnect();
-                bHapticsManager.Quit();
+                //bHapticsManager.Quit();
                 ConfigManager.SaveAll();
             }
             catch (Exception ex) { ErrorMessageBox(ex.ToString()); }
