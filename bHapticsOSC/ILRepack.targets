@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="ILRepacker_Debug" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+		<ItemGroup>
+			<AssemblyFile Include="$(OutputPath)$(AssemblyName).exe" />
+		</ItemGroup>
+		<ItemGroup>
+			<InputAssemblies Include="@(AssemblyFile)" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'Rug.Osc'" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'Tomlet'" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'bHapticsLib'" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'OscLib'" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'OscLib.Config'" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'OscLib.Utils'" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'OscLib.VRChat'" />
+		</ItemGroup>
+		<ILRepack
+			Parallel="true"
+			DebugInfo="true"
+			InputAssemblies="@(InputAssemblies)"
+			TargetKind="Exe"
+			OutputFile="@(AssemblyFile)"
+		/>
+	</Target>
+	
+	<Target Name="ILRepacker_Release" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+		<ItemGroup>
+			<AssemblyFile Include="$(OutputPath)$(AssemblyName).exe" />
+		</ItemGroup>
+		<ItemGroup>
+			<InputAssemblies Include="@(AssemblyFile)" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'Rug.Osc'" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'Tomlet'" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'bHapticsLib'" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'OscLib'" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'OscLib.Config'" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'OscLib.Utils'" />
+			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'OscLib.VRChat'" />
+		</ItemGroup>
+		<ILRepack
+			Parallel="true"
+			DebugInfo="false"
+			InputAssemblies="@(InputAssemblies)"
+			TargetKind="exe"
+			OutputFile="@(AssemblyFile)"
+		/>
+	</Target>
+	
+	<Target Name="Cleanup" AfterTargets="ILRepack">
+		<ItemGroup>
+			<FilesToDelete Include="$(OutputPath)Rug.Osc.dll" />
+			<FilesToDelete Include="$(OutputPath)Tomlet.dll" />
+			<FilesToDelete Include="$(OutputPath)bHapticsLib.dll" />
+			<FilesToDelete Include="$(OutputPath)OscLib.dll" />
+			<FilesToDelete Include="$(OutputPath)OscLib.Config.dll" />
+			<FilesToDelete Include="$(OutputPath)OscLib.Utils.dll" />
+			<FilesToDelete Include="$(OutputPath)OscLib.VRChat.dll" />
+		</ItemGroup>
+		<Delete Files="@(FilesToDelete)" />
+	</Target>
+</Project>

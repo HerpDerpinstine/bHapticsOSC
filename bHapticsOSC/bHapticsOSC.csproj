@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\bHapticsLib\bHapticsLib.csproj" />
     <ProjectReference Include="..\OscLib.Config\OscLib.Config.csproj" />
     <ProjectReference Include="..\OscLib.Utils\OscLib.Utils.csproj" />
