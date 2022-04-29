@@ -155,7 +155,10 @@ namespace bHapticsOSC
         [VRC_AvatarChange]
         private void OnAvatarChange(string avatarId)
         {
-            Console.WriteLine("Avatar Changed");
+            Console.WriteLine($"Avatar Changed to {avatarId}");
+
+            // To-Do: Append VRChat OSC Avatar Config - JSON
+
             PacketQueue.Enqueue(new VRChatPacketAvatarChange { id = avatarId });
         }
 
