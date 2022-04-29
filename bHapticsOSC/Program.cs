@@ -1,14 +1,24 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
-using bHapticsOSC.Config;
-using bHapticsOSC.Utils;
-using bHapticsOSC.OpenSoundControl;
-using Bhaptics.Tact;
+using bHapticsLib;
+using OscLib;
+using OscLib.Config;
 
 namespace bHapticsOSC
 {
     internal static class Program
     {
+        internal static DevicesConfig Devices;
+        internal static VRChatConfig VRChat;
+
+        static Program()
+        {
+            string basefolder = Path.GetDirectoryName(typeof(Program).Assembly.Location);
+            Devices = ConfigManager.CreateConfig<DevicesConfig>(basefolder, nameof(Devices));
+            VRChat = ConfigManager.CreateConfig<VRChatConfig>(basefolder, nameof(VRChat));
+        }
+
         internal static int Main(string[] args)
         {
             AppDomain.CurrentDomain.ProcessExit += ProcessExit;
@@ -19,11 +29,13 @@ namespace bHapticsOSC
                 return 0;
 
             WelcomeMessage();
+            
             try
             {
+                OscManager.Load();
                 ConfigManager.LoadAll();
 
-                ConfigManager.Connection.OnFileModified = () =>
+                OscManager.Connection.OnFileModified = () =>
                 {
                     Console.WriteLine();
                     Console.WriteLine("Connection.cfg Reloaded!");
@@ -32,7 +44,7 @@ namespace bHapticsOSC
                     OscManager.Connect();
                 };
 
-                ConfigManager.Devices.OnFileModified += () =>
+                Devices.OnFileModified += () =>
                 {
                     Console.WriteLine();
                     Console.WriteLine("Devices.cfg Reloaded!");
@@ -40,7 +52,7 @@ namespace bHapticsOSC
                     PrintDevices(true);
                 };
 
-                ConfigManager.VRChat.OnFileModified += () =>
+                VRChat.OnFileModified += () =>
                 {
                     Console.WriteLine();
                     Console.WriteLine("VRChat.cfg Reloaded!");
@@ -54,7 +66,7 @@ namespace bHapticsOSC
                 PrintVRChat();
                 //PrintUdonAudioLink();
 
-                bHaptics.Load();
+                bHapticsManager.Load(BuildInfo.Name, BuildInfo.Name);
 
                 OscManager.Connect();
 
@@ -86,7 +98,7 @@ namespace bHapticsOSC
             try
             {
                 OscManager.Disconnect();
-                //bHaptics.Quit();
+                bHapticsManager.Quit();
                 ConfigManager.SaveAll();
             }
             catch (Exception ex) { ErrorMessageBox(ex.ToString()); }
@@ -104,9 +116,9 @@ namespace bHapticsOSC
         {
             Console.WriteLine($"===== VRChat =====");
             Console.WriteLine();
-            Console.WriteLine($"[AFK] = {ConfigManager.VRChat.vrchat.Value.AFK}");
-            Console.WriteLine($"[InStation] = {ConfigManager.VRChat.vrchat.Value.InStation}");
-            Console.WriteLine($"[Seated] = {ConfigManager.VRChat.vrchat.Value.Seated}");
+            Console.WriteLine($"[AFK] = {VRChat.vrchat.Value.AFK}");
+            Console.WriteLine($"[InStation] = {VRChat.vrchat.Value.InStation}");
+            Console.WriteLine($"[Seated] = {VRChat.vrchat.Value.Seated}");
             Console.WriteLine();
             Console.WriteLine();
         }
@@ -115,15 +127,15 @@ namespace bHapticsOSC
         {
             Console.WriteLine($"===== OSC Receiver =====");
             Console.WriteLine();
-            Console.WriteLine($"[Port] = {ConfigManager.Connection.receiver.Value.Port}");
+            Console.WriteLine($"[Port] = {OscManager.Connection.receiver.Value.Port}");
             Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine($"===== OSC Sender =====");
             Console.WriteLine();
-            Console.WriteLine($"[Enabled] = {ConfigManager.Connection.sender.Value.Enabled}");
-            Console.WriteLine($"[IP] = {ConfigManager.Connection.sender.Value.IP}");
-            Console.WriteLine($"[Port] = {ConfigManager.Connection.sender.Value.Port}");
+            Console.WriteLine($"[Enabled] = {OscManager.Connection.sender.Value.Enabled}");
+            Console.WriteLine($"[IP] = {OscManager.Connection.sender.Value.IP}");
+            Console.WriteLine($"[Port] = {OscManager.Connection.sender.Value.Port}");
             Console.WriteLine();
             Console.WriteLine();
         }
@@ -168,8 +180,8 @@ namespace bHapticsOSC
             //Console.WriteLine($"[{name}  |  Enabled] = {(isAudioLink ? ConfigManager.VRChat.PositionTypeToUALEnabled(positionType) : ConfigManager.Devices.PositionTypeToEnabled(positionType))}");
             //Console.WriteLine($"[{name}  |  Intensity] = {(isAudioLink ? ConfigManager.VRChat.PositionTypeToUALIntensity(positionType) : ConfigManager.Devices.PositionTypeToIntensity(positionType))}");
 
-            Console.WriteLine($"[{name}  |  Enabled] = {ConfigManager.Devices.PositionTypeToEnabled(positionType)}");
-            Console.WriteLine($"[{name}  |  Intensity] = {ConfigManager.Devices.PositionTypeToIntensity(positionType)}");
+            Console.WriteLine($"[{name}  |  Enabled] = {Devices.PositionTypeToEnabled(positionType)}");
+            Console.WriteLine($"[{name}  |  Intensity] = {Devices.PositionTypeToIntensity(positionType)}");
 
             Console.WriteLine();
         }

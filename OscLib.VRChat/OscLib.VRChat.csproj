@@ -1,0 +1,41 @@
+﻿	<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<LangVersion>8.0</LangVersion>
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<OutputPath>$(SolutionDir)Output\$(Configuration)\</OutputPath>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	    <ApplicationIcon>../bhaptics_icon.ico</ApplicationIcon>
+		<OutputType>Library</OutputType>
+		<StartupObject />
+		<RootNamespace>OscLib.VRChat</RootNamespace>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DebugType>full</DebugType>
+		<DefineConstants>TRACE;NET48;DEBUG</DefineConstants>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DebugType>None</DebugType>
+		<DefineConstants>NET48</DefineConstants>
+		<GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+	</PropertyGroup>
+	
+	<ItemGroup>
+	  <Compile Remove="Output\**" />
+	  <EmbeddedResource Remove="Output\**" />
+	  <None Remove="Output\**" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Compile Include="..\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+	  <Compile Include="..\Properties\BuildInfo.cs" Link="Properties\BuildInfo.cs" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\OscLib\OscLib.csproj" />
+	</ItemGroup>
+</Project>
