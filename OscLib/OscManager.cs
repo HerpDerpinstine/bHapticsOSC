@@ -14,17 +14,11 @@ namespace OscLib
         private static OscReceiverHandler oscReceiver = new OscReceiverHandler();
         private static OscSenderHandler oscSender = new OscSenderHandler();
         internal static OscPacketQueue oscPacketQueue = new OscPacketQueue();
-        public delegate void OscAddressMethod(string address, OscMessage msg);
-        public delegate void dOnOscPacketArgumentMismatch(string address, OscMessage msg);
-        public delegate void dOnOscPacketError();
-        public delegate void dOnOscReceiverError();
-        public delegate void dOnOscSenderError();
 
         public static void Load()
         {
             Assembly baseAssembly = typeof(OscManager).Assembly;
             Connection = ConfigManager.CreateConfig<ConnectionConfig>(Path.GetDirectoryName(baseAssembly.Location), nameof(Connection));
-            AttachOscAttributesFromAssembly(baseAssembly);
         }
 
         public static void Connect()
@@ -83,21 +77,26 @@ namespace OscLib
 
                             Attach(newAddress, (OscMessage msg) =>
                             {
-                                if (parameters.Length > 0)
-                                {
-                                    if (msg.Count != parameters.Length)
-                                        return;
+                                if ((msg == null) || (parameters.Length <= 0))
+                                    method.Invoke(null, new object[0]);
+                                else
+                                    method.Invoke(null, msg.ToArray());
 
-                                    if (msg.Count > 0)
-                                        for (int i = 0; i < msg.Count; i++)
-                                            if (msg[i].GetType() != parameters[i].ParameterType)
-                                            {
-                                                // To-Do: Log Information
-                                                Console.WriteLine($"Parameter Mismatch for {newAddress}");
-                                                return;
-                                            }
-                                }
+                                /*
+                                if (msg.Count != parameters.Length)
+                                    return;
+
+                                if (msg.Count > 0)
+                                    for (int i = 0; i < msg.Count; i++)
+                                        if (msg[i].GetType() != parameters[i].ParameterType)
+                                        {
+                                            // To-Do: Log Information
+                                            Console.WriteLine($"Parameter Mismatch for {newAddress}");
+                                            return;
+                                        }
+
                                 method.Invoke(null, msg.ToArray());
+                                */
                             });
                         }
                     }

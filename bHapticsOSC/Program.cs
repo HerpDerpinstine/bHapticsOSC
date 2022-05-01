@@ -11,6 +11,7 @@ namespace bHapticsOSC
     {
         internal static DevicesConfig Devices;
         internal static VRChatConfig VRChat;
+        internal static VRChatSupport VRCSupport = new VRChatSupport();
 
         static Program()
         {
@@ -68,7 +69,9 @@ namespace bHapticsOSC
 
                 bHapticsManager.Load(BuildInfo.Name, BuildInfo.Name);
 
+                OscManager.AttachOscAttributesFromAssembly(typeof(Program).Assembly);
                 OscManager.Connect();
+                VRCSupport.BeginInit();
 
                 Console.WriteLine();
                 Console.WriteLine("Awaiting Packets...");
@@ -97,6 +100,7 @@ namespace bHapticsOSC
         {
             try
             {
+                VRCSupport.EndInit();
                 OscManager.Disconnect();
                 //bHapticsManager.Quit();
                 ConfigManager.SaveAll();

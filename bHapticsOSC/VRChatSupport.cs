@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using bHapticsLib;
 using OscLib;
 using OscLib.Utils;
-using OscLib.Config;
 using OscLib.VRChat;
 using Rug.Osc;
 using System.Collections.Concurrent;
@@ -141,36 +140,38 @@ namespace bHapticsOSC
         }
 
         [VRC_AFK]
-        private void OnAFK(bool status)
-            => PacketQueue.Enqueue(new VRChatPacketAFK { value = status });
+        private static void OnAFK(bool status)
+            => Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacketAFK { value = status });
 
         [VRC_InStation]
-        private void OnInStation(bool status)
-            => PacketQueue.Enqueue(new VRChatPacketInStation { value = status });
+        private static void OnInStation(bool status)
+            => Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacketInStation { value = status });
 
         [VRC_Seated]
-        private void OnSeated(bool status)
-            => PacketQueue.Enqueue(new VRChatPacketSeated { value = status });
+        private static void OnSeated(bool status)
+            => Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacketSeated { value = status });
 
         [VRC_AvatarChange]
-        private void OnAvatarChange(string avatarId)
+        private static void OnAvatarChange() => OnAvatarChange(string.Empty);
+        [VRC_AvatarChange]
+        private static void OnAvatarChange(string avatarId)
         {
             Console.WriteLine($"Avatar Changed to {avatarId}");
 
             // To-Do: Append VRChat OSC Avatar Config - JSON
 
-            PacketQueue.Enqueue(new VRChatPacketAvatarChange { id = avatarId });
+            Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacketAvatarChange { id = avatarId });
         }
 
         //[VRC_AvatarParameter("bHapticsOSC_UdonAudioLink")]
         //private void OnUdonAudioLink(int amplitude)
         //    => UdonAudioLink = amplitude;
 
-        private void OnNode(OscMessage msg, int node, PositionType position)
+        private static void OnNode(OscMessage msg, int node, PositionType position)
         {
             if ((msg == null) || (!(msg[0] is bool)))
                 return;
-            PacketQueue.Enqueue(new VRChatNodePacket
+            Program.VRCSupport.PacketQueue.Enqueue(new VRChatNodePacket
             {
                 position = position,
                 node = node,
