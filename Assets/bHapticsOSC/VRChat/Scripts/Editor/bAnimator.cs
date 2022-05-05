@@ -47,11 +47,11 @@ namespace bHapticsOSC.VRChat
 
 			layer = aac.CreateSupportingFxLayer(layer_name);
 
-			AacFlState falseState = layer.NewState("False").WithWriteDefaultsSetTo(false);
+			AacFlState falseState = layer.NewState("False").WithWriteDefaultsSetTo(true);
 			falseState.TransitionsFromEntry().When(boolParam.IsFalse());
 			falseState.Exits().AfterAnimationFinishes();
 
-			AacFlState trueState = layer.NewState("True", 1, 0).WithWriteDefaultsSetTo(false);
+			AacFlState trueState = layer.NewState("True", 1, 0).WithWriteDefaultsSetTo(true);
 			trueState.TransitionsFromEntry().When(boolParam.IsTrue());
 			trueState.Exits().AfterAnimationFinishes();
 

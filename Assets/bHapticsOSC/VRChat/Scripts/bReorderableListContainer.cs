@@ -62,7 +62,7 @@ namespace bHapticsOSC.VRChat
             SerializedProperty element = SerializedProperty.GetArrayElementAtIndex(index);
 
             if (ElementType == typeof(string))
-                element.stringValue = DefaultElement as string;
+                element.stringValue = $"{DefaultElement as string}_{index + 1}";
 
             element.serializedObject.ApplyModifiedProperties();
         }

@@ -122,7 +122,7 @@ Material:
     - _Color4in: {r: 1, g: 1, b: 1, a: 1}
     - _Color4out: {r: 0.03773582, g: 0.03773582, b: 0.03773582, a: 1}
     - _ColorTint: {r: 0, g: 0.08628178, b: 1, a: 1}
-    - _DefaultColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+    - _DefaultColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _MainColor: {r: 0, g: 0, b: 0, a: 0.5019608}

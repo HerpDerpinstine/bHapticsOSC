@@ -5,8 +5,9 @@
 		_MainTex("Albedo (RGB)", 2D) = "white" {}
 
 		_Device("Device", Float) = 0
-		_TouchColor("Touch Color", Color) = (0,0,0,1)
-		_AudioLink("AudioLink", Int) = 0
+		_DefaultColor("Default Color", Color) = (0,0,0,0)
+		_TouchColor("Touch Color", Color) = (0,1,1,0.5)
+		//_AudioLink("AudioLink", Int) = 0
 		[MaterialToggle] _SingularNode("Singular Node", Int) = 0
 		
 		[MaterialToggle] _Node1("Node 1", Int) = 0
@@ -44,8 +45,9 @@
 		uniform fixed _IsFlip;
 
 		uniform float _Device;
+		uniform float4 _DefaultColor;
 		uniform float4 _TouchColor;
-		uniform int _AudioLink;
+		//uniform int _AudioLink;
 		uniform int _SingularNode;
 
 		uniform int _Node1;
@@ -221,8 +223,8 @@
 				}
 				else
 				{
-					o.Albedo = _MainTex_var.rgb;
-					o.Alpha = _MainTex_var.a;
+					o.Albedo = _DefaultColor.rgb;
+					o.Alpha = _DefaultColor.a;
 				}
 				return;
 			}
@@ -254,8 +256,8 @@
 			}
 			else
 			{
-				o.Albedo = _MainTex_var.rgb;
-				o.Alpha = _MainTex_var.a;
+				o.Albedo = _DefaultColor.rgb;
+				o.Alpha = _DefaultColor.a;
 			}
 		}
 

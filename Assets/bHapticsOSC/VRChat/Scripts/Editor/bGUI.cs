@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Sprites;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace bHapticsOSC.VRChat
@@ -265,10 +264,7 @@ namespace bHapticsOSC.VRChat
         public enum HelpBoxType
         {
             NoFXLayer,
-            NoExpressionParameters,
-            NothingSelected,
-            NotEnoughMemory,
-            NonSceneObject,
+            NotReadyToApply,
         }
         public static void DrawHelpBox(HelpBoxType type, string additionalText = null)
         {
@@ -282,14 +278,9 @@ namespace bHapticsOSC.VRChat
                     msg = "No Custom FX Layer Found!\nIt is required that the Avatar have some form of non-default FX Layer set.";
                     goto default;
 
-                case HelpBoxType.NothingSelected:
+                case HelpBoxType.NotReadyToApply:
                     messageType = MessageType.Warning;
                     msg = "Nothing is Added!\nPlease add at least 1 Device to Integrate into the Avatar.";
-                    goto default;
-
-                case HelpBoxType.NotEnoughMemory:
-                    messageType = MessageType.Error;
-                    msg = $"Not enough Expression Parameter Memory!\nIn order to Integrate this many options you need {additionalText} more free bits.\nEither free up some space or get rid of some Devices.";
                     goto default;
 
                 default:

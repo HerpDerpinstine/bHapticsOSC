@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using VRC.Dynamics;
 
 namespace bHapticsOSC.VRChat
 {
@@ -47,6 +48,9 @@ namespace bHapticsOSC.VRChat
 
                 _showMesh = (objPrefab == device.PrefabMesh);
                 CurrentPrefab = obj;
+                CustomContactTags.Clear();
+                bContacts.ScanForExistingTags(this);
+
                 break;
             }
         }
@@ -70,8 +74,16 @@ namespace bHapticsOSC.VRChat
             spawnedPrefab.transform.localEulerAngles = baseObj.transform.localEulerAngles;
             spawnedPrefab.transform.localScale = baseObj.transform.localScale;
 
-            DestroyCurrentPrefab();
+            string[] currentTags = CustomContactTags.ToArray();
+
+            if (CurrentPrefab != null)
+                Undo.DestroyObjectImmediate(CurrentPrefab);
+
             Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
+
+            CustomContactTags.Clear();
+            CustomContactTags.AddRange(currentTags);
+
             CurrentPrefab = spawnedPrefab;
         }
 
@@ -84,6 +96,7 @@ namespace bHapticsOSC.VRChat
                 return;
             Undo.DestroyObjectImmediate(CurrentPrefab);
             CurrentPrefab = null;
+            CustomContactTags.Clear();
         }
 
         public void Reset()
@@ -92,6 +105,7 @@ namespace bHapticsOSC.VRChat
             _showMesh = false;
             ShowMesh = true;
             ApplyParentConstraints = true;
+            CustomContactTags.Clear();
         }
     }
 }

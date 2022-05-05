@@ -50,12 +50,10 @@ namespace bHapticsOSC.VRChat
 			{
 				editorComp.AllCustomContactTagsContainers = new Dictionary<bUserSettings, bReorderableListContainer<string>>();
 				foreach (bUserSettings settings in editorComp.AllUserSettings.Values)
-					editorComp.AllCustomContactTagsContainers[settings] = new bReorderableListContainer<string>("Custom Contact Tags", "New Tag", bGUI.LabelStyle, new SerializedObject(settings).FindProperty("CustomContactTags"));
+					editorComp.AllCustomContactTagsContainers[settings] = new bReorderableListContainer<string>("Custom Contact Tags", "New_Tag", bGUI.LabelStyle, new SerializedObject(settings).FindProperty("CustomContactTags"));
 			}
 
 			editorComp.FindExistingPrefabs(bDevice.AllTemplates);
-
-			// Scan all Existing Prefabs for Tags
 
 			bDeviceTemplate CurrentTemplate = bDevice.AllTemplates[editorComp.CurrentDevice];
 			bUserSettings userSettings = editorComp.AllUserSettings[CurrentTemplate];
@@ -187,7 +185,7 @@ namespace bHapticsOSC.VRChat
 
 			if (!editorComp.IsReadyToApply())
 			{
-				bGUI.DrawHelpBox(bGUI.HelpBoxType.NothingSelected);
+				bGUI.DrawHelpBox(bGUI.HelpBoxType.NotReadyToApply);
 				return;
 			}
 
@@ -204,6 +202,7 @@ namespace bHapticsOSC.VRChat
 					EditorUtility.DisplayProgressBar(bHapticsOSCIntegration.SystemName, "Modifying Avatar...", 0.5f);
 					ApplySerializedChanges();
 					bAnimator.CreateAllNodes(editorComp);
+					bContacts.ApplyNewTags(editorComp);
 
 					if (bConstraints.ShouldApply(editorComp, bDeviceType.HAND_LEFT, out bUserSettings leftHandSettings)
 						|| bConstraints.ShouldApply(editorComp, bDeviceType.HAND_RIGHT, out bUserSettings rightHandSettings))
@@ -222,8 +221,6 @@ namespace bHapticsOSC.VRChat
 
 			if (GUI.changed)
 				EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-
-			serializedObject.ApplyModifiedProperties();
 		}
 
 		private bool CloneAnimatorAsset()
