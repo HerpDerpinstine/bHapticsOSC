@@ -35,8 +35,6 @@ namespace OscLib
                 {
                     if (OscManager.Connection.sender.Value.PipeAllPackets)
                         OscManager.oscSender.Send(packet);
-                    if (OscManager.Passthrough.sender.Value.PipeAllPackets)
-                        OscManager.oscSenderPassthrough.Send(packet);
 
                     switch (OscManager.ShouldInvoke(packet))
                     {
@@ -45,8 +43,6 @@ namespace OscLib
 
                             if (!OscManager.Connection.sender.Value.PipeAllPackets)
                                 OscManager.oscSender.Send(packet);
-                            if (!OscManager.Passthrough.sender.Value.PipeAllPackets)
-                                OscManager.oscSenderPassthrough.Send(packet);
 
                             OscManager.Invoke(packet);
 

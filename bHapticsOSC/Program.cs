@@ -46,16 +46,6 @@ namespace bHapticsOSC
                     originalConnectionAct();
                 };
 
-                Action originalPassthroughAct = OscManager.Passthrough.OnFileModified;
-                OscManager.Passthrough.OnFileModified = () =>
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Passthrough.cfg Reloaded!");
-                    Console.WriteLine();
-                    PrintPassthrough();
-                    originalPassthroughAct();
-                };
-
                 Devices.OnFileModified += () =>
                 {
                     Console.WriteLine();
@@ -151,24 +141,6 @@ namespace bHapticsOSC
             Console.WriteLine($"[Enabled] = {OscManager.Connection.sender.Value.Enabled}");
             Console.WriteLine($"[IP] = {OscManager.Connection.sender.Value.IP}");
             Console.WriteLine($"[Port] = {OscManager.Connection.sender.Value.Port}");
-            Console.WriteLine();
-            Console.WriteLine();
-        }
-
-        private static void PrintPassthrough()
-        {
-            Console.WriteLine($"===== Passthrough Receiver =====");
-            Console.WriteLine();
-            Console.WriteLine($"[Enabled] = {OscManager.Passthrough.receiver.Value.Enabled}");
-            Console.WriteLine($"[Port] = {OscManager.Passthrough.receiver.Value.Port}");
-            Console.WriteLine();
-            Console.WriteLine();
-
-            Console.WriteLine($"===== Passthrough Sender =====");
-            Console.WriteLine();
-            Console.WriteLine($"[Enabled] = {OscManager.Passthrough.sender.Value.Enabled}");
-            Console.WriteLine($"[IP] = {OscManager.Passthrough.sender.Value.IP}");
-            Console.WriteLine($"[Port] = {OscManager.Passthrough.sender.Value.Port}");
             Console.WriteLine();
             Console.WriteLine();
         }
