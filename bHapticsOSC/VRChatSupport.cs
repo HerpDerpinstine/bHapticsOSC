@@ -117,10 +117,7 @@ namespace bHapticsOSC
                     else if (packet is VRChatPacketSeated)
                         Seated = ((VRChatPacketSeated)packet).value;
                     else if (packet is VRChatPacketAvatarChange)
-                    {
                         ResetDevices();
-                        // To-Do: Append VRChat OSC Avatar Config - JSON
-                    }
                     else if (packet is VRChatNodePacket)
                     {
                         VRChatNodePacket nodePacket = (VRChatNodePacket)packet;
@@ -158,6 +155,7 @@ namespace bHapticsOSC
         private static void OnAvatarChange(string avatarId)
         {
             Console.WriteLine($"Avatar Changed to {avatarId}");
+            // To-Do: Append VRChat OSC Avatar Config - JSON
             Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacketAvatarChange { id = avatarId });
         }
 
