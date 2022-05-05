@@ -56,12 +56,11 @@ namespace OscLib
                 foreach (MethodInfo method in type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static))
                 {
                     ParameterInfo[] parameters = method.GetParameters();
+                    int parameterCount = parameters.Length;
                     foreach (IOscAddress oscAddress in method.GetCustomAttributes().Where(x => x.GetType().GetInterface("IOscAddress") != null))
                     {
                         string prefix = oscAddress.GetAddressPrefix();
                         string[] addressBook = oscAddress.GetAddressBook();
-
-                        // To-Do: Parameter Check
 
                         if ((addressBook == null) || (addressBook.Length <= 0))
                             continue;
@@ -77,26 +76,37 @@ namespace OscLib
 
                             Attach(newAddress, (OscMessage msg) =>
                             {
-                                if ((msg == null) || (parameters.Length <= 0))
+                                if ((msg == null) || (parameterCount <= 0))
+                                {
                                     method.Invoke(null, new object[0]);
-                                else
-                                    method.Invoke(null, msg.ToArray());
-
-                                /*
-                                if (msg.Count != parameters.Length)
                                     return;
+                                }
 
-                                if (msg.Count > 0)
-                                    for (int i = 0; i < msg.Count; i++)
-                                        if (msg[i].GetType() != parameters[i].ParameterType)
-                                        {
-                                            // To-Do: Log Information
-                                            Console.WriteLine($"Parameter Mismatch for {newAddress}");
-                                            return;
-                                        }
+                                int msgCount = msg.Count;
+                                if (msgCount <= 0)
+                                {
+                                    method.Invoke(null, new object[parameterCount]);
+                                    return;
+                                }
+
+                                if (msgCount != parameterCount)
+                                {
+                                    Console.WriteLine($"Count Mismatch for {newAddress}  |  Expected {parameterCount}, Got {msgCount}");
+                                    return;
+                                }
+
+                                for (int i = 0; i < msgCount; i++)
+                                {
+                                    Type msgType = msg[i].GetType();
+                                    Type parameterType = parameters[i].ParameterType;
+                                    if (msgType != parameterType)
+                                    {
+                                        Console.WriteLine($"Type Mismatch for {newAddress} at Parameter {i}  |  Expected {parameterType}, Got {msgType}");
+                                        return;
+                                    }
+                                }
 
                                 method.Invoke(null, msg.ToArray());
-                                */
                             });
                         }
                     }
