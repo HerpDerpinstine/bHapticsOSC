@@ -7,18 +7,19 @@ namespace OscLib
     internal class OscSenderHandler
     {
         private OscSender Sender;
+        private string Name;
 
-        public void BeginInit()
+        internal OscSenderHandler(string name)
+            => Name = name;
+
+        public void BeginInit(string ipAddress, int port)
         {
             if (Sender != null)
                 EndInit();
 
-            if (!OscManager.Connection.sender.Value.Enabled)
-                return;
-
-            Sender = new OscSender(IPAddress.Parse(OscManager.Connection.sender.Value.IP), OscManager.Connection.sender.Value.Port, OscManager.Connection.sender.Value.Port);
+            Sender = new OscSender(IPAddress.Parse(ipAddress), port, port);
             Sender.Connect();
-            Console.WriteLine("[OscSender] Connected!");
+            Console.WriteLine($"[{Name}] Connected!");
         }
 
         public void EndInit()
@@ -31,13 +32,12 @@ namespace OscLib
             Sender.Dispose();
             Sender = null;
 
-            Console.WriteLine("[OscSender] Disconnected!");
+            Console.WriteLine($"[{Name}] Disconnected!");
         }
 
         internal void Send(OscPacket packet)
         {
-            if (!OscManager.Connection.sender.Value.Enabled
-                || (Sender == null)
+            if ((Sender == null)
                 || (Sender.State == OscSocketState.Closing)
                 || (Sender.State == OscSocketState.Closed))
                 return;

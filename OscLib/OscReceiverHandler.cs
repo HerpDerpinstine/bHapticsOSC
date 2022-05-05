@@ -9,6 +9,17 @@ namespace OscLib
     {
         private OscReceiver Receiver;
         private bool ShouldRun;
+        private string Name;
+        private int CurrentPort;
+
+        internal OscReceiverHandler(string name)
+            => Name = name;
+
+        public void BeginInit(int port)
+        {
+            CurrentPort = port;
+            BeginInit();
+        }
 
         public override bool BeginInitInternal()
         {
@@ -16,9 +27,9 @@ namespace OscLib
                 EndInit();
             
             ShouldRun = true;
-            Receiver = new OscReceiver(System.Net.IPAddress.Any, OscManager.Connection.receiver.Value.Port);
+            Receiver = new OscReceiver(System.Net.IPAddress.Any, CurrentPort);
             Receiver.Connect();
-            Console.WriteLine("[OscReceiver] Connected!");
+            Console.WriteLine($"[{Name}] Connected!");
 
             return true;
         }
@@ -45,7 +56,7 @@ namespace OscLib
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Exception in OscReceiver Thread: {ex}");
+                    Console.WriteLine($"Exception in {Name} Thread: {ex}");
                 }
 
                 if (ShouldRun)
@@ -59,7 +70,7 @@ namespace OscLib
                 }
             }
 
-            Console.WriteLine("[OscReceiver] Disconnected!");
+            Console.WriteLine($"[{Name}] Disconnected!");
         }
     }
 }

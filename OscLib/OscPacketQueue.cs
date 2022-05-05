@@ -3,7 +3,6 @@ using Rug.Osc;
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace OscLib
 {
@@ -35,14 +34,22 @@ namespace OscLib
                 while (PacketQueue.TryDequeue(out OscPacket packet))
                 {
                     if (OscManager.Connection.sender.Value.PipeAllPackets)
-                        OscManager.Send(packet);
+                        OscManager.oscSender.Send(packet);
+                    if (OscManager.Passthrough.sender.Value.PipeAllPackets)
+                        OscManager.oscSenderPassthrough.Send(packet);
+
                     switch (OscManager.ShouldInvoke(packet))
                     {
                         case OscPacketInvokeAction.Pospone:
                         case OscPacketInvokeAction.Invoke:
+
                             if (!OscManager.Connection.sender.Value.PipeAllPackets)
-                                OscManager.Send(packet);
+                                OscManager.oscSender.Send(packet);
+                            if (!OscManager.Passthrough.sender.Value.PipeAllPackets)
+                                OscManager.oscSenderPassthrough.Send(packet);
+
                             OscManager.Invoke(packet);
+
                             goto default;
                         case OscPacketInvokeAction.HasError:
                             throw new Exception($"Error while reading OscPacket: {packet.Error}");

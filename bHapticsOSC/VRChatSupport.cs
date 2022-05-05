@@ -17,7 +17,7 @@ namespace bHapticsOSC
         private bool AFK;
         private bool InStation;
         private bool Seated;
-        private int UdonAudioLink;
+        private int UdonAudioLink = 0;
 
         private class VRChatPacket { }
         private class VRChatPacketAvatarChange : VRChatPacket { internal string id; }
@@ -151,8 +151,6 @@ namespace bHapticsOSC
         private static void OnSeated(bool status)
             => Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacketSeated { value = status });
 
-        [VRC_AvatarChange]
-        private static void OnAvatarChange() => OnAvatarChange(string.Empty);
         [VRC_AvatarChange]
         private static void OnAvatarChange(string avatarId)
         {
