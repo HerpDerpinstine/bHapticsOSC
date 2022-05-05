@@ -10,16 +10,12 @@ namespace OscLib
     public static class OscManager
     {
         public static ConnectionConfig Connection;
-        public static PassthroughConfig Passthrough;
 
         private static OscAddressManager AddressBook = new OscAddressManager();
         internal static OscPacketQueue oscPacketQueue = new OscPacketQueue();
 
         private static OscReceiverHandler oscReceiver = new OscReceiverHandler("OscReceiver");
-        private static OscReceiverHandler oscReceiverPassthrough = new OscReceiverHandler("PassthroughReceiver");
-
         internal static OscSenderHandler oscSender = new OscSenderHandler("OscSender");
-        internal static OscSenderHandler oscSenderPassthrough = new OscSenderHandler("PassthroughSender");
 
         public static void Load()
         {
@@ -27,9 +23,6 @@ namespace OscLib
 
             Connection = ConfigManager.CreateConfig<ConnectionConfig>(Path.GetDirectoryName(baseAssembly.Location), nameof(Connection));
             Connection.OnFileModified = () => { Disconnect(); Connect(); };
-
-            Passthrough = ConfigManager.CreateConfig<PassthroughConfig>(Path.GetDirectoryName(baseAssembly.Location), nameof(Passthrough));
-            Passthrough.OnFileModified = () => { Disconnect(); Connect(); };
         }
 
         public static void Connect()
@@ -39,12 +32,6 @@ namespace OscLib
             if (Connection.sender.Value.Enabled)
                 oscSender.BeginInit(Connection.sender.Value.IP, Connection.sender.Value.Port);
 
-            if (Passthrough.receiver.Value.Enabled)
-                oscReceiverPassthrough.BeginInit(Passthrough.receiver.Value.Port);
-
-            if (Passthrough.sender.Value.Enabled)
-                oscSenderPassthrough.BeginInit(Passthrough.sender.Value.IP, Passthrough.sender.Value.Port);
-
             oscPacketQueue.BeginInit();
         }
 
@@ -53,17 +40,11 @@ namespace OscLib
             oscReceiver.EndInit();
             oscSender.EndInit();
 
-            oscReceiverPassthrough.EndInit();
-            oscSenderPassthrough.EndInit();
-
             oscPacketQueue.EndInit();
         }
 
         public static void Send(OscPacket packet)
-        {
-            oscSender.Send(packet);
-            oscSenderPassthrough.Send(packet);
-        }
+            => oscSender.Send(packet);
 
         public static void Attach(string address, OscMessageEvent oscMessageEvent)
             => AddressBook.Attach(address, oscMessageEvent);
