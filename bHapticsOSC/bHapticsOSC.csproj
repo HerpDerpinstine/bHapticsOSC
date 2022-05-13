@@ -35,8 +35,4 @@
     <ProjectReference Include="..\OscLib\OscLib.csproj" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="cd $(OutputPath)" />
-  </Target>
-
 </Project>
