@@ -19,7 +19,7 @@
 			Parallel="true"
 			DebugInfo="true"
 			InputAssemblies="@(InputAssemblies)"
-			TargetKind="Exe"
+			TargetKind="SameAsPrimaryAssembly"
 			OutputFile="@(AssemblyFile)"
 		/>
 	</Target>
@@ -43,7 +43,7 @@
 			Parallel="true"
 			DebugInfo="false"
 			InputAssemblies="@(InputAssemblies)"
-			TargetKind="exe"
+			TargetKind="SameAsPrimaryAssembly"
 			OutputFile="@(AssemblyFile)"
 		/>
 	</Target>
