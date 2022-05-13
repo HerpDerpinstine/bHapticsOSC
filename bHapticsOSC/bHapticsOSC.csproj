@@ -28,19 +28,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\bHapticsLib\bHapticsLib.csproj" />
     <ProjectReference Include="..\OscLib.Config\OscLib.Config.csproj" />
     <ProjectReference Include="..\OscLib.Utils\OscLib.Utils.csproj" />
     <ProjectReference Include="..\OscLib.VRChat\OscLib.VRChat.csproj" />
     <ProjectReference Include="..\OscLib\OscLib.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="NativeLibs\bHaptics.x64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="NativeLibs\bHaptics.x86.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

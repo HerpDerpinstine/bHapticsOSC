@@ -1,4 +1,5 @@
-﻿using OscLib.Config;
+﻿using bHapticsLib;
+using OscLib.Config;
 using OscLib.Utils;
 using Tomlet.Attributes;
 
@@ -70,51 +71,51 @@ namespace bHapticsOSC
                 => Intensity = Intensity.Clamp(0, 500);
         }
 
-        public bool PositionTypeToUALEnabled(bHapticsLib.PositionType positionType)
+        public bool PositionTypeToUALEnabled(PositionType positionType)
         {
             return (positionType) switch
             {
-                bHapticsLib.PositionType.Head => Head.Value.Enabled,
+                PositionType.Head => Head.Value.Enabled,
 
-                bHapticsLib.PositionType.VestFront => Vest.Value.Enabled,
-                bHapticsLib.PositionType.VestBack => Vest.Value.Enabled,
+                PositionType.VestFront => Vest.Value.Enabled,
+                PositionType.VestBack => Vest.Value.Enabled,
 
-                bHapticsLib.PositionType.ForearmL => ArmLeft.Value.Enabled,
-                bHapticsLib.PositionType.ForearmR => ArmRight.Value.Enabled,
+                PositionType.ForearmL => ArmLeft.Value.Enabled,
+                PositionType.ForearmR => ArmRight.Value.Enabled,
 
-                bHapticsLib.PositionType.HandL => HandLeft.Value.Enabled,
-                bHapticsLib.PositionType.HandR => HandRight.Value.Enabled,
+                PositionType.HandL => HandLeft.Value.Enabled,
+                PositionType.HandR => HandRight.Value.Enabled,
 
-                //bHaptics.PositionType.GloveLeft => GloveLeft.Value.Enabled,
-                //bHaptics.PositionType.GloveRight => GloveRight.Value.Enabled,
+                //PositionType.GloveLeft => GloveLeft.Value.Enabled,
+                //PositionType.GloveRight => GloveRight.Value.Enabled,
 
-                bHapticsLib.PositionType.FootL => FootLeft.Value.Enabled,
-                bHapticsLib.PositionType.FootR => FootRight.Value.Enabled,
+                PositionType.FootL => FootLeft.Value.Enabled,
+                PositionType.FootR => FootRight.Value.Enabled,
 
                 _ => true
             };
         }
 
-        public int PositionTypeToUALIntensity(bHapticsLib.PositionType positionType)
+        public int PositionTypeToUALIntensity(PositionType positionType)
         {
             return (positionType) switch
             {
-                bHapticsLib.PositionType.Head => Head.Value.Intensity,
+                PositionType.Head => Head.Value.Intensity,
 
-                bHapticsLib.PositionType.VestFront => Vest.Value.Intensity,
-                bHapticsLib.PositionType.VestBack => Vest.Value.Intensity,
+                PositionType.VestFront => Vest.Value.Intensity,
+                PositionType.VestBack => Vest.Value.Intensity,
 
-                bHapticsLib.PositionType.ForearmL => ArmLeft.Value.Intensity,
-                bHapticsLib.PositionType.ForearmR => ArmRight.Value.Intensity,
+                PositionType.ForearmL => ArmLeft.Value.Intensity,
+                PositionType.ForearmR => ArmRight.Value.Intensity,
 
-                bHapticsLib.PositionType.HandL => HandLeft.Value.Intensity,
-                bHapticsLib.PositionType.HandR => HandRight.Value.Intensity,
+                PositionType.HandL => HandLeft.Value.Intensity,
+                PositionType.HandR => HandRight.Value.Intensity,
 
-                //bHaptics.PositionType.GloveLeft => GloveLeft.Value.Intensity,
-                //bHaptics.PositionType.GloveRight => GloveRight.Value.Intensity,
+                //PositionType.GloveLeft => GloveLeft.Value.Intensity,
+                //PositionType.GloveRight => GloveRight.Value.Intensity,
 
-                bHapticsLib.PositionType.FootL => FootLeft.Value.Intensity,
-                bHapticsLib.PositionType.FootR => FootRight.Value.Intensity,
+                PositionType.FootL => FootLeft.Value.Intensity,
+                PositionType.FootR => FootRight.Value.Intensity,
 
                 _ => 100
             };
