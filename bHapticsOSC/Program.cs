@@ -119,11 +119,17 @@ namespace bHapticsOSC
 
         private static void PrintVRChat()
         {
-            Console.WriteLine($"===== VRChat =====");
+            Console.WriteLine($"===== VRChat - Reactivity =====");
             Console.WriteLine();
-            Console.WriteLine($"[AFK] = {VRChat.vrchat.Value.AFK}");
-            Console.WriteLine($"[InStation] = {VRChat.vrchat.Value.InStation}");
-            Console.WriteLine($"[Seated] = {VRChat.vrchat.Value.Seated}");
+            Console.WriteLine($"[AFK] = {VRChat.reactivity.Value.AFK}");
+            Console.WriteLine($"[InStation] = {VRChat.reactivity.Value.InStation}");
+            Console.WriteLine($"[Seated] = {VRChat.reactivity.Value.Seated}");
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.WriteLine($"===== VRChat - Avatar OSC Config Reset =====");
+            Console.WriteLine();
+            Console.WriteLine($"[Enabled] = {VRChat.avatarOSCConfigReset.Value.Enabled}");
             Console.WriteLine();
             Console.WriteLine();
         }

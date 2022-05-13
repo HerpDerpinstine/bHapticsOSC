@@ -20,7 +20,7 @@ namespace bHapticsOSC
         private bool Seated;
         private int UdonAudioLink = 0;
 
-        private const string Prefix = "/avatar/parameters";
+        private const string AvatarParameterPrefix = "/avatar/parameters";
         private static Tuple<int, PositionType, string, string>[] DeviceSchemes = new Tuple<int, PositionType, string, string>[]
         {
             new Tuple<int, PositionType, string, string>(6, PositionType.Head, "bHapticsOSC_Head", string.Empty),
@@ -64,7 +64,7 @@ namespace bHapticsOSC
 
                 string[] nodeAddressesArr = new string[device.Item1];
                 for (int i = 1; i < device.Item1 + 1; i++)
-                    nodeAddressesArr[i - 1] = $"{Prefix}/{device.Item3}_{i}";
+                    nodeAddressesArr[i - 1] = $"{AvatarParameterPrefix}/{device.Item3}_{i}";
 
                 switch (device.Item2)
                 {
@@ -91,6 +91,7 @@ namespace bHapticsOSC
                 for (int i = 0; i < nodeAddressesArr.Length; i++)
                 {
                     string path = nodeAddressesArr[i];
+                    Console.WriteLine(path);
                     int index = i + 1;
                     OscManager.Attach(path, (OscMessage msg) => OnNode(msg, index, device.Item2));
                     OscManager.Attach($"{path.Replace("bHapticsOSC_", "bHaptics_")}_bool", (OscMessage msg) => OnNode(msg, index, device.Item2));
@@ -120,7 +121,11 @@ namespace bHapticsOSC
                     else if (packet is VRChatPacketSeated)
                         Seated = ((VRChatPacketSeated)packet).value;
                     else if (packet is VRChatPacketAvatarChange)
+                    {
                         ResetDevices();
+                        if (Program.VRChat.avatarOSCConfigReset.Value.Enabled)
+                            VRCAvatarConfig.RemoveFile(((VRChatPacketAvatarChange)packet).id);
+                    }
                     else if (packet is VRChatNodePacket)
                     {
                         VRChatNodePacket nodePacket = (VRChatNodePacket)packet;
@@ -158,22 +163,7 @@ namespace bHapticsOSC
         private static void OnAvatarChange(string avatarId)
         {
             Console.WriteLine($"Avatar Changed to {avatarId}");
-
-            if (!string.IsNullOrEmpty(avatarId))
-            {
-                foreach (Tuple<int, PositionType, string, string> device in DeviceSchemes)
-                {
-                    for (int i = 1; i < device.Item1 + 1; i++)
-                    {
-                        string nodeParam = $"{device.Item3}_{i}";
-                        string nodeAddress = $"{Prefix}/{nodeParam}";
-                        VRCAvatarConfig.AddParameter(avatarId, nodeParam, nodeAddress, "Bool");
-                    }
-                }
-            }
-
             Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacketAvatarChange { id = avatarId });
-
         }
 
         //[VRC_AvatarParameter("bHapticsOSC_UdonAudioLink")]
@@ -194,10 +184,10 @@ namespace bHapticsOSC
 
         private void SubmitDevices()
         {
-            if ((AFK && !Program.VRChat.vrchat.Value.AFK) 
+            if ((AFK && !Program.VRChat.reactivity.Value.AFK) 
                 || ((UdonAudioLink <= 0) && 
-                    ((InStation && !Program.VRChat.vrchat.Value.InStation) 
-                        || (Seated && !Program.VRChat.vrchat.Value.Seated)))
+                    ((InStation && !Program.VRChat.reactivity.Value.InStation) 
+                        || (Seated && !Program.VRChat.reactivity.Value.Seated)))
                 || (Devices.Count <= 0))
                 return;
 
@@ -235,8 +225,8 @@ namespace bHapticsOSC
                 if (!Program.Devices.PositionTypeToEnabled(Position))
                     return;
 
-                if (!bHapticsManager.IsDeviceConnected(Position))
-                    return;
+                //if (!bHapticsManager.IsDeviceConnected(Position))
+                //    return;
 
                 /*
                 if (ConfigManager.UdonAudioLink.PositionTypeToUALEnabled(Position) && (UdonAudioLink > 0))

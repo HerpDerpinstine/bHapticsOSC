@@ -17,7 +17,7 @@ namespace OscLib
             if (Sender != null)
                 EndInit();
 
-            Sender = new OscSender(IPAddress.Parse(ipAddress), port, port);
+            Sender = new OscSender(IPAddress.Parse(ipAddress), 0, port);
             Sender.Connect();
             Console.WriteLine($"[{Name}] Connected!");
         }
