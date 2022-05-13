@@ -1,17 +1,17 @@
 ﻿using System;
 
-namespace OscLib.VRChat
+namespace OscLib.VRChat.Attributes
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class VRC_AvatarChange : Attribute, IOscAddress
+    public class VRC_GestureRight : Attribute, IOscAddress
     {
         private string[] AddressBook;
 
-        public VRC_AvatarChange()
-            => AddressBook = new string[] { "change" };
+        public VRC_GestureRight()
+            => AddressBook = new string[] { "GestureRight" };
 
         public string GetAddressPrefix()
-            => "/avatar";
+            => "/avatar/parameters";
         public string[] GetAddressBook()
             => AddressBook;
     }

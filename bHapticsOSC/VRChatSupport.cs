@@ -7,6 +7,7 @@ using OscLib.VRChat;
 using Rug.Osc;
 using System.Collections.Concurrent;
 using System.Threading;
+using OscLib.VRChat.Attributes;
 
 namespace bHapticsOSC
 {
@@ -18,6 +19,27 @@ namespace bHapticsOSC
         private bool InStation;
         private bool Seated;
         private int UdonAudioLink = 0;
+
+        private const string Prefix = "/avatar/parameters";
+        private static Tuple<int, PositionType, string, string>[] DeviceSchemes = new Tuple<int, PositionType, string, string>[]
+        {
+            new Tuple<int, PositionType, string, string>(6, PositionType.Head, "bHapticsOSC_Head", string.Empty),
+
+            new Tuple<int, PositionType, string, string>(20, PositionType.VestFront, "bHapticsOSC_Vest_Front", string.Empty),
+            new Tuple<int, PositionType, string, string>(20, PositionType.VestBack, "bHapticsOSC_Vest_Back", string.Empty),
+
+            new Tuple<int, PositionType, string, string>(6, PositionType.ForearmL, "bHapticsOSC_Arm_Left", string.Empty),
+            new Tuple<int, PositionType, string, string>(6, PositionType.ForearmR, "bHapticsOSC_Arm_Right", string.Empty),
+
+            new Tuple<int, PositionType, string, string>(3, PositionType.HandL, "bHapticsOSC_Hand_Left", string.Empty),
+            new Tuple<int, PositionType, string, string>(3, PositionType.HandR, "bHapticsOSC_Hand_Right", string.Empty),
+
+            //new Tuple<int, PositionType, string, string>(0, PositionType.GloveLeft, "bHapticsOSC_Glove_Left", string.Empty),
+            //new Tuple<int, PositionType, string, string>(0, PositionType.GloveRight, "bHapticsOSC_Glove_Right", string.Empty),
+
+            new Tuple<int, PositionType, string, string>(3, PositionType.FootL, "bHapticsOSC_Foot_Left", string.Empty),
+            new Tuple<int, PositionType, string, string>(3, PositionType.FootR, "bHapticsOSC_Foot_Right", string.Empty),
+        };
 
         private class VRChatPacket { }
         private class VRChatPacketAvatarChange : VRChatPacket { internal string id; }
@@ -34,26 +56,7 @@ namespace bHapticsOSC
 
         internal VRChatSupport() : base()
         {
-            string Prefix = "/avatar/parameters";
-            foreach (Tuple<int, PositionType, string, string> device in new Tuple<int, PositionType, string, string>[]
-            {
-                new Tuple<int, PositionType, string, string>(6, PositionType.Head, $"{Prefix}/bHapticsOSC_Head", string.Empty),
-
-                new Tuple<int, PositionType, string, string>(20, PositionType.VestFront, $"{Prefix}/bHapticsOSC_Vest_Front", string.Empty),
-                new Tuple<int, PositionType, string, string>(20, PositionType.VestBack, $"{Prefix}/bHapticsOSC_Vest_Back", string.Empty),
-
-                new Tuple<int, PositionType, string, string>(6, PositionType.ForearmL, $"{Prefix}/bHapticsOSC_Arm_Left", string.Empty),
-                new Tuple<int, PositionType, string, string>(6, PositionType.ForearmR, $"{Prefix}/bHapticsOSC_Arm_Right", string.Empty),
-
-                new Tuple<int, PositionType, string, string>(3, PositionType.HandL, $"{Prefix}/bHapticsOSC_Hand_Left", string.Empty),
-                new Tuple<int, PositionType, string, string>(3, PositionType.HandR, $"{Prefix}/bHapticsOSC_Hand_Right", string.Empty),
-
-                //new Tuple<int, PositionType, string, string>(0, PositionType.GloveLeft, $"{Prefix}/bHapticsOSC_Glove_Left", string.Empty),
-                //new Tuple<int, PositionType, string, string>(0, PositionType.GloveRight, $"{Prefix}/bHapticsOSC_Glove_Right", string.Empty),
-
-                new Tuple<int, PositionType, string, string>(3, PositionType.FootL, $"{Prefix}/bHapticsOSC_Foot_Left", string.Empty),
-                new Tuple<int, PositionType, string, string>(3, PositionType.FootR, $"{Prefix}/bHapticsOSC_Foot_Right", string.Empty),
-            })
+            foreach (Tuple<int, PositionType, string, string> device in DeviceSchemes)
             {
                 if (device.Item1 <= 0)
                     continue;
@@ -61,7 +64,7 @@ namespace bHapticsOSC
 
                 string[] nodeAddressesArr = new string[device.Item1];
                 for (int i = 1; i < device.Item1 + 1; i++)
-                    nodeAddressesArr[i - 1] = $"{device.Item3}_{i}";
+                    nodeAddressesArr[i - 1] = $"{Prefix}/{device.Item3}_{i}";
 
                 switch (device.Item2)
                 {
@@ -155,8 +158,22 @@ namespace bHapticsOSC
         private static void OnAvatarChange(string avatarId)
         {
             Console.WriteLine($"Avatar Changed to {avatarId}");
-            // To-Do: Append VRChat OSC Avatar Config - JSON
+
+            if (!string.IsNullOrEmpty(avatarId))
+            {
+                foreach (Tuple<int, PositionType, string, string> device in DeviceSchemes)
+                {
+                    for (int i = 1; i < device.Item1 + 1; i++)
+                    {
+                        string nodeParam = $"{device.Item3}_{i}";
+                        string nodeAddress = $"{Prefix}/{nodeParam}";
+                        VRCAvatarConfig.AddParameter(avatarId, nodeParam, nodeAddress, "Bool");
+                    }
+                }
+            }
+
             Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacketAvatarChange { id = avatarId });
+
         }
 
         //[VRC_AvatarParameter("bHapticsOSC_UdonAudioLink")]

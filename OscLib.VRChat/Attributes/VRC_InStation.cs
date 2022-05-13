@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace OscLib.VRChat
+namespace OscLib.VRChat.Attributes
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class VRC_AFK : Attribute, IOscAddress
+    public class VRC_InStation : Attribute, IOscAddress
     {
         private string[] AddressBook;
 
-        public VRC_AFK()
-            => AddressBook = new string[] { "AFK" };
+        public VRC_InStation()
+            => AddressBook = new string[] { "InStation" };
 
         public string GetAddressPrefix()
             => "/avatar/parameters";

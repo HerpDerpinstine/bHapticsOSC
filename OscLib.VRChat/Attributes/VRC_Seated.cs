@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OscLib.VRChat
+namespace OscLib.VRChat.Attributes
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class VRC_Seated : Attribute, IOscAddress
