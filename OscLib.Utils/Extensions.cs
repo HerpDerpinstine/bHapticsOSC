@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace OscLib.Utils
 {
@@ -17,5 +18,28 @@ namespace OscLib.Utils
             => Clamp<Double>(value, min, max);
         public static Single Clamp(this Single value, Single min, Single max)
             => Clamp<Single>(value, min, max);
+
+        public static void GetDelegate<T>(this IntPtr ptr, out T output) where T : Delegate
+                  => output = GetDelegate<T>(ptr);
+        public static T GetDelegate<T>(this IntPtr ptr) where T : Delegate
+            => GetDelegate(ptr, typeof(T)) as T;
+        public static Delegate GetDelegate(this IntPtr ptr, Type type)
+        {
+            if (ptr == IntPtr.Zero)
+                throw new ArgumentNullException(nameof(ptr));
+            Delegate del = Marshal.GetDelegateForFunctionPointer(ptr, type);
+            if (del == null)
+                throw new Exception($"Unable to Get Delegate of Type {type.FullName} for Function Pointer!");
+            return del;
+        }
+        public static IntPtr GetFunctionPointer(this Delegate del)
+            => Marshal.GetFunctionPointerForDelegate(del);
+
+        public static NativeLibrary ToNewNativeLibrary(this IntPtr ptr)
+            => new NativeLibrary(ptr);
+        public static NativeLibrary<T> ToNewNativeLibrary<T>(this IntPtr ptr)
+            => new NativeLibrary<T>(ptr);
+        public static IntPtr GetNativeLibraryExport(this IntPtr ptr, string name)
+            => NativeLibrary.GetExport(ptr, name);
     }
 }
