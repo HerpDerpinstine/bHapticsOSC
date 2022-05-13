@@ -48,8 +48,6 @@
 		<ItemGroup>
 			<FilesToDelete Include="$(OutputPath)Rug.Osc.dll" />
 			<FilesToDelete Include="$(OutputPath)Tomlet.dll" />
-			<FilesToDelete Include="$(OutputPath)Newtonsoft.Json.dll" />
-			<FilesToDelete Include="$(OutputPath)bHapticsLib.dll" />
 			<FilesToDelete Include="$(OutputPath)OscLib.dll" />
 			<FilesToDelete Include="$(OutputPath)OscLib.Config.dll" />
 			<FilesToDelete Include="$(OutputPath)OscLib.Utils.dll" />
