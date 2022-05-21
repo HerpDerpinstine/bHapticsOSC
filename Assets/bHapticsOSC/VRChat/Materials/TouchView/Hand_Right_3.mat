@@ -8,8 +8,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Hand_Right_3
-  m_Shader: {fileID: 4800000, guid: bd2ad6f3cce9d5641a18b56178358c07, type: 3}
-  m_ShaderKeywords: PIXELSNAP_ON _ALPHAPREMULTIPLY_ON
+  m_Shader: {fileID: 4800000, guid: deeb0ce91be788a4398a2544feae7917, type: 3}
+  m_ShaderKeywords: PIXELSNAP_ON _ALPHAPREMULTIPLY_ON _SINGULARNODE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
