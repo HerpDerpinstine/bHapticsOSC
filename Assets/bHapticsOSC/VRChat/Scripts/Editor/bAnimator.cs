@@ -27,12 +27,12 @@ namespace bHapticsOSC.VRChat
 				for (int node = 1; node < keyValuePair.Value.NodeCount + 1; node++)
 				{
 					string nodeName = $"{bHapticsOSCIntegration.SystemName}_{keyValuePair.Value.Name.Replace(' ', '_')}_{node}";
-					CreateAnimatorLayerStates(node, nodeName, aac, editorComp, keyValuePair);
+					CreateAnimatorLayerStates(node, nodeName, userSettings.TouchView_Default, userSettings.TouchView_Triggered, aac, editorComp, keyValuePair);
 				}
 			}
 		}
 
-		private static void CreateAnimatorLayerStates(int node, string nodeName, AacFlBase aac, bHapticsOSCIntegration editorComp, KeyValuePair<bDeviceType, bDeviceTemplate> keyValuePair)
+		private static void CreateAnimatorLayerStates(int node, string nodeName, Color defaultCol, Color triggeredCol, AacFlBase aac, bHapticsOSCIntegration editorComp, KeyValuePair<bDeviceType, bDeviceTemplate> keyValuePair)
 		{
 			string layer_name = $"{keyValuePair.Value.Name.Replace(' ', '_')}_{node}";
 
@@ -44,7 +44,7 @@ namespace bHapticsOSC.VRChat
 			layer.EntryTransitionsTo(exitState);
 			try { aac.RemoveAllSupportingLayers("ParameterCreation"); } catch { }
 
-			float shaderDeviceIndex = bShader.GetShaderIndex(keyValuePair.Key, node);
+			float shaderDeviceIndex = bDevice.GetShaderIndex(keyValuePair.Key, node);
 			Renderer[] renderers = bShader.FindRenderersFromIndex(shaderDeviceIndex, editorComp.avatar.gameObject);
 			if (renderers.Length <= 0)
 				return;
@@ -61,6 +61,8 @@ namespace bHapticsOSC.VRChat
 
 			foreach (Renderer renderer in renderers)
 			{
+				//bShader.SetTouchViewColors(renderer, defaultCol, triggeredCol);
+
 				AacFlClip falseClip = aac.NewClip().Animating(clip => clip.Animates(renderer, $"material._Node{node}").WithOneFrame(0f));
 				falseState = falseState.WithAnimation(falseClip);
 

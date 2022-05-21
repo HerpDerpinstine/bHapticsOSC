@@ -172,7 +172,24 @@ void TouchViewSurf(Input IN,
 	{
 		if ((node1 == 1)
 			|| (node2 == 1)
-			|| (node3 == 1))
+			|| (node3 == 1)
+			|| (node4 == 1)
+			|| (node5 == 1)
+			|| (node6 == 1)
+			|| (node7 == 1)
+			|| (node8 == 1)
+			|| (node9 == 1)
+			|| (node10 == 1)
+			|| (node11 == 1)
+			|| (node12 == 1)
+			|| (node13 == 1)
+			|| (node14 == 1)
+			|| (node15 == 1)
+			|| (node16 == 1)
+			|| (node17 == 1)
+			|| (node18 == 1)
+			|| (node19 == 1)
+			|| (node20 == 1))
 		{
 			o.Albedo = touchColor.rgb;
 			o.Alpha = touchColor.a;

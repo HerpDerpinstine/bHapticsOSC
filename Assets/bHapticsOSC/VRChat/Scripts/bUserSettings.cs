@@ -18,6 +18,13 @@ namespace bHapticsOSC.VRChat
         public List<string> CustomContactTags = new List<string>();
 
         [SerializeField]
+        public Color TouchView_Default = new Color(0, 0, 0, 0);
+        private Color touchView_Default = new Color(0, 0, 0, 0);
+        [SerializeField]
+        public Color TouchView_Triggered = new Color(0, 1, 1, 0.5f);
+        private Color touchView_Triggered = new Color(0, 1, 1, 0.5f);
+
+        [SerializeField]
         private bool _showMesh = true;
         public System.Action<bUserSettings> OnShowMeshChange;
         public bool ShowMesh
@@ -46,6 +53,9 @@ namespace bHapticsOSC.VRChat
                     continue;
 
                 _showMesh = (objPrefab == device.PrefabMesh);
+                //if (_showMesh)
+                //    bShader.GetTouchViewColors(device.ShaderIndex, obj, ref TouchView_Default, ref TouchView_Triggered);
+
                 CurrentPrefab = obj;
                 CustomContactTags.Clear();
                 bContacts.ScanForExistingTags(this);
@@ -75,6 +85,9 @@ namespace bHapticsOSC.VRChat
 
             string[] currentTags = CustomContactTags.ToArray();
 
+            Color currentTouchViewDefault = TouchView_Default;
+            Color currentTouchViewTriggered = TouchView_Triggered;
+
             if (CurrentPrefab != null)
                 Undo.DestroyObjectImmediate(CurrentPrefab);
 
@@ -82,6 +95,9 @@ namespace bHapticsOSC.VRChat
 
             CustomContactTags.Clear();
             CustomContactTags.AddRange(currentTags);
+
+            TouchView_Default = currentTouchViewDefault;
+            TouchView_Triggered = currentTouchViewTriggered;
 
             CurrentPrefab = spawnedPrefab;
         }
@@ -96,6 +112,8 @@ namespace bHapticsOSC.VRChat
             Undo.DestroyObjectImmediate(CurrentPrefab);
             CurrentPrefab = null;
             CustomContactTags.Clear();
+            TouchView_Default = touchView_Default;
+            TouchView_Triggered = touchView_Triggered;
         }
 
         public void Reset()
@@ -105,6 +123,8 @@ namespace bHapticsOSC.VRChat
             ShowMesh = true;
             ApplyParentConstraints = true;
             CustomContactTags.Clear();
+            TouchView_Default = touchView_Default;
+            TouchView_Triggered = touchView_Triggered;
         }
     }
 }

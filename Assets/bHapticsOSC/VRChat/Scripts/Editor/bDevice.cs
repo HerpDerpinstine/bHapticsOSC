@@ -44,6 +44,24 @@ namespace bHapticsOSC.VRChat
                     settings.PrefabMesh = (GameObject)EditorGUIUtility.Load(withMeshStr);
             }
         }
+
+        public static float GetShaderIndex(this bDeviceType type, int node = 1)
+        {
+            if (node < 1)
+                node = 1;
+            if (node > 3)
+                node = 3;
+            float index = bDevice.AllTemplates[type].ShaderIndex;
+            switch (type)
+            {
+                case bDeviceType.HAND_RIGHT:
+                    return index + (node * 0.1f);
+                case bDeviceType.HAND_LEFT:
+                    return index + (node * 0.1f);
+                default:
+                    return index;
+            };
+        }
     }
 }
 #endif

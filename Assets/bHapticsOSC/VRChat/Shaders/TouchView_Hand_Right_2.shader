@@ -31,8 +31,6 @@
 		[HideInInspector][MaterialToggle] _Node20("Node 20", Int) = 0
 	}
 
-	CustomEditor "bHapticsOSC.VRChat.bTouchViewEditor"
-
 	SubShader
 	{
 		Tags{ "RenderType" = "Transparent" "Queue" = "Transparent" }

@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR && VRC_SDK_VRCSDK3 && bHapticsOSC_HasAac
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace bHapticsOSC.VRChat
@@ -37,22 +38,31 @@ namespace bHapticsOSC.VRChat
 			return output.ToArray();
 		}
 
-		public static float GetShaderIndex(this bDeviceType type, int node = 1)
+		public static void GetTouchViewColors(float shaderIndex, GameObject obj, ref Color defaultCol, ref Color triggeredCol)
+        {
+			Renderer renderer = FindRenderersFromIndex(shaderIndex, obj).FirstOrDefault();
+
+			if (renderer == null)
+				return;
+
+			MaterialPropertyBlock materialPropertyBlock = new MaterialPropertyBlock();
+			renderer.GetPropertyBlock(materialPropertyBlock);
+
+			defaultCol = materialPropertyBlock.GetColor("_DefaultColor");
+			triggeredCol = materialPropertyBlock.GetColor("_TouchColor");
+		}
+
+		public static void SetTouchViewColors(Renderer renderer, Color defaultCol, Color triggeredCol)
 		{
-			if (node < 1)
-				node = 1;
-			if (node > 3)
-				node = 3;
-			float index = bDevice.AllTemplates[type].ShaderIndex;
-			switch (type) 
-			{
-				case bDeviceType.HAND_RIGHT: 
-					return index + (node * 0.1f);
-				case bDeviceType.HAND_LEFT: 
-					return index + (node * 0.1f);
-				default:
-					return index;
-			};
+			if (renderer == null)
+				return;
+
+			MaterialPropertyBlock materialPropertyBlock = new MaterialPropertyBlock();
+
+			materialPropertyBlock.SetColor("_DefaultColor", defaultCol);
+			materialPropertyBlock.SetColor("_TouchColor", triggeredCol);
+
+			renderer.SetPropertyBlock(materialPropertyBlock);
 		}
 	}
 }

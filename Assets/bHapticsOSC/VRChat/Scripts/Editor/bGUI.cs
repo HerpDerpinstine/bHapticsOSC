@@ -252,14 +252,27 @@ namespace bHapticsOSC.VRChat
         public static Vector3 DrawVector3Field(string name, Vector3 currentValue, Object undoObject = null)
         {
             EditorGUI.BeginChangeCheck();
-            Vector3 newVec = EditorGUILayout.Vector3Field(name, currentValue);
+            Vector3 newValue = EditorGUILayout.Vector3Field(name, currentValue);
             GUILayout.Space(6);
             if (EditorGUI.EndChangeCheck() && (undoObject != null))
             {
                 Undo.RecordObject(undoObject, $"[{bHapticsOSCIntegration.SystemName}] Changed {name}");
                 Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
             }
-            return newVec;
+            return newValue;
+        }
+
+        public static Color DrawColorField(string name, Color currentValue, Object undoObject = null)
+        {
+            EditorGUI.BeginChangeCheck();
+            Color newValue = EditorGUILayout.ColorField(name, currentValue);
+            GUILayout.Space(6);
+            if (EditorGUI.EndChangeCheck() && (undoObject != null))
+            {
+                Undo.RecordObject(undoObject, $"[{bHapticsOSCIntegration.SystemName}] Changed {name}");
+                Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
+            }
+            return newValue;
         }
 
         public enum HelpBoxType
