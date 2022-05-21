@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿#if UNITY_EDITOR && VRC_SDK_VRCSDK3 && bHapticsOSC_HasAac
+using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
@@ -242,3 +243,4 @@ namespace bHapticsOSC.VRChat
 		}
 	}
 }
+#endif

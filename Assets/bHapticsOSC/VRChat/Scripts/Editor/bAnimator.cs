@@ -1,4 +1,5 @@
-﻿using AnimatorAsCode.V0;
+﻿#if UNITY_EDITOR && VRC_SDK_VRCSDK3 && bHapticsOSC_HasAac
+using AnimatorAsCode.V0;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,10 +36,13 @@ namespace bHapticsOSC.VRChat
 		{
 			string layer_name = $"{keyValuePair.Value.Name.Replace(' ', '_')}_{node}";
 
-			aac.RemoveAllSupportingLayers(layer_name);
+			try { aac.RemoveAllSupportingLayers(layer_name); } catch { }
 			AacFlLayer layer = aac.CreateSupportingFxLayer("ParameterCreation");
 			AacFlBoolParameter boolParam = layer.BoolParameter(nodeName);
-			aac.RemoveAllSupportingLayers("ParameterCreation");
+			AacFlState exitState = layer.NewState("dummy");
+			exitState.Exits();
+			layer.EntryTransitionsTo(exitState);
+			try { aac.RemoveAllSupportingLayers("ParameterCreation"); } catch { }
 
 			float shaderDeviceIndex = bShader.GetShaderIndex(keyValuePair.Key, node);
 			Renderer[] renderers = bShader.FindRenderersFromIndex(shaderDeviceIndex, editorComp.avatar.gameObject);
@@ -66,3 +70,4 @@ namespace bHapticsOSC.VRChat
 		}
 	}
 }
+#endif
