@@ -5,7 +5,7 @@ using UnityEngine;
 namespace bHapticsOSC.VRChat
 {
     [InitializeOnLoad]
-    internal class bEditorDropDownMenu : Editor
+    internal class bURLs : Editor
     {
         [MenuItem("bHapticsOSC/Wiki")]
         private static void OpenWiki()
