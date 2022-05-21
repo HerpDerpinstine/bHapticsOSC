@@ -7,28 +7,28 @@
 
 		[HideInInspector] _MainTex("Albedo (RGB)", 2D) = "white" {}
 		[HideInInspector] _Device("Device", Float) = 0
-		[HideInInspector][MaterialToggle] _SingularNode("Singular Node", Int) = 0
+		[HideInInspector] _SingularNode("Singular Node", Int) = 0
 
-		[HideInInspector][MaterialToggle] _Node1("Node 1", Int) = 0
-		[HideInInspector][MaterialToggle] _Node2("Node 2", Int) = 0
-		[HideInInspector][MaterialToggle] _Node3("Node 3", Int) = 0
-		[HideInInspector][MaterialToggle] _Node4("Node 4", Int) = 0
-		[HideInInspector][MaterialToggle] _Node5("Node 5", Int) = 0
-		[HideInInspector][MaterialToggle] _Node6("Node 6", Int) = 0
-		[HideInInspector][MaterialToggle] _Node7("Node 7", Int) = 0
-		[HideInInspector][MaterialToggle] _Node8("Node 8", Int) = 0
-		[HideInInspector][MaterialToggle] _Node9("Node 9", Int) = 0
-		[HideInInspector][MaterialToggle] _Node10("Node 10", Int) = 0
-		[HideInInspector][MaterialToggle] _Node11("Node 11", Int) = 0
-		[HideInInspector][MaterialToggle] _Node12("Node 12", Int) = 0
-		[HideInInspector][MaterialToggle] _Node13("Node 13", Int) = 0
-		[HideInInspector][MaterialToggle] _Node14("Node 14", Int) = 0
-		[HideInInspector][MaterialToggle] _Node15("Node 15", Int) = 0
-		[HideInInspector][MaterialToggle] _Node16("Node 16", Int) = 0
-		[HideInInspector][MaterialToggle] _Node17("Node 17", Int) = 0
-		[HideInInspector][MaterialToggle] _Node18("Node 18", Int) = 0
-		[HideInInspector][MaterialToggle] _Node19("Node 19", Int) = 0
-		[HideInInspector][MaterialToggle] _Node20("Node 20", Int) = 0
+		[HideInInspector] _Node1("Node 1", Int) = 0
+		[HideInInspector] _Node2("Node 2", Int) = 0
+		[HideInInspector] _Node3("Node 3", Int) = 0
+		[HideInInspector] _Node4("Node 4", Int) = 0
+		[HideInInspector] _Node5("Node 5", Int) = 0
+		[HideInInspector] _Node6("Node 6", Int) = 0
+		[HideInInspector] _Node7("Node 7", Int) = 0
+		[HideInInspector] _Node8("Node 8", Int) = 0
+		[HideInInspector] _Node9("Node 9", Int) = 0
+		[HideInInspector] _Node10("Node 10", Int) = 0
+		[HideInInspector] _Node11("Node 11", Int) = 0
+		[HideInInspector] _Node12("Node 12", Int) = 0
+		[HideInInspector] _Node13("Node 13", Int) = 0
+		[HideInInspector] _Node14("Node 14", Int) = 0
+		[HideInInspector] _Node15("Node 15", Int) = 0
+		[HideInInspector] _Node16("Node 16", Int) = 0
+		[HideInInspector] _Node17("Node 17", Int) = 0
+		[HideInInspector] _Node18("Node 18", Int) = 0
+		[HideInInspector] _Node19("Node 19", Int) = 0
+		[HideInInspector] _Node20("Node 20", Int) = 0
 	}
 
 	SubShader

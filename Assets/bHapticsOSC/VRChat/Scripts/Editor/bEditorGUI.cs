@@ -108,9 +108,11 @@ namespace bHapticsOSC.VRChat
 						return;
 					}
 
+					userSettings.ShowMesh = bGUI.DrawToggle("Show Mesh", userSettings.ShowMesh, userSettings);
+					GUILayout.Space(6);
+
 					if (CurrentTemplate.HasParentConstraints)
 					{
-						GUILayout.Space(6);
 						userSettings.ApplyParentConstraints = bGUI.DrawToggle("Apply ParentConstraints", userSettings.ApplyParentConstraints, userSettings);
 						GUILayout.Space(6);
 					}
@@ -118,21 +120,10 @@ namespace bHapticsOSC.VRChat
 					// Transform Editor
 					userSettings.CurrentPrefab.transform.localPosition = bGUI.DrawVector3Field("Position", userSettings.CurrentPrefab.transform.localPosition, userSettings.CurrentPrefab.transform);
 					userSettings.CurrentPrefab.transform.localEulerAngles = bGUI.DrawVector3Field("Rotation", userSettings.CurrentPrefab.transform.localEulerAngles, userSettings.CurrentPrefab.transform);
+
 					userSettings.CurrentPrefab.transform.localScale = bGUI.DrawVector3Field("Scale", userSettings.CurrentPrefab.transform.localScale, userSettings.CurrentPrefab.transform);
+
 					GUILayout.Space(10);
-
-					userSettings.ShowMesh = bGUI.DrawToggle("Show Mesh", userSettings.ShowMesh, userSettings);
-
-					/*
-					if (userSettings.ShowMesh)
-					{
-						GUILayout.Space(6);
-						userSettings.TouchView_Default = bGUI.DrawColorField("TouchView Default", userSettings.TouchView_Default, userSettings);
-						userSettings.TouchView_Triggered = bGUI.DrawColorField("TouchView Triggered", userSettings.TouchView_Triggered, userSettings);
-					}
-					*/
-
-					GUILayout.Space(16);
 
 					// Custom Contact Tags
 					CustomContactTagsContainer.Draw();

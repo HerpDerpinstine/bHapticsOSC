@@ -168,61 +168,30 @@ void TouchViewSurf(Input IN,
 {
 	float4 _MainTex_var = tex2D(mainTex, isFlip);
 
-	if (isSingularNode == 1)
-	{
-		if ((node1 == 1)
-			|| (node2 == 1)
-			|| (node3 == 1)
-			|| (node4 == 1)
-			|| (node5 == 1)
-			|| (node6 == 1)
-			|| (node7 == 1)
-			|| (node8 == 1)
-			|| (node9 == 1)
-			|| (node10 == 1)
-			|| (node11 == 1)
-			|| (node12 == 1)
-			|| (node13 == 1)
-			|| (node14 == 1)
-			|| (node15 == 1)
-			|| (node16 == 1)
-			|| (node17 == 1)
-			|| (node18 == 1)
-			|| (node19 == 1)
-			|| (node20 == 1))
-		{
-			o.Albedo = touchColor.rgb;
-			o.Alpha = touchColor.a;
-		}
-		else
-		{
-			o.Albedo = defaultColor.rgb;
-			o.Alpha = defaultColor.a;
-		}
-		return;
-	}
+	int CurrentNode = 0;
+	if (isSingularNode == 0)
+		CurrentNode = GetCurrentNode(IN, device);
 
-	int CurrentNode = GetCurrentNode(IN, device);
-	if (((CurrentNode == 1) && (node1 == 1))
-		|| ((CurrentNode == 2) && (node2 == 1))
-		|| ((CurrentNode == 3) && (node3 == 1))
-		|| ((CurrentNode == 4) && (node4 == 1))
-		|| ((CurrentNode == 5) && (node5 == 1))
-		|| ((CurrentNode == 6) && (node6 == 1))
-		|| ((CurrentNode == 7) && (node7 == 1))
-		|| ((CurrentNode == 8) && (node8 == 1))
-		|| ((CurrentNode == 9) && (node9 == 1))
-		|| ((CurrentNode == 10) && (node10 == 1))
-		|| ((CurrentNode == 11) && (node11 == 1))
-		|| ((CurrentNode == 12) && (node12 == 1))
-		|| ((CurrentNode == 13) && (node13 == 1))
-		|| ((CurrentNode == 14) && (node14 == 1))
-		|| ((CurrentNode == 15) && (node15 == 1))
-		|| ((CurrentNode == 16) && (node16 == 1))
-		|| ((CurrentNode == 17) && (node17 == 1))
-		|| ((CurrentNode == 18) && (node18 == 1))
-		|| ((CurrentNode == 19) && (node19 == 1))
-		|| ((CurrentNode == 20) && (node20 == 1)))
+	if ((((isSingularNode == 1) || (CurrentNode == 1)) && (node1 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 2)) && (node2 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 3)) && (node3 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 4)) && (node4 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 5)) && (node5 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 6)) && (node6 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 7)) && (node7 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 8)) && (node8 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 9)) && (node9 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 10)) && (node10 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 11)) && (node11 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 12)) && (node12 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 13)) && (node13 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 14)) && (node14 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 15)) && (node15 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 16)) && (node16 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 17)) && (node17 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 18)) && (node18 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 19)) && (node19 == 1))
+		|| (((isSingularNode == 1) || (CurrentNode == 20)) && (node20 == 1)))
 	{
 		o.Albedo = touchColor.rgb;
 		o.Alpha = touchColor.a;

@@ -249,15 +249,20 @@ namespace bHapticsOSC.VRChat
             return value;
         }
 
-        public static Vector3 DrawVector3Field(string name, Vector3 currentValue, Object undoObject = null)
+        public static Vector3 DrawVector3Field(string name, Vector3 currentValue, Object undoObject = null, System.Action onChangeCallback = null)
         {
             EditorGUI.BeginChangeCheck();
             Vector3 newValue = EditorGUILayout.Vector3Field(name, currentValue);
             GUILayout.Space(6);
-            if (EditorGUI.EndChangeCheck() && (undoObject != null))
+            if (EditorGUI.EndChangeCheck())
             {
-                Undo.RecordObject(undoObject, $"[{bHapticsOSCIntegration.SystemName}] Changed {name}");
-                Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
+                if (undoObject != null)
+                {
+                    Undo.RecordObject(undoObject, $"[{bHapticsOSCIntegration.SystemName}] Changed {name}");
+                    Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
+                }
+                if (onChangeCallback != null)
+                    onChangeCallback();
             }
             return newValue;
         }
