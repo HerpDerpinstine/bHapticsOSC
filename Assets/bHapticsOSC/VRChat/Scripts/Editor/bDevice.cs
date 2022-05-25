@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#if UNITY_EDITOR && VRC_SDK_VRCSDK3 && bHapticsOSC_HasAac
+using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -32,9 +34,34 @@ namespace bHapticsOSC.VRChat
             foreach (bDeviceTemplate settings in AllTemplates.Values)
             {
                 string nameWithoutSpaces = settings.Name.Replace(" ", "");
-                settings.Prefab = (GameObject)EditorGUIUtility.Load($"Assets/bHapticsOSC/VRChat/Prefabs/Without Mesh/{nameWithoutSpaces}.prefab");
-                settings.PrefabMesh = (GameObject)EditorGUIUtility.Load($"Assets/bHapticsOSC/VRChat/Prefabs/With Mesh/{nameWithoutSpaces}.prefab");
+
+                string withoutMeshStr = $"Assets/bHapticsOSC/VRChat/Prefabs/Without Mesh/{nameWithoutSpaces}.prefab";
+                if (File.Exists(withoutMeshStr))
+                    settings.Prefab = (GameObject)EditorGUIUtility.Load(withoutMeshStr);
+
+                string withMeshStr = $"Assets/bHapticsOSC/VRChat/Prefabs/With Mesh/{nameWithoutSpaces}.prefab";
+                if (File.Exists(withMeshStr))
+                    settings.PrefabMesh = (GameObject)EditorGUIUtility.Load(withMeshStr);
             }
+        }
+
+        public static float GetShaderIndex(this bDeviceType type, int node = 1)
+        {
+            if (node < 1)
+                node = 1;
+            if (node > 3)
+                node = 3;
+            float index = bDevice.AllTemplates[type].ShaderIndex;
+            switch (type)
+            {
+                case bDeviceType.HAND_RIGHT:
+                    return index + (node * 0.1f);
+                case bDeviceType.HAND_LEFT:
+                    return index + (node * 0.1f);
+                default:
+                    return index;
+            };
         }
     }
 }
+#endif

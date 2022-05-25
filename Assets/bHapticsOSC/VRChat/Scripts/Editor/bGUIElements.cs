@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR && VRC_SDK_VRCSDK3 && bHapticsOSC_HasAac
+using UnityEngine;
 
 namespace bHapticsOSC.VRChat
 {
@@ -10,3 +11,4 @@ namespace bHapticsOSC.VRChat
         public GUIStyle Style;
     }
 }
+#endif

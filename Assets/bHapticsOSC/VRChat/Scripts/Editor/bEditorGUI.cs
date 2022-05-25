@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿#if UNITY_EDITOR && VRC_SDK_VRCSDK3 && bHapticsOSC_HasAac
+using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
@@ -15,6 +16,7 @@ namespace bHapticsOSC.VRChat
 
 		public override void OnInspectorGUI()
 		{
+			serializedObject.Update();
 			EditorGUILayout.Space();
 
 			editorComp = (bHapticsOSCIntegration)target;
@@ -28,8 +30,6 @@ namespace bHapticsOSC.VRChat
 				bGUI.DrawHelpBox(bGUI.HelpBoxType.NoFXLayer);
 				return;
 			}
-			if (editorComp.CurrentTemplate == null)
-				editorComp.CurrentTemplate = bDevice.AllTemplates[bDeviceType.VEST];
 
 			if (editorComp.AllUserSettings == null)
             {
@@ -39,17 +39,26 @@ namespace bHapticsOSC.VRChat
 					bDeviceTemplate template = bDevice.AllTemplates.Values.ElementAt(i);
 					if (!template.HasBone)
 						continue;
-					bUserSettings newSettings = new bUserSettings
-					{
-						Bone = template.Bone,
-						OnShowMeshChange = (bUserSettings thisSettings) => thisSettings.SwapPrefabs(editorComp.avatarAnimator, thisSettings.ShowMesh ? template.PrefabMesh : template.Prefab)
-					};
-					newSettings.FindExistingPrefab(template);
+
+					bUserSettings newSettings = CreateInstance<bUserSettings>();
+					newSettings.Bone = template.Bone;
+					newSettings.OnShowMeshChange = (bUserSettings thisSettings) => thisSettings.SwapPrefabs(editorComp.avatarAnimator, thisSettings.ShowMesh ? template.PrefabMesh : template.Prefab);
 					editorComp.AllUserSettings[template] = newSettings;
 				}
 			}
-			
-			bUserSettings userSettings = editorComp.AllUserSettings[editorComp.CurrentTemplate];
+
+			if (editorComp.AllCustomContactTagsContainers == null)
+			{
+				editorComp.AllCustomContactTagsContainers = new Dictionary<bUserSettings, bReorderableListContainer<string>>();
+				foreach (bUserSettings settings in editorComp.AllUserSettings.Values)
+					editorComp.AllCustomContactTagsContainers[settings] = new bReorderableListContainer<string>("Custom Contact Tags", "New_Tag", bGUI.LabelStyle, new SerializedObject(settings).FindProperty("CustomContactTags"));
+			}
+
+			editorComp.FindExistingPrefabs(bDevice.AllTemplates);
+
+			bDeviceTemplate CurrentTemplate = bDevice.AllTemplates[editorComp.CurrentDevice];
+			bUserSettings userSettings = editorComp.AllUserSettings[CurrentTemplate];
+			bReorderableListContainer<string> CustomContactTagsContainer = editorComp.AllCustomContactTagsContainers[userSettings];
 			
 			bGUI.DrawSection(string.Empty, () =>
 			{
@@ -90,44 +99,42 @@ namespace bHapticsOSC.VRChat
 				EditorGUILayout.Space(12);
 
 				// Selected Device
-				bGUI.DrawSection(editorComp.CurrentTemplate.Name, () =>
+				bGUI.DrawSection(CurrentTemplate.Name, () =>
 				{
 					if (userSettings.CurrentPrefab == null)
 					{
-						bGUI.DrawButton("+ ADD DEVICE", () => userSettings.SwapPrefabs(editorComp.avatarAnimator, editorComp.CurrentTemplate.PrefabMesh));
+						if (bGUI.DrawButton("+ ADD DEVICE"))
+							userSettings.Reset();
 						return;
 					}
 
-					bool localShowMesh = userSettings.ShowMesh;
-					bGUI.DrawToggle("Show Mesh", ref localShowMesh);
-					userSettings.ShowMesh = localShowMesh;
+					userSettings.ShowMesh = bGUI.DrawToggle("Show Mesh", userSettings.ShowMesh, userSettings);
+					GUILayout.Space(6);
 
-					if (editorComp.CurrentTemplate.HasParentConstraints)
+					if (CurrentTemplate.HasParentConstraints)
 					{
+						userSettings.ApplyParentConstraints = bGUI.DrawToggle("Apply ParentConstraints", userSettings.ApplyParentConstraints, userSettings);
 						GUILayout.Space(6);
-						bGUI.DrawToggle("Apply ParentConstraints", ref userSettings.ApplyParentConstraints);
 					}
 
-					GUILayout.Space(12);
+					// Transform Editor
+					userSettings.CurrentPrefab.transform.localPosition = bGUI.DrawVector3Field("Position", userSettings.CurrentPrefab.transform.localPosition, userSettings.CurrentPrefab.transform);
+					userSettings.CurrentPrefab.transform.localEulerAngles = bGUI.DrawVector3Field("Rotation", userSettings.CurrentPrefab.transform.localEulerAngles, userSettings.CurrentPrefab.transform);
 
-					// Position Editor
-					userSettings.CurrentPrefab.transform.localPosition = EditorGUILayout.Vector3Field("Position", userSettings.CurrentPrefab.transform.localPosition);
-					GUILayout.Space(6);
+					userSettings.CurrentPrefab.transform.localScale = bGUI.DrawVector3Field("Scale", userSettings.CurrentPrefab.transform.localScale, userSettings.CurrentPrefab.transform);
 
-					// Rotation Editor
-					userSettings.CurrentPrefab.transform.localEulerAngles = EditorGUILayout.Vector3Field("Rotation", userSettings.CurrentPrefab.transform.localEulerAngles);
-					GUILayout.Space(6);
-
-					// Scale Editor
-					userSettings.CurrentPrefab.transform.localScale = EditorGUILayout.Vector3Field("Scale", userSettings.CurrentPrefab.transform.localScale);
-					GUILayout.Space(12);
+					GUILayout.Space(10);
 
 					// Custom Contact Tags
-					//GUILayout.Space(12);
+					CustomContactTagsContainer.Draw();
 
+					// END
+					bGUI.DrawSeparator();
 					GUILayout.BeginHorizontal();
-					bGUI.DrawButton("SELECT IN SCENE", userSettings.SelectCurrentPrefab);
-					bGUI.DrawButton("REMOVE DEVICE", userSettings.DestroyCurrentPrefab);
+					if (bGUI.DrawButton("SELECT IN SCENE"))
+						userSettings.SelectCurrentPrefab();
+					if (bGUI.DrawButton("REMOVE DEVICE", userSettings, false))
+						userSettings.DestroyCurrentPrefab();
 					GUILayout.EndHorizontal();
 				},
 				() =>
@@ -143,7 +150,8 @@ namespace bHapticsOSC.VRChat
 					GUILayout.FlexibleSpace();
 					GUILayout.FlexibleSpace();
 
-					bGUI.DrawHeaderButton("RESET", userSettings.Reset);
+					if (bGUI.DrawHeaderButton("RESET", userSettings, false))
+						userSettings.Reset();
 
 					GUILayout.EndHorizontal();
 					GUILayout.Space(-GUILayoutUtility.GetLastRect().height);
@@ -151,7 +159,6 @@ namespace bHapticsOSC.VRChat
 
 				GUILayout.Space(-4);
 			});
-
 			bGUI.DrawSeparator();
 
 			/*
@@ -180,11 +187,11 @@ namespace bHapticsOSC.VRChat
 
 			if (!editorComp.IsReadyToApply())
 			{
-				bGUI.DrawHelpBox(bGUI.HelpBoxType.NothingSelected);
+				bGUI.DrawHelpBox(bGUI.HelpBoxType.NotReadyToApply);
 				return;
 			}
 
-			bGUI.DrawButton("APPLY INTEGRATION", () =>
+			if (bGUI.DrawButton("APPLY INTEGRATION"))
 			{
 				EditorUtility.DisplayProgressBar(bHapticsOSCIntegration.SystemName, "Cloning FX Layer...", 0);
 				if (!CloneAnimatorAsset())
@@ -197,6 +204,7 @@ namespace bHapticsOSC.VRChat
 					EditorUtility.DisplayProgressBar(bHapticsOSCIntegration.SystemName, "Modifying Avatar...", 0.5f);
 					ApplySerializedChanges();
 					bAnimator.CreateAllNodes(editorComp);
+					bContacts.ApplyNewTags(editorComp);
 
 					if (bConstraints.ShouldApply(editorComp, bDeviceType.HAND_LEFT, out bUserSettings leftHandSettings)
 						|| bConstraints.ShouldApply(editorComp, bDeviceType.HAND_RIGHT, out bUserSettings rightHandSettings))
@@ -209,7 +217,7 @@ namespace bHapticsOSC.VRChat
 					EditorUtility.DisplayDialog(bHapticsOSCIntegration.SystemName, "Integration Complete!\nThe Avatar is now setup for bHapticsOSC support.", "OK");
 					DestroyImmediate(editorComp);
 				}
-			});
+			}
 
 			GUILayout.Space(6);
 
@@ -236,3 +244,4 @@ namespace bHapticsOSC.VRChat
 		}
 	}
 }
+#endif

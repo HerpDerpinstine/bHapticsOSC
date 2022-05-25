@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if UNITY_EDITOR && VRC_SDK_VRCSDK3 && bHapticsOSC_HasAac
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Sprites;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace bHapticsOSC.VRChat
 
         private static GUIStyle ButtonStyle;
         private static GUIStyle HeaderButtonStyle;
+        public static GUIStyle LabelStyle;
 
         public static Sprite Rig;
         private static GUIStyle RigStyle;
@@ -31,6 +33,8 @@ namespace bHapticsOSC.VRChat
 
             ButtonStyle = new GUIStyle(GUI.skin.button) { alignment = TextAnchor.MiddleCenter };
             HeaderButtonStyle = new GUIStyle(ButtonStyle) { contentOffset = new Vector2(-5, 1) };
+
+            LabelStyle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter };
 
             Rig = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/bHapticsOSC/VRChat/Textures/UI/rig.png", typeof(Sprite));
             RigStyle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.UpperCenter };
@@ -109,13 +113,19 @@ namespace bHapticsOSC.VRChat
             EditorGUILayout.Space();
         }
 
-        public static void DrawToggle(string text, ref bool value)
+        public static bool DrawToggle(string text, bool value, Object undoObject = null)
         {
             Rect toggleRect = GUILayoutUtility.GetRect(new GUIContent(text), GUI.skin.toggle);
             toggleRect.width = GUI.skin.toggle.CalcSize(new GUIContent(text)).x;
 
-            value = GUI.Toggle(toggleRect, value, text);
+            EditorGUI.BeginChangeCheck();
+            bool newvalue = GUI.Toggle(toggleRect, value, text);
+            if (EditorGUI.EndChangeCheck() && (undoObject != null))
+                Undo.RecordObject(undoObject, $"[{bHapticsOSCIntegration.SystemName}] Toggled {text}");
+            
             EditorGUIUtility.AddCursorRect(toggleRect, MouseCursor.Link);
+
+            return newvalue;
         }
 
         public static void DrawSection(string name, System.Action draw, System.Action headerDraw = null)
@@ -154,7 +164,7 @@ namespace bHapticsOSC.VRChat
 
             bDeviceTemplate template = bDevice.AllTemplates[device];
 
-            bool isSelected = (editorComp.CurrentTemplate == template);
+            bool isSelected = (editorComp.CurrentDevice == device);
             Sprite sprite = isSelected ? templateElement.Selected : templateElement.NotSelected;
 
             Texture2D spriteTexture = SpriteUtility.GetSpriteTexture(sprite, false);
@@ -173,7 +183,8 @@ namespace bHapticsOSC.VRChat
             if (GUI.Button(spriteRect, spriteTexture, templateElement.Style) && !isSelected)
             {
                 isSelected = true;
-                editorComp.CurrentTemplate = template;
+                Undo.RecordObject(editorComp, $"[{bHapticsOSCIntegration.SystemName}] Selected Device");
+                editorComp.CurrentDevice = device;
             }
 
             if ((templateElement.Prefab != null) && (editorComp.AllUserSettings[template].CurrentPrefab != null))
@@ -191,18 +202,27 @@ namespace bHapticsOSC.VRChat
             GUILayout.EndHorizontal();
         }
 
-        public static void DrawButton(string text, System.Action onClick)
+        public static bool DrawButton(string text, Object undoObject = null, bool shouldCollapse = true)
         {
             GUIContent content = new GUIContent(text);
 
             Rect buttonRect = GUILayoutUtility.GetRect(content, ButtonStyle);
-            if (GUI.Button(buttonRect, content, ButtonStyle))
-                onClick?.Invoke();
+
+            EditorGUI.BeginChangeCheck();
+            bool value = GUI.Button(buttonRect, content, ButtonStyle);
+            if (EditorGUI.EndChangeCheck() && (undoObject != null))
+            {
+                Undo.RegisterCompleteObjectUndo(undoObject, $"[{bHapticsOSCIntegration.SystemName}] Clicked {text}");
+                if (shouldCollapse)
+                    Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
+            }
 
             EditorGUIUtility.AddCursorRect(buttonRect, MouseCursor.Link);
+
+            return value;
         }
 
-        public static void DrawHeaderButton(string text, System.Action onClick)
+        public static bool DrawHeaderButton(string text, Object undoObject = null, bool shouldCollapse = true)
         {
             GUIContent content = new GUIContent(text);
 
@@ -214,21 +234,56 @@ namespace bHapticsOSC.VRChat
             buttonRect.x += originalOffset.x;
             buttonRect.y += originalOffset.y;
 
-            if (GUI.Button(buttonRect, content, HeaderButtonStyle))
-                onClick?.Invoke();
-
+            EditorGUI.BeginChangeCheck();
+            bool value = GUI.Button(buttonRect, content, HeaderButtonStyle);
+            if (EditorGUI.EndChangeCheck() && (undoObject != null))
+            {
+                Undo.RegisterCompleteObjectUndo(undoObject, $"[{bHapticsOSCIntegration.SystemName}] Clicked {text}");
+                if (shouldCollapse)
+                    Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
+            }
             HeaderButtonStyle.contentOffset = originalOffset;
 
             EditorGUIUtility.AddCursorRect(buttonRect, MouseCursor.Link);
+
+            return value;
+        }
+
+        public static Vector3 DrawVector3Field(string name, Vector3 currentValue, Object undoObject = null, System.Action onChangeCallback = null)
+        {
+            EditorGUI.BeginChangeCheck();
+            Vector3 newValue = EditorGUILayout.Vector3Field(name, currentValue);
+            GUILayout.Space(6);
+            if (EditorGUI.EndChangeCheck())
+            {
+                if (undoObject != null)
+                {
+                    Undo.RecordObject(undoObject, $"[{bHapticsOSCIntegration.SystemName}] Changed {name}");
+                    Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
+                }
+                if (onChangeCallback != null)
+                    onChangeCallback();
+            }
+            return newValue;
+        }
+
+        public static Color DrawColorField(string name, Color currentValue, Object undoObject = null)
+        {
+            EditorGUI.BeginChangeCheck();
+            Color newValue = EditorGUILayout.ColorField(name, currentValue);
+            GUILayout.Space(6);
+            if (EditorGUI.EndChangeCheck() && (undoObject != null))
+            {
+                Undo.RecordObject(undoObject, $"[{bHapticsOSCIntegration.SystemName}] Changed {name}");
+                Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
+            }
+            return newValue;
         }
 
         public enum HelpBoxType
         {
             NoFXLayer,
-            NoExpressionParameters,
-            NothingSelected,
-            NotEnoughMemory,
-            NonSceneObject,
+            NotReadyToApply,
         }
         public static void DrawHelpBox(HelpBoxType type, string additionalText = null)
         {
@@ -242,14 +297,9 @@ namespace bHapticsOSC.VRChat
                     msg = "No Custom FX Layer Found!\nIt is required that the Avatar have some form of non-default FX Layer set.";
                     goto default;
 
-                case HelpBoxType.NothingSelected:
+                case HelpBoxType.NotReadyToApply:
                     messageType = MessageType.Warning;
                     msg = "Nothing is Added!\nPlease add at least 1 Device to Integrate into the Avatar.";
-                    goto default;
-
-                case HelpBoxType.NotEnoughMemory:
-                    messageType = MessageType.Error;
-                    msg = $"Not enough Expression Parameter Memory!\nIn order to Integrate this many options you need {additionalText} more free bits.\nEither free up some space or get rid of some Devices.";
                     goto default;
 
                 default:
@@ -263,3 +313,4 @@ namespace bHapticsOSC.VRChat
         }
     }
 }
+#endif

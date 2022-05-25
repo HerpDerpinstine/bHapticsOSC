@@ -50,7 +50,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -174,8 +173,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_11
@@ -233,8 +232,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_19
@@ -289,7 +288,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -473,8 +471,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_18
@@ -529,7 +527,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -687,7 +684,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -924,8 +920,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_7
@@ -980,7 +976,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -1045,8 +1040,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_5
@@ -1133,7 +1128,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -1263,7 +1257,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -1325,7 +1318,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -1387,7 +1379,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -1449,7 +1440,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -1614,7 +1604,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -1676,7 +1665,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -1738,7 +1726,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -1896,8 +1883,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_1
@@ -2164,7 +2151,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -2294,8 +2280,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_17
@@ -2350,7 +2336,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -2553,8 +2538,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_13
@@ -2609,7 +2594,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -2671,7 +2655,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -2821,7 +2804,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -2886,8 +2868,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_2
@@ -3001,7 +2983,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -3125,8 +3106,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_20
@@ -3181,7 +3162,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -3420,7 +3400,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -3659,7 +3638,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -3752,7 +3730,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -3884,8 +3861,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_6
@@ -3943,8 +3920,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_3
@@ -4034,8 +4011,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_15
@@ -4124,7 +4101,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -4257,8 +4233,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_8
@@ -4347,7 +4323,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -4477,7 +4452,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -4598,7 +4572,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -4694,7 +4667,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -4815,7 +4787,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -4877,7 +4848,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -4974,8 +4944,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_12
@@ -5030,7 +5000,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -5092,7 +5061,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -5154,7 +5122,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -5216,7 +5183,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -5278,7 +5244,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -5437,8 +5402,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_14
@@ -5496,8 +5461,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_10
@@ -5552,7 +5517,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -5732,7 +5696,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -5828,7 +5791,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -5890,7 +5852,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -5952,7 +5913,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   collisionTags:
-  - World
   - Head
   - Torso
   - Hand
@@ -6085,8 +6045,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_4
@@ -6144,8 +6104,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_9
@@ -6203,8 +6163,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_16

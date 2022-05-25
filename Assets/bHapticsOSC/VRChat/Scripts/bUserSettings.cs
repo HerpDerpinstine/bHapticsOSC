@@ -1,11 +1,12 @@
-﻿#if UNITY_EDITOR
+﻿#if UNITY_EDITOR && VRC_SDK_VRCSDK3 && bHapticsOSC_HasAac
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 namespace bHapticsOSC.VRChat
 {
     [System.Serializable]
-    public class bUserSettings : Object
+    public class bUserSettings : ScriptableObject
     {
         [SerializeField]
         public HumanBodyBones Bone;
@@ -13,8 +14,15 @@ namespace bHapticsOSC.VRChat
         public bool ApplyParentConstraints = true;
         [SerializeField]
         public GameObject CurrentPrefab;
-        //[SerializeField]
-        //public string[] CustomContactTags = new string[0];
+        [SerializeField]
+        public List<string> CustomContactTags = new List<string>();
+
+        [SerializeField]
+        public Color TouchView_Default = new Color(0, 0, 0, 0);
+        private Color touchView_Default = new Color(0, 0, 0, 0);
+        [SerializeField]
+        public Color TouchView_Triggered = new Color(0, 1, 1, 0.5f);
+        private Color touchView_Triggered = new Color(0, 1, 1, 0.5f);
 
         [SerializeField]
         private bool _showMesh = true;
@@ -33,6 +41,8 @@ namespace bHapticsOSC.VRChat
 
         public void FindExistingPrefab(bDeviceTemplate device)
         {
+            if (CurrentPrefab != null)
+                return;
             foreach (GameObject obj in (GameObject[])FindObjectsOfType(typeof(GameObject)))
             {
                 if (!PrefabUtility.IsPartOfAnyPrefab(obj))
@@ -43,25 +53,52 @@ namespace bHapticsOSC.VRChat
                     continue;
 
                 _showMesh = (objPrefab == device.PrefabMesh);
+                //if (_showMesh)
+                //    bShader.GetTouchViewColors(device.ShaderIndex, obj, ref TouchView_Default, ref TouchView_Triggered);
+
                 CurrentPrefab = obj;
+                CustomContactTags.Clear();
+                bContacts.ScanForExistingTags(this);
+
                 break;
             }
         }
 
-        public void SwapPrefabs(Animator animator, GameObject newPrefab)
+        public void SwapPrefabs(Animator animator, GameObject newPrefab, bool resetTransform = false)
         {
+            if (CurrentPrefab != null)
+                Undo.RecordObject(CurrentPrefab, $"[{bHapticsOSCIntegration.SystemName}] Swapped Prefabs");
+
             Transform parent = animator.GetBoneTransform(Bone);
             GameObject spawnedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(newPrefab);
-            spawnedPrefab.transform.SetParent(parent);
+
+            Undo.RegisterCreatedObjectUndo(spawnedPrefab, $"[{bHapticsOSCIntegration.SystemName}] Swapped Prefabs");
+            Undo.SetTransformParent(spawnedPrefab.transform, parent, $"[{bHapticsOSCIntegration.SystemName}] Swapped Prefabs");
+
             GameObject baseObj = newPrefab;
-            if (CurrentPrefab != null)
+            if (!resetTransform && (CurrentPrefab != null))
                 baseObj = CurrentPrefab;
 
             spawnedPrefab.transform.localPosition = baseObj.transform.localPosition;
             spawnedPrefab.transform.localEulerAngles = baseObj.transform.localEulerAngles;
             spawnedPrefab.transform.localScale = baseObj.transform.localScale;
 
-            DestroyCurrentPrefab();
+            string[] currentTags = CustomContactTags.ToArray();
+
+            Color currentTouchViewDefault = TouchView_Default;
+            Color currentTouchViewTriggered = TouchView_Triggered;
+
+            if (CurrentPrefab != null)
+                Undo.DestroyObjectImmediate(CurrentPrefab);
+
+            Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
+
+            CustomContactTags.Clear();
+            CustomContactTags.AddRange(currentTags);
+
+            TouchView_Default = currentTouchViewDefault;
+            TouchView_Triggered = currentTouchViewTriggered;
+
             CurrentPrefab = spawnedPrefab;
         }
 
@@ -72,18 +109,22 @@ namespace bHapticsOSC.VRChat
         {
             if (CurrentPrefab == null)
                 return;
-            DestroyImmediate(CurrentPrefab);
+            Undo.DestroyObjectImmediate(CurrentPrefab);
             CurrentPrefab = null;
+            CustomContactTags.Clear();
+            TouchView_Default = touchView_Default;
+            TouchView_Triggered = touchView_Triggered;
         }
 
         public void Reset()
         {
             DestroyCurrentPrefab();
-            OnShowMeshChange?.Invoke(this);
+            _showMesh = false;
             ShowMesh = true;
             ApplyParentConstraints = true;
-
-            //CustomContactTags.Clear();
+            CustomContactTags.Clear();
+            TouchView_Default = touchView_Default;
+            TouchView_Triggered = touchView_Triggered;
         }
     }
 }

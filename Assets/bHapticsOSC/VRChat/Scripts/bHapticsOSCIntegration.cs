@@ -1,10 +1,11 @@
-#if UNITY_EDITOR
+#if UNITY_EDITOR && VRC_SDK_VRCSDK3 && bHapticsOSC_HasAac
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Animations;
 using AnimatorAsCode.V0;
 using VRC.SDK3.Avatars.Components;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace bHapticsOSC.VRChat
 {
@@ -23,9 +24,11 @@ namespace bHapticsOSC.VRChat
         public string assetKey;
 
         [SerializeField]
-        public bDeviceTemplate CurrentTemplate;
+        public bDeviceType CurrentDevice = bDeviceType.VEST;
         [SerializeField]
         public Dictionary<bDeviceTemplate, bUserSettings> AllUserSettings;
+        [SerializeField]
+        public Dictionary<bUserSettings, bReorderableListContainer<string>> AllCustomContactTagsContainers;
 
         public VRCAvatarDescriptor.CustomAnimLayer fx_layer;
         public AnimatorController animatorControllerClone;
@@ -91,6 +94,17 @@ namespace bHapticsOSC.VRChat
         //public void ResetExtras()
         //{
         //}
+
+        public void FindExistingPrefabs(Dictionary<bDeviceType, bDeviceTemplate> deviceTemplates)
+        {
+            for (int i = 0; i < deviceTemplates.Count; i++)
+            {
+                bDeviceTemplate template = deviceTemplates.Values.ElementAt(i);
+                if (!template.HasBone)
+                    continue;
+                AllUserSettings[template].FindExistingPrefab(template);
+            }
+        }
     }
 }
 #endif

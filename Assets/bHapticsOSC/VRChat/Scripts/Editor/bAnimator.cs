@@ -1,4 +1,5 @@
-﻿using AnimatorAsCode.V0;
+﻿#if UNITY_EDITOR && VRC_SDK_VRCSDK3 && bHapticsOSC_HasAac
+using AnimatorAsCode.V0;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,37 +27,42 @@ namespace bHapticsOSC.VRChat
 				for (int node = 1; node < keyValuePair.Value.NodeCount + 1; node++)
 				{
 					string nodeName = $"{bHapticsOSCIntegration.SystemName}_{keyValuePair.Value.Name.Replace(' ', '_')}_{node}";
-					CreateAnimatorLayerStates(node, nodeName, aac, editorComp, keyValuePair);
+					CreateAnimatorLayerStates(node, nodeName, userSettings.TouchView_Default, userSettings.TouchView_Triggered, aac, editorComp, keyValuePair);
 				}
 			}
 		}
 
-		private static void CreateAnimatorLayerStates(int node, string nodeName, AacFlBase aac, bHapticsOSCIntegration editorComp, KeyValuePair<bDeviceType, bDeviceTemplate> keyValuePair)
+		private static void CreateAnimatorLayerStates(int node, string nodeName, Color defaultCol, Color triggeredCol, AacFlBase aac, bHapticsOSCIntegration editorComp, KeyValuePair<bDeviceType, bDeviceTemplate> keyValuePair)
 		{
 			string layer_name = $"{keyValuePair.Value.Name.Replace(' ', '_')}_{node}";
 
-			aac.RemoveAllSupportingLayers(layer_name);
+			try { aac.RemoveAllSupportingLayers(layer_name); } catch { }
 			AacFlLayer layer = aac.CreateSupportingFxLayer("ParameterCreation");
 			AacFlBoolParameter boolParam = layer.BoolParameter(nodeName);
-			aac.RemoveAllSupportingLayers("ParameterCreation");
+			AacFlState exitState = layer.NewState("dummy");
+			exitState.Exits();
+			layer.EntryTransitionsTo(exitState);
+			try { aac.RemoveAllSupportingLayers("ParameterCreation"); } catch { }
 
-			float shaderDeviceIndex = bShader.GetShaderIndex(keyValuePair.Key, node);
+			float shaderDeviceIndex = bDevice.GetShaderIndex(keyValuePair.Key, node);
 			Renderer[] renderers = bShader.FindRenderersFromIndex(shaderDeviceIndex, editorComp.avatar.gameObject);
 			if (renderers.Length <= 0)
 				return;
 
 			layer = aac.CreateSupportingFxLayer(layer_name);
 
-			AacFlState falseState = layer.NewState("False").WithWriteDefaultsSetTo(false);
+			AacFlState falseState = layer.NewState("False").WithWriteDefaultsSetTo(true);
 			falseState.TransitionsFromEntry().When(boolParam.IsFalse());
 			falseState.Exits().AfterAnimationFinishes();
 
-			AacFlState trueState = layer.NewState("True", 1, 0).WithWriteDefaultsSetTo(false);
+			AacFlState trueState = layer.NewState("True", 1, 0).WithWriteDefaultsSetTo(true);
 			trueState.TransitionsFromEntry().When(boolParam.IsTrue());
 			trueState.Exits().AfterAnimationFinishes();
 
 			foreach (Renderer renderer in renderers)
 			{
+				//bShader.SetTouchViewColors(renderer, defaultCol, triggeredCol);
+
 				AacFlClip falseClip = aac.NewClip().Animating(clip => clip.Animates(renderer, $"material._Node{node}").WithOneFrame(0f));
 				falseState = falseState.WithAnimation(falseClip);
 
@@ -66,3 +72,4 @@ namespace bHapticsOSC.VRChat
 		}
 	}
 }
+#endif
