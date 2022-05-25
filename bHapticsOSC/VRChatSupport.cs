@@ -91,7 +91,6 @@ namespace bHapticsOSC
                 for (int i = 0; i < nodeAddressesArr.Length; i++)
                 {
                     string path = nodeAddressesArr[i];
-                    Console.WriteLine(path);
                     int index = i + 1;
                     OscManager.Attach(path, (OscMessage msg) => OnNode(msg, index, device.Item2));
                     OscManager.Attach($"{path.Replace("bHapticsOSC_", "bHaptics_")}_bool", (OscMessage msg) => OnNode(msg, index, device.Item2));
