@@ -173,8 +173,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_11
@@ -232,8 +232,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_19
@@ -471,8 +471,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_18
@@ -920,8 +920,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_7
@@ -1040,8 +1040,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_5
@@ -1883,8 +1883,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_1
@@ -2280,8 +2280,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_17
@@ -2538,8 +2538,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_13
@@ -2868,8 +2868,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_2
@@ -3106,8 +3106,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_20
@@ -3861,8 +3861,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_6
@@ -3920,8 +3920,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_3
@@ -4011,8 +4011,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_15
@@ -4233,8 +4233,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_8
@@ -4944,8 +4944,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_12
@@ -5402,8 +5402,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_14
@@ -5461,8 +5461,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_10
@@ -6045,8 +6045,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_4
@@ -6104,8 +6104,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_9
@@ -6163,8 +6163,8 @@ MonoBehaviour:
   - Hand
   - Foot
   - Finger
-  allowSelf: 0
-  allowOthers: 1
+  allowSelf: 1
+  allowOthers: 0
   localOnly: 0
   receiverType: 0
   parameter: bHapticsOSC_Vest_Back_16
