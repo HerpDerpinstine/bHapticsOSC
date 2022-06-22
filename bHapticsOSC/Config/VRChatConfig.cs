@@ -31,7 +31,7 @@ namespace bHapticsOSC
         [TomlDoNotInlineObject]
         public class AvatarOSCConfigReset : ConfigCategoryValue
         {
-            [TomlPrecedingComment("If the Application should Automatically Reset the Avatar's OSC Config on Xhange.")]
+            [TomlPrecedingComment("If the Application should Automatically Reset the Avatar's OSC Config on Change.")]
             public bool Enabled = true;
         }
     }
