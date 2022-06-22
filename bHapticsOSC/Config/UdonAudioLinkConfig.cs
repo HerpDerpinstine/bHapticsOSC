@@ -1,4 +1,5 @@
-﻿using bHapticsLib;
+﻿/*
+using bHapticsLib;
 using OscLib.Config;
 using OscLib.Utils;
 using Tomlet.Attributes;
@@ -77,6 +78,7 @@ namespace bHapticsOSC
             {
                 PositionType.Head => Head.Value.Enabled,
 
+                PositionType.Vest => Vest.Value.Enabled,
                 PositionType.VestFront => Vest.Value.Enabled,
                 PositionType.VestBack => Vest.Value.Enabled,
 
@@ -102,6 +104,7 @@ namespace bHapticsOSC
             {
                 PositionType.Head => Head.Value.Intensity,
 
+                PositionType.Vest => Vest.Value.Intensity,
                 PositionType.VestFront => Vest.Value.Intensity,
                 PositionType.VestBack => Vest.Value.Intensity,
 
@@ -122,3 +125,4 @@ namespace bHapticsOSC
         }
     }
 }
+*/
