@@ -22,13 +22,10 @@ namespace bHapticsOSC
 
             public enum UdonAudioLinkModeEnum
             {
-                FULL = 0,
-                //CENTER_BARS = 1,
-                //OUTER_BARS = 2,
-                //CENTER_WAVE = 3,
+                FULL,
+                WAVE
             }
-            //[TomlPrecedingComment("What Reaction Mode the Application should use to interpret Udon AudioLink Intensity with.  ( FULL | CENTER_BARS | OUTER_BARS | CENTER_WAVE )")]
-            [TomlPrecedingComment("What Reaction Mode the Application should use to interpret Udon AudioLink Intensity with.  ( FULL )")]
+            [TomlPrecedingComment("What Reaction Mode the Application should use to interpret Udon AudioLink Intensity with.  ( FULL | WAVE )")]
             public UdonAudioLinkModeEnum ReactionMode;
         }
 
