@@ -232,8 +232,21 @@ namespace bHapticsOSC
                 if (!Program.Devices.PositionTypeToEnabled(Position))
                     return;
 
-                if (!bHapticsManager.IsDeviceConnected(Position))
-                    return;
+                //if (!bHapticsManager.IsDeviceConnected(Position))
+                //    return;
+
+                if (Program.UdonAudioLink.PositionTypeToEnabled(Position))
+                {
+                    switch (Program.UdonAudioLink.udonAudioLink.Value.ReactionMode)
+                    {
+                        case UdonAudioLinkConfig.UdonAudioLink.UdonAudioLinkModeEnum.FULL:
+                            Submit_UdonAudioLink_Full();
+                            goto default;
+
+                        default:
+                            break;
+                    }
+                }
 
                 bHapticsManager.Submit($"{BuildInfo.Name}_{Position}", Position, Buffer, 150);
             }
@@ -248,6 +261,17 @@ namespace bHapticsOSC
             {
                 for (int i = 1; i < Buffer.Length + 1; i++)
                     SetNodeIntensity(i, 0);
+            }
+
+            private void Submit_UdonAudioLink_Full()
+            {
+                if (Program.VRCSupport.UdonAudioLink <= 0)
+                    return;
+
+                int audioLinkIntensity = (Program.UdonAudioLink.PositionTypeToIntensity(Position) * (Program.VRCSupport.UdonAudioLink / 100));
+                for (int i = 0; i < Buffer.Length; i++)
+                    if (Program.UdonAudioLink.udonAudioLink.Value.OverrideTouch || (Buffer[i] < audioLinkIntensity))
+                        Buffer[i] = (byte)audioLinkIntensity;
             }
         }
     }
