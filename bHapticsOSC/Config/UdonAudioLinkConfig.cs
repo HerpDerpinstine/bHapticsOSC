@@ -16,8 +16,20 @@ namespace bHapticsOSC
         {
             [TomlPrecedingComment("If Udon AudioLink Extension support should be Enabled.")]
             public bool Enabled = true;
+
             [TomlPrecedingComment("If Touch Intensity should be overridden by Udon AudioLink Intensity instead of layered together.")]
             public bool OverrideTouch = false;
+
+            public enum UdonAudioLinkModeEnum
+            {
+                FULL = 0,
+                //CENTER_BARS = 1,
+                //OUTER_BARS = 2,
+                //CENTER_WAVE = 3,
+            }
+            //[TomlPrecedingComment("What Reaction Mode the Application should use to interpret Udon AudioLink Intensity with.  ( FULL | CENTER_BARS | OUTER_BARS | CENTER_WAVE )")]
+            [TomlPrecedingComment("What Reaction Mode the Application should use to interpret Udon AudioLink Intensity with.  ( FULL )")]
+            public UdonAudioLinkModeEnum ReactionMode;
         }
 
         [TomlDoNotInlineObject]

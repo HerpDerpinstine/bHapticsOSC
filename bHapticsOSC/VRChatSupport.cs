@@ -18,7 +18,7 @@ namespace bHapticsOSC
         private bool AFK;
         private bool InStation;
         private bool Seated;
-        private int UdonAudioLink = 0;
+        private int UdonAudioLink;
 
         private const string AvatarParameterPrefix = "/avatar/parameters";
         private static Tuple<int, PositionType, string, string>[] DeviceSchemes = new Tuple<int, PositionType, string, string>[]
@@ -42,17 +42,24 @@ namespace bHapticsOSC
         };
 
         private class VRChatPacket { }
-        private class VRChatPacketAvatarChange : VRChatPacket { internal string id; }
-        private class VRChatPacketAFK : VRChatPacket { internal bool value; }
-        private class VRChatPacketInStation : VRChatPacket { internal bool value; }
-        private class VRChatPacketSeated : VRChatPacket { internal bool value; }
-        private class VRChatNodePacket : VRChatPacket
+
+        private class VRChatPacket_Node : VRChatPacket
         {
             internal PositionType position;
             internal int node;
             internal int intensity;
         }
         private ConcurrentQueue<VRChatPacket> PacketQueue = new ConcurrentQueue<VRChatPacket>();
+
+        private class VRChatPacket_int : VRChatPacket { internal int value; }
+        private class VRChatPacket_bool : VRChatPacket { internal bool value; }
+        private class VRChatPacket_string : VRChatPacket { internal string value; }
+
+        private class VRChatPacket_AvatarChange : VRChatPacket_string { }
+        private class VRChatPacket_AFK : VRChatPacket_bool { }
+        private class VRChatPacket_InStation : VRChatPacket_bool { }
+        private class VRChatPacket_Seated : VRChatPacket_bool { }
+        private class VRChatPacket_UdonAudioLink : VRChatPacket_int { }
 
         internal VRChatSupport() : base()
         {
@@ -113,21 +120,23 @@ namespace bHapticsOSC
             {
                 while (PacketQueue.TryDequeue(out VRChatPacket packet))
                 {
-                    if (packet is VRChatPacketAFK)
-                        AFK = ((VRChatPacketAFK)packet).value;
-                    else if (packet is VRChatPacketInStation)
-                        InStation = ((VRChatPacketInStation)packet).value;
-                    else if (packet is VRChatPacketSeated)
-                        Seated = ((VRChatPacketSeated)packet).value;
-                    else if (packet is VRChatPacketAvatarChange)
+                    if (packet is VRChatPacket_AFK)
+                        AFK = ((VRChatPacket_AFK)packet).value;
+                    else if (packet is VRChatPacket_InStation)
+                        InStation = ((VRChatPacket_InStation)packet).value;
+                    else if (packet is VRChatPacket_Seated)
+                        Seated = ((VRChatPacket_Seated)packet).value;
+                    else if (packet is VRChatPacket_UdonAudioLink)
+                        UdonAudioLink = ((VRChatPacket_UdonAudioLink)packet).value;
+                    else if (packet is VRChatPacket_AvatarChange)
                     {
                         ResetDevices();
                         if (Program.VRChat.avatarOSCConfigReset.Value.Enabled)
-                            VRCAvatarConfig.RemoveFile(((VRChatPacketAvatarChange)packet).id);
+                            VRCAvatarConfig.RemoveFile(((VRChatPacket_AvatarChange)packet).value);
                     }
-                    else if (packet is VRChatNodePacket)
+                    else if (packet is VRChatPacket_Node)
                     {
-                        VRChatNodePacket nodePacket = (VRChatNodePacket)packet;
+                        VRChatPacket_Node nodePacket = (VRChatPacket_Node)packet;
                         SetDeviceNodeIntensity(nodePacket.position, nodePacket.node, nodePacket.intensity);
                     }
                 }
@@ -148,32 +157,32 @@ namespace bHapticsOSC
 
         [VRC_AFK]
         private static void OnAFK(bool status)
-            => Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacketAFK { value = status });
+            => Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacket_AFK { value = status });
 
         [VRC_InStation]
         private static void OnInStation(bool status)
-            => Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacketInStation { value = status });
+            => Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacket_InStation { value = status });
 
         [VRC_Seated]
         private static void OnSeated(bool status)
-            => Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacketSeated { value = status });
+            => Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacket_Seated { value = status });
 
         [VRC_AvatarChange]
         private static void OnAvatarChange(string avatarId)
         {
             Console.WriteLine($"Avatar Changed to {avatarId}");
-            Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacketAvatarChange { id = avatarId });
+            Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacket_AvatarChange { value = avatarId });
         }
 
-        //[VRC_AvatarParameter("bHapticsOSC_UdonAudioLink")]
-        //private void OnUdonAudioLink(int amplitude)
-        //    => UdonAudioLink = amplitude;
+        [VRC_AvatarParameter("bHapticsOSC_UdonAudioLink")]
+        private void OnUdonAudioLink(int amplitude)
+            => Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacket_UdonAudioLink { value = amplitude });
 
         private static void OnNode(OscMessage msg, int node, PositionType position)
         {
             if ((msg == null) || (!(msg[0] is bool)))
                 return;
-            Program.VRCSupport.PacketQueue.Enqueue(new VRChatNodePacket
+            Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacket_Node
             {
                 position = position,
                 node = node,
@@ -184,9 +193,8 @@ namespace bHapticsOSC
         private void SubmitDevices()
         {
             if ((AFK && !Program.VRChat.reactivity.Value.AFK) 
-                || ((UdonAudioLink <= 0) && 
-                    ((InStation && !Program.VRChat.reactivity.Value.InStation) 
-                        || (Seated && !Program.VRChat.reactivity.Value.Seated)))
+                || (InStation && !Program.VRChat.reactivity.Value.InStation) 
+                || (Seated && !Program.VRChat.reactivity.Value.Seated)
                 || (Devices.Count <= 0))
                 return;
 
@@ -224,18 +232,8 @@ namespace bHapticsOSC
                 if (!Program.Devices.PositionTypeToEnabled(Position))
                     return;
 
-                //if (!bHapticsManager.IsDeviceConnected(Position))
-                //    return;
-
-                /*
-                if (ConfigManager.UdonAudioLink.PositionTypeToUALEnabled(Position) && (UdonAudioLink > 0))
-                {
-                    int audioLinkIntensity = (ConfigManager.VRChat.PositionTypeToUALIntensity(Position) * (UdonAudioLink / 100));
-                    for (int i = 0; i < Value.Length; i++)
-                        if (ConfigManager.UdonAudioLink.udonAudioLink.Value.OverrideTouch || (Value[i] < audioLinkIntensity))
-                            Value[i] = (byte)audioLinkIntensity;
-                }
-                */
+                if (!bHapticsManager.IsDeviceConnected(Position))
+                    return;
 
                 bHapticsManager.Submit($"{BuildInfo.Name}_{Position}", Position, Buffer, 150);
             }
