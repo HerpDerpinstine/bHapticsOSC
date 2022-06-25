@@ -48,6 +48,7 @@ namespace bHapticsOSC
                     PrintConnection();
                     originalConnectionAct();
                 };
+                PrintConnection();
 
                 Devices.OnFileModified += () =>
                 {
@@ -56,6 +57,7 @@ namespace bHapticsOSC
                     Console.WriteLine();
                     PrintDevices(true);
                 };
+                PrintDevices(false);
 
                 UdonAudioLink.OnFileModified += () =>
                 {
@@ -64,6 +66,7 @@ namespace bHapticsOSC
                     Console.WriteLine();
                     PrintUdonAudioLink();
                 };
+                PrintUdonAudioLink();
 
                 VRChat.OnFileModified += () =>
                 {
@@ -72,12 +75,7 @@ namespace bHapticsOSC
                     Console.WriteLine();
                     PrintVRChat();
                 };
-
-                PrintConnection();
-                PrintDevices(false);
-
                 PrintVRChat();
-                PrintUdonAudioLink();
 
                 bHapticsManager.Load(BuildInfo.Name, BuildInfo.Name);
 
