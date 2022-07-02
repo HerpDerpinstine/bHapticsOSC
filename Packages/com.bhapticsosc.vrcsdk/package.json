@@ -8,5 +8,5 @@
         "com.vrchat.base" : "https://github.com/vrchat/com.vrchat.base.git",
         "com.vrchat.avatars" : "https://github.com/vrchat/com.vrchat.avatars.git"
     },
-    "url" : "https://github.com/HerpDerpinstine/com.bhapticsosc.vrcsdk.git"
+    "url" : "https://github.com/HerpDerpinstine/bHapticsOSC.git?path=/Packages/com.bhapticsosc.vrcsdk"
 }
