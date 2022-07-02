@@ -235,7 +235,7 @@ namespace bHapticsOSC
                 //if (!bHapticsManager.IsDeviceConnected(Position))
                 //    return;
 
-                if (Program.UdonAudioLink.PositionTypeToEnabled(Position))
+               /* if (Program.UdonAudioLink.PositionTypeToEnabled(Position))
                 {
                     switch (Program.UdonAudioLink.udonAudioLink.Value.ReactionMode)
                     {
@@ -246,7 +246,7 @@ namespace bHapticsOSC
                         default:
                             break;
                     }
-                }
+                }*/
 
                 bHapticsManager.Submit($"{BuildInfo.Name}_{Position}", Position, Buffer, 150);
             }
