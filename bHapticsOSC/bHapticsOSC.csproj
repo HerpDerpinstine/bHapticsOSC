@@ -15,6 +15,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Config\UdonAudioLinkConfig.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="ILRepack.targets" />
   </ItemGroup>
 
@@ -24,13 +28,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Config\UdonAudioLinkConfig.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\bHapticsLib\bHapticsLib.csproj" />
+    <ProjectReference Include="..\..\bHapticsLib\bHapticsLib\bHapticsLib.csproj" />
     <ProjectReference Include="..\OscLib.Config\OscLib.Config.csproj" />
-    <ProjectReference Include="..\OscLib.Utils\OscLib.Utils.csproj" />
     <ProjectReference Include="..\OscLib.VRChat\OscLib.VRChat.csproj" />
     <ProjectReference Include="..\OscLib\OscLib.csproj" />
   </ItemGroup>

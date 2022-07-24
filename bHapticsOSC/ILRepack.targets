@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Target Name="ILRepacker_Debug" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+	<Target Name="ILRepacker" AfterTargets="Build" Condition="true">
 		<ItemGroup>
+			<UseDebugInfo Value="'$(Configuration)' == 'Debug'" />
 			<AssemblyFile Include="$(OutputPath)$(AssemblyName).exe" />
 		</ItemGroup>
 		<ItemGroup>
@@ -16,37 +17,14 @@
 		</ItemGroup>
 		<ILRepack
 			Parallel="true"
-			DebugInfo="true"
+			DebugInfo="@(UseDebugInfo)"
 			InputAssemblies="@(InputAssemblies)"
 			TargetKind="SameAsPrimaryAssembly"
 			OutputFile="@(AssemblyFile)"
 		/>
 	</Target>
 	
-	<Target Name="ILRepacker_Release" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
-		<ItemGroup>
-			<AssemblyFile Include="$(OutputPath)$(AssemblyName).exe" />
-		</ItemGroup>
-		<ItemGroup>
-			<InputAssemblies Include="@(AssemblyFile)" />
-			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'Rug.Osc'" />
-			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'Tomlet'" />
-			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'bHapticsLib'" />
-			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'OscLib'" />
-			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'OscLib.Config'" />
-			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'OscLib.Utils'" />
-			<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'OscLib.VRChat'" />
-		</ItemGroup>
-		<ILRepack
-			Parallel="true"
-			DebugInfo="false"
-			InputAssemblies="@(InputAssemblies)"
-			TargetKind="SameAsPrimaryAssembly"
-			OutputFile="@(AssemblyFile)"
-		/>
-	</Target>
-	
-	<Target Name="Cleanup" AfterTargets="ILRepack">
+	<Target Name="Cleanup" AfterTargets="ILRepacker">
 		<ItemGroup>
 			<FilesToDelete Include="$(OutputPath)Rug.Osc.dll" />
 			<FilesToDelete Include="$(OutputPath)Tomlet.dll" />

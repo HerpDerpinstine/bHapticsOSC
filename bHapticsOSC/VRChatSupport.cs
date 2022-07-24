@@ -222,7 +222,7 @@ namespace bHapticsOSC
         private class Device
         {
             private PositionType Position;
-            private byte[] Buffer = new byte[bHapticsManager.MaxBufferSize];
+            private byte[] Buffer = new byte[bHapticsManager.MaxMotorsPerDotPoint];
 
             internal Device(PositionType position)
                 => Position = position;
@@ -232,8 +232,8 @@ namespace bHapticsOSC
                 if (!Program.Devices.PositionTypeToEnabled(Position))
                     return;
 
-                //if (!bHapticsManager.IsDeviceConnected(Position))
-                //    return;
+                if (!bHapticsManager.IsDeviceConnected(Position))
+                    return;
 
                /* if (Program.UdonAudioLink.PositionTypeToEnabled(Position))
                 {
@@ -248,7 +248,7 @@ namespace bHapticsOSC
                     }
                 }*/
 
-                bHapticsManager.Submit($"{BuildInfo.Name}_{Position}", Position, Buffer, 150);
+                bHapticsManager.Submit($"{BuildInfo.Name}_{Position}", 150, Position, Buffer);
             }
 
             internal int GetNodeIntensity(int node)
@@ -263,6 +263,7 @@ namespace bHapticsOSC
                     SetNodeIntensity(i, 0);
             }
 
+            /*
             private void Submit_UdonAudioLink_Full()
             {
                 if (Program.VRCSupport.UdonAudioLink <= 0)
@@ -273,6 +274,7 @@ namespace bHapticsOSC
                     if (Program.UdonAudioLink.udonAudioLink.Value.OverrideTouch || (Buffer[i] < audioLinkIntensity))
                         Buffer[i] = (byte)audioLinkIntensity;
             }
+            */
         }
     }
 }

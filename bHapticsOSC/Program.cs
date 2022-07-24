@@ -11,7 +11,7 @@ namespace bHapticsOSC
     {
         internal static DevicesConfig Devices;
         internal static VRChatConfig VRChat;
-        internal static UdonAudioLinkConfig UdonAudioLink;
+        //internal static UdonAudioLinkConfig UdonAudioLink;
 
         internal static VRChatSupport VRCSupport = new VRChatSupport();
 
@@ -19,7 +19,7 @@ namespace bHapticsOSC
         {
             string basefolder = Path.GetDirectoryName(typeof(Program).Assembly.Location);
             Devices = ConfigManager.CreateConfig<DevicesConfig>(basefolder, nameof(Devices));
-            UdonAudioLink = ConfigManager.CreateConfig<UdonAudioLinkConfig>(basefolder, nameof(UdonAudioLink));
+            //UdonAudioLink = ConfigManager.CreateConfig<UdonAudioLinkConfig>(basefolder, nameof(UdonAudioLink));
             VRChat = ConfigManager.CreateConfig<VRChatConfig>(basefolder, nameof(VRChat));
         }
 
@@ -59,6 +59,7 @@ namespace bHapticsOSC
                 };
                 PrintDevices(false);
 
+                /*
                 UdonAudioLink.OnFileModified += () =>
                 {
                     Console.WriteLine();
@@ -67,6 +68,7 @@ namespace bHapticsOSC
                     PrintUdonAudioLink();
                 };
                 PrintUdonAudioLink();
+                */
 
                 VRChat.OnFileModified += () =>
                 {
@@ -77,7 +79,7 @@ namespace bHapticsOSC
                 };
                 PrintVRChat();
 
-                bHapticsManager.Load(BuildInfo.Name, BuildInfo.Name);
+                bHapticsManager.Initialize(BuildInfo.Name, BuildInfo.Name, true, 0);
 
                 OscManager.AttachOscAttributesFromAssembly(typeof(Program).Assembly);
                 OscManager.Connect();
@@ -112,7 +114,7 @@ namespace bHapticsOSC
             {
                 VRCSupport.EndInit();
                 OscManager.Disconnect();
-                //bHapticsManager.Quit();
+                bHapticsManager.Quit();
                 ConfigManager.SaveAll();
             }
             catch (Exception ex) { ErrorMessageBox(ex.ToString()); }
@@ -160,6 +162,7 @@ namespace bHapticsOSC
             Console.WriteLine();
         }
 
+        /*
         private static void PrintUdonAudioLink()
         {
             Console.WriteLine($"===== Udon AudioLink =====");
@@ -169,6 +172,7 @@ namespace bHapticsOSC
             Console.WriteLine();
             PrintDevices(true);
         }
+        */
 
         private static void PrintDevices(bool isAudioLink)
         {
@@ -196,8 +200,12 @@ namespace bHapticsOSC
 
         private static void PrintDevice(string name, PositionType positionType, bool isAudioLink)
         {
-            Console.WriteLine($"[{name}  |  Enabled] = {(isAudioLink ? UdonAudioLink.PositionTypeToEnabled(positionType) : Devices.PositionTypeToEnabled(positionType))}");
-            Console.WriteLine($"[{name}  |  Intensity] = {(isAudioLink ? UdonAudioLink.PositionTypeToIntensity(positionType) : Devices.PositionTypeToIntensity(positionType))}");
+            //Console.WriteLine($"[{name}  |  Enabled] = {(isAudioLink ? UdonAudioLink.PositionTypeToEnabled(positionType) : Devices.PositionTypeToEnabled(positionType))}");
+            //Console.WriteLine($"[{name}  |  Intensity] = {(isAudioLink ? UdonAudioLink.PositionTypeToIntensity(positionType) : Devices.PositionTypeToIntensity(positionType))}");
+
+            Console.WriteLine($"[{name}  |  Enabled] = {Devices.PositionTypeToEnabled(positionType)}");
+            Console.WriteLine($"[{name}  |  Intensity] = {Devices.PositionTypeToIntensity(positionType)}");
+
             Console.WriteLine();
         }
     }

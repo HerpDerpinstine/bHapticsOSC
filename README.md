@@ -22,6 +22,7 @@ Please read through the [Documentation / Wiki](https://github.com/HerpDerpinstin
 bHapticsOSC is licensed under the GPL-3.0 License. See [LICENSE](https://github.com/HerpDerpinstine/bHapticsOSC/blob/master/LICENSE.md) for the full License.
 
 Third-party Libraries used as Source Code and/or bundled in Binary Form:
+- [bHapticsLib](https://github.com/LavaGang/bHapticsLib) is licensed under the MIT License. See [LICENSE](https://github.com/LavaGang/bHapticsLib/blob/master/LICENSE.md) for the full License.
 - [Animator As Code](https://github.com/hai-vr/av3-animator-as-code) is licensed under the MIT License. See [LICENSE](https://github.com/hai-vr/av3-animator-as-code/blob/main/LICENSE) for the full License.
 - [Rug.Osc](https://bitbucket.org/rugcode/rug.osc) is licensed under the MIT License. See [LICENSE](https://bitbucket.org/rugcode/rug.osc/wiki/License) for the full License.
 - [Tomlet](https://github.com/SamboyCoding/Tomlet) is licensed under the MIT License. See [LICENSE](https://github.com/SamboyCoding/Tomlet/blob/master/LICENSE) for the full License.
