@@ -79,7 +79,7 @@ namespace bHapticsOSC
                 };
                 PrintVRChat();
 
-                bHapticsManager.Initialize(BuildInfo.Name, BuildInfo.Name, true, 0);
+                bHapticsManager.Connect(BuildInfo.Name, BuildInfo.Name, true, 0);
 
                 OscManager.AttachOscAttributesFromAssembly(typeof(Program).Assembly);
                 OscManager.Connect();
@@ -114,7 +114,7 @@ namespace bHapticsOSC
             {
                 VRCSupport.EndInit();
                 OscManager.Disconnect();
-                bHapticsManager.Quit();
+                bHapticsManager.Disconnect();
                 ConfigManager.SaveAll();
             }
             catch (Exception ex) { ErrorMessageBox(ex.ToString()); }
@@ -182,29 +182,29 @@ namespace bHapticsOSC
                 Console.WriteLine();
             }
 
-            PrintDevice("Head", PositionType.Head, isAudioLink);
+            PrintDevice("Head", PositionID.Head, isAudioLink);
 
-            PrintDevice("Vest", PositionType.Vest, isAudioLink);
+            PrintDevice("Vest", PositionID.Vest, isAudioLink);
 
-            PrintDevice("Arm Left", PositionType.ForearmL, isAudioLink);
-            PrintDevice("Arm Right", PositionType.ForearmR, isAudioLink);
+            PrintDevice("Arm Left", PositionID.ArmLeft, isAudioLink);
+            PrintDevice("Arm Right", PositionID.ArmRight, isAudioLink);
 
-            PrintDevice("Hand Left", PositionType.HandL, isAudioLink);
-            PrintDevice("Hand Right", PositionType.HandR, isAudioLink);
+            PrintDevice("Hand Left", PositionID.HandLeft, isAudioLink);
+            PrintDevice("Hand Right", PositionID.HandRight, isAudioLink);
 
-            PrintDevice("Foot Left", PositionType.FootL, isAudioLink);
-            PrintDevice("Foot Right", PositionType.FootR, isAudioLink);
+            PrintDevice("Foot Left", PositionID.FootLeft, isAudioLink);
+            PrintDevice("Foot Right", PositionID.FootRight, isAudioLink);
 
             Console.WriteLine();
         }
 
-        private static void PrintDevice(string name, PositionType positionType, bool isAudioLink)
+        private static void PrintDevice(string name, PositionID PositionID, bool isAudioLink)
         {
-            //Console.WriteLine($"[{name}  |  Enabled] = {(isAudioLink ? UdonAudioLink.PositionTypeToEnabled(positionType) : Devices.PositionTypeToEnabled(positionType))}");
-            //Console.WriteLine($"[{name}  |  Intensity] = {(isAudioLink ? UdonAudioLink.PositionTypeToIntensity(positionType) : Devices.PositionTypeToIntensity(positionType))}");
+            //Console.WriteLine($"[{name}  |  Enabled] = {(isAudioLink ? UdonAudioLink.PositionIDToEnabled(PositionID) : Devices.PositionIDToEnabled(PositionID))}");
+            //Console.WriteLine($"[{name}  |  Intensity] = {(isAudioLink ? UdonAudioLink.PositionIDToIntensity(PositionID) : Devices.PositionIDToIntensity(PositionID))}");
 
-            Console.WriteLine($"[{name}  |  Enabled] = {Devices.PositionTypeToEnabled(positionType)}");
-            Console.WriteLine($"[{name}  |  Intensity] = {Devices.PositionTypeToIntensity(positionType)}");
+            Console.WriteLine($"[{name}  |  Enabled] = {Devices.PositionIDToEnabled(PositionID)}");
+            Console.WriteLine($"[{name}  |  Intensity] = {Devices.PositionIDToIntensity(PositionID)}");
 
             Console.WriteLine();
         }

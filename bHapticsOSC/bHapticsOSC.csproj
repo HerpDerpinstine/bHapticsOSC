@@ -36,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\bHapticsLib\bHapticsLib\bHapticsLib.csproj" />
     <ProjectReference Include="..\OscLib.Config\OscLib.Config.csproj" />
     <ProjectReference Include="..\OscLib.VRChat\OscLib.VRChat.csproj" />
     <ProjectReference Include="..\OscLib\OscLib.csproj" />

@@ -14,38 +14,38 @@ namespace bHapticsOSC
     internal class VRChatSupport : ThreadedTask
     {
         private bool ShouldRun;
-        private Dictionary<PositionType, Device> Devices = new Dictionary<PositionType, Device>();
+        private Dictionary<PositionID, Device> Devices = new Dictionary<PositionID, Device>();
         private bool AFK;
         private bool InStation;
         private bool Seated;
         private int UdonAudioLink;
 
         private const string AvatarParameterPrefix = "/avatar/parameters";
-        private static Tuple<int, PositionType, string, string>[] DeviceSchemes = new Tuple<int, PositionType, string, string>[]
+        private static Tuple<int, PositionID, string, string>[] DeviceSchemes = new Tuple<int, PositionID, string, string>[]
         {
-            new Tuple<int, PositionType, string, string>(6, PositionType.Head, "bHapticsOSC_Head", string.Empty),
+            new Tuple<int, PositionID, string, string>(6, PositionID.Head, "bHapticsOSC_Head", string.Empty),
 
-            new Tuple<int, PositionType, string, string>(20, PositionType.VestFront, "bHapticsOSC_Vest_Front", string.Empty),
-            new Tuple<int, PositionType, string, string>(20, PositionType.VestBack, "bHapticsOSC_Vest_Back", string.Empty),
+            new Tuple<int, PositionID, string, string>(20, PositionID.VestFront, "bHapticsOSC_Vest_Front", string.Empty),
+            new Tuple<int, PositionID, string, string>(20, PositionID.VestBack, "bHapticsOSC_Vest_Back", string.Empty),
 
-            new Tuple<int, PositionType, string, string>(6, PositionType.ForearmL, "bHapticsOSC_Arm_Left", string.Empty),
-            new Tuple<int, PositionType, string, string>(6, PositionType.ForearmR, "bHapticsOSC_Arm_Right", string.Empty),
+            new Tuple<int, PositionID, string, string>(6, PositionID.ArmLeft, "bHapticsOSC_Arm_Left", string.Empty),
+            new Tuple<int, PositionID, string, string>(6, PositionID.ArmRight, "bHapticsOSC_Arm_Right", string.Empty),
 
-            new Tuple<int, PositionType, string, string>(3, PositionType.HandL, "bHapticsOSC_Hand_Left", string.Empty),
-            new Tuple<int, PositionType, string, string>(3, PositionType.HandR, "bHapticsOSC_Hand_Right", string.Empty),
+            new Tuple<int, PositionID, string, string>(3, PositionID.HandLeft, "bHapticsOSC_Hand_Left", string.Empty),
+            new Tuple<int, PositionID, string, string>(3, PositionID.HandRight, "bHapticsOSC_Hand_Right", string.Empty),
 
-            //new Tuple<int, PositionType, string, string>(0, PositionType.GloveLeft, "bHapticsOSC_Glove_Left", string.Empty),
-            //new Tuple<int, PositionType, string, string>(0, PositionType.GloveRight, "bHapticsOSC_Glove_Right", string.Empty),
+            //new Tuple<int, PositionID, string, string>(0, PositionID.GloveLeft, "bHapticsOSC_Glove_Left", string.Empty),
+            //new Tuple<int, PositionID, string, string>(0, PositionID.GloveRight, "bHapticsOSC_Glove_Right", string.Empty),
 
-            new Tuple<int, PositionType, string, string>(3, PositionType.FootL, "bHapticsOSC_Foot_Left", string.Empty),
-            new Tuple<int, PositionType, string, string>(3, PositionType.FootR, "bHapticsOSC_Foot_Right", string.Empty),
+            new Tuple<int, PositionID, string, string>(3, PositionID.FootLeft, "bHapticsOSC_Foot_Left", string.Empty),
+            new Tuple<int, PositionID, string, string>(3, PositionID.FootRight, "bHapticsOSC_Foot_Right", string.Empty),
         };
 
         private class VRChatPacket { }
 
         private class VRChatPacket_Node : VRChatPacket
         {
-            internal PositionType position;
+            internal PositionID position;
             internal int node;
             internal int intensity;
         }
@@ -63,7 +63,7 @@ namespace bHapticsOSC
 
         internal VRChatSupport() : base()
         {
-            foreach (Tuple<int, PositionType, string, string> device in DeviceSchemes)
+            foreach (Tuple<int, PositionID, string, string> device in DeviceSchemes)
             {
                 if (device.Item1 <= 0)
                     continue;
@@ -75,7 +75,7 @@ namespace bHapticsOSC
 
                 switch (device.Item2)
                 {
-                    case PositionType.VestFront:
+                    case PositionID.VestFront:
                         Array.Reverse(nodeAddressesArr, 0, 4);
                         Array.Reverse(nodeAddressesArr, 4, 4);
                         Array.Reverse(nodeAddressesArr, 8, 4);
@@ -83,11 +83,11 @@ namespace bHapticsOSC
                         Array.Reverse(nodeAddressesArr, 16, 4);
                         break;
 
-                    case PositionType.Head:
+                    case PositionID.Head:
                         Array.Reverse(nodeAddressesArr, 0, 6);
                         break;
 
-                    case PositionType.FootR:
+                    case PositionID.FootRight:
                         Array.Reverse(nodeAddressesArr, 0, 3);
                         break;
 
@@ -178,7 +178,7 @@ namespace bHapticsOSC
         private void OnUdonAudioLink(int amplitude)
             => Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacket_UdonAudioLink { value = amplitude });
 
-        private static void OnNode(OscMessage msg, int node, PositionType position)
+        private static void OnNode(OscMessage msg, int node, PositionID position)
         {
             if ((msg == null) || (!(msg[0] is bool)))
                 return;
@@ -186,7 +186,7 @@ namespace bHapticsOSC
             {
                 position = position,
                 node = node,
-                intensity = ((bool)msg[0]) ? Program.Devices.PositionTypeToIntensity(position) : 0,
+                intensity = ((bool)msg[0]) ? Program.Devices.PositionIDToIntensity(position) : 0,
             });
         }
 
@@ -212,30 +212,30 @@ namespace bHapticsOSC
                 device.Reset();
         }
 
-        private void SetDeviceNodeIntensity(PositionType positionType, int node, int intensity)
+        private void SetDeviceNodeIntensity(PositionID PositionID, int node, int intensity)
         {
-            if ((Devices.Count <= 0) || !Devices.TryGetValue(positionType, out Device device))
+            if ((Devices.Count <= 0) || !Devices.TryGetValue(PositionID, out Device device))
                 return;
             device.SetNodeIntensity(node, intensity);
         }
 
         private class Device
         {
-            private PositionType Position;
+            private PositionID Position;
             private byte[] Buffer = new byte[bHapticsManager.MaxMotorsPerDotPoint];
 
-            internal Device(PositionType position)
+            internal Device(PositionID position)
                 => Position = position;
 
             internal void Submit()
             {
-                if (!Program.Devices.PositionTypeToEnabled(Position))
+                if (!Program.Devices.PositionIDToEnabled(Position))
                     return;
 
                 if (!bHapticsManager.IsDeviceConnected(Position))
                     return;
 
-               /* if (Program.UdonAudioLink.PositionTypeToEnabled(Position))
+               /* if (Program.UdonAudioLink.PositionIDToEnabled(Position))
                 {
                     switch (Program.UdonAudioLink.udonAudioLink.Value.ReactionMode)
                     {
@@ -248,7 +248,7 @@ namespace bHapticsOSC
                     }
                 }*/
 
-                bHapticsManager.Submit($"{BuildInfo.Name}_{Position}", 150, Position, Buffer);
+                bHapticsManager.Play($"{BuildInfo.Name}_{Position}", 150, Position, Buffer);
             }
 
             internal int GetNodeIntensity(int node)
@@ -269,7 +269,7 @@ namespace bHapticsOSC
                 if (Program.VRCSupport.UdonAudioLink <= 0)
                     return;
 
-                int audioLinkIntensity = (Program.UdonAudioLink.PositionTypeToIntensity(Position) * (Program.VRCSupport.UdonAudioLink / 100));
+                int audioLinkIntensity = (Program.UdonAudioLink.PositionIDToIntensity(Position) * (Program.VRCSupport.UdonAudioLink / 100));
                 for (int i = 0; i < Buffer.Length; i++)
                     if (Program.UdonAudioLink.udonAudioLink.Value.OverrideTouch || (Buffer[i] < audioLinkIntensity))
                         Buffer[i] = (byte)audioLinkIntensity;

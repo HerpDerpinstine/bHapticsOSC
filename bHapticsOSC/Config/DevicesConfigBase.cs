@@ -48,53 +48,53 @@ namespace bHapticsOSC
             });
         }
 
-        public bool PositionTypeToEnabled(PositionType positionType)
+        public bool PositionIDToEnabled(PositionID PositionID)
         {
-            return (positionType) switch
+            return (PositionID) switch
             {
-                PositionType.Head => Head.Value.GetEnabled(),
+                PositionID.Head => Head.Value.GetEnabled(),
 
-                PositionType.Vest => Vest.Value.GetEnabled(),
-                PositionType.VestFront => Vest.Value.GetEnabled(),
-                PositionType.VestBack => Vest.Value.GetEnabled(),
+                PositionID.Vest => Vest.Value.GetEnabled(),
+                PositionID.VestFront => Vest.Value.GetEnabled(),
+                PositionID.VestBack => Vest.Value.GetEnabled(),
 
-                PositionType.ForearmL => ArmLeft.Value.GetEnabled(),
-                PositionType.ForearmR => ArmRight.Value.GetEnabled(),
+                PositionID.ArmLeft => ArmLeft.Value.GetEnabled(),
+                PositionID.ArmRight => ArmRight.Value.GetEnabled(),
 
-                PositionType.HandL => HandLeft.Value.GetEnabled(),
-                PositionType.HandR => HandRight.Value.GetEnabled(),
+                PositionID.HandLeft => HandLeft.Value.GetEnabled(),
+                PositionID.HandRight => HandRight.Value.GetEnabled(),
 
-                //PositionType.GloveLeft => GloveLeft.Value.GetEnabled(),
-                //PositionType.GloveRight => GloveRight.Value.GetEnabled(),
+                //PositionID.GloveLeft => GloveLeft.Value.GetEnabled(),
+                //PositionID.GloveRight => GloveRight.Value.GetEnabled(),
 
-                PositionType.FootL => FootLeft.Value.GetEnabled(),
-                PositionType.FootR => FootRight.Value.GetEnabled(),
+                PositionID.FootLeft => FootLeft.Value.GetEnabled(),
+                PositionID.FootRight => FootRight.Value.GetEnabled(),
 
                 _ => true
             };
         }
 
-        public int PositionTypeToIntensity(PositionType positionType)
+        public int PositionIDToIntensity(PositionID PositionID)
         {
-            return (positionType) switch
+            return (PositionID) switch
             {
-                PositionType.Head => Head.Value.GetIntensity(),
+                PositionID.Head => Head.Value.GetIntensity(),
 
-                PositionType.Vest => Vest.Value.GetIntensity(),
-                PositionType.VestFront => Vest.Value.GetIntensity(),
-                PositionType.VestBack => Vest.Value.GetIntensity(),
+                PositionID.Vest => Vest.Value.GetIntensity(),
+                PositionID.VestFront => Vest.Value.GetIntensity(),
+                PositionID.VestBack => Vest.Value.GetIntensity(),
 
-                PositionType.ForearmL => ArmLeft.Value.GetIntensity(),
-                PositionType.ForearmR => ArmRight.Value.GetIntensity(),
+                PositionID.ArmLeft => ArmLeft.Value.GetIntensity(),
+                PositionID.ArmRight => ArmRight.Value.GetIntensity(),
 
-                PositionType.HandL => HandLeft.Value.GetIntensity(),
-                PositionType.HandR => HandRight.Value.GetIntensity(),
+                PositionID.HandLeft => HandLeft.Value.GetIntensity(),
+                PositionID.HandRight => HandRight.Value.GetIntensity(),
 
-                //PositionType.GloveLeft => GloveLeft.Value.GetIntensity(),
-                //PositionType.GloveRight => GloveRight.Value.GetIntensity(),
+                //PositionID.GloveLeft => GloveLeft.Value.GetIntensity(),
+                //PositionID.GloveRight => GloveRight.Value.GetIntensity(),
 
-                PositionType.FootL => FootLeft.Value.GetIntensity(),
-                PositionType.FootR => FootRight.Value.GetIntensity(),
+                PositionID.FootLeft => FootLeft.Value.GetIntensity(),
+                PositionID.FootRight => FootRight.Value.GetIntensity(),
 
                 _ => 100
             };
