@@ -35,11 +35,11 @@ namespace bHapticsOSC.VRChat
             {
                 string nameWithoutSpaces = settings.Name.Replace(" ", "");
 
-                string withoutMeshStr = $"Assets/bHapticsOSC/VRChat/Prefabs/Without Mesh/{nameWithoutSpaces}.prefab";
+                string withoutMeshStr = $"Assets/com.bhapticsosc.vrcsdk/Resources/Prefabs/Without Mesh/{nameWithoutSpaces}.prefab";
                 if (File.Exists(withoutMeshStr))
                     settings.Prefab = (GameObject)EditorGUIUtility.Load(withoutMeshStr);
 
-                string withMeshStr = $"Assets/bHapticsOSC/VRChat/Prefabs/With Mesh/{nameWithoutSpaces}.prefab";
+                string withMeshStr = $"Assets/com.bhapticsosc.vrcsdk/Resources/Prefabs/With Mesh/{nameWithoutSpaces}.prefab";
                 if (File.Exists(withMeshStr))
                     settings.PrefabMesh = (GameObject)EditorGUIUtility.Load(withMeshStr);
             }

@@ -2,7 +2,7 @@
 	"name" : "com.bhapticsosc.vrcsdk",
 	"displayName" : "bHapticsOSC.VRCSDK",
 	"description" : "bHapticsOSC's VRChat Integration SDK",
-	"version" : "2.1.2",
+	"version" : "2.1.3",
     "unity" : "2019.4",
     "gitDependencies" : {
         "com.vrchat.base" : "https://github.com/vrchat/com.vrchat.base.git",

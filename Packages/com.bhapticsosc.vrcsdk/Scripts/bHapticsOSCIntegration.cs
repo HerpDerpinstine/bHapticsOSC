@@ -22,6 +22,9 @@ namespace bHapticsOSC.VRChat
         public Animator avatarAnimator;
         [SerializeField]
         public string assetKey;
+		
+        [SerializeField]
+		public bExtraSettings extraSettings;
 
         [SerializeField]
         public bDeviceType CurrentDevice = bDeviceType.VEST;
@@ -64,6 +67,9 @@ namespace bHapticsOSC.VRChat
 
             if (string.IsNullOrEmpty(assetKey) || string.IsNullOrEmpty(assetKey.Trim()))
                 assetKey = GUID.Generate().ToString();
+			
+			if (extraSettings == null)
+				extraSettings = new bExtraSettings();
         }
 
 		public AacFlBase CreateAnimatorAsCode()
@@ -90,10 +96,6 @@ namespace bHapticsOSC.VRChat
                     return true;
             return false;
         }
-
-        //public void ResetExtras()
-        //{
-        //}
 
         public void FindExistingPrefabs(Dictionary<bDeviceType, bDeviceTemplate> deviceTemplates)
         {

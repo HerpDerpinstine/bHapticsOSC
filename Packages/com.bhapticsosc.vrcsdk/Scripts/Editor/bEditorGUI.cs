@@ -161,10 +161,10 @@ namespace bHapticsOSC.VRChat
 			});
 			bGUI.DrawSeparator();
 
-			/*
 			bGUI.DrawSection("Extras", () =>
 			{
-				bGUI.DrawToggle("Udon AudioLink Extension Support", ref editorComp.AudioLink);
+				editorComp.extraSettings.AnimatorWriteDefaults = bGUI.DrawToggle("Animator Write Defaults", editorComp.extraSettings.AnimatorWriteDefaults, editorComp.extraSettings);
+				//bGUI.DrawToggle("Udon AudioLink Extension Support", ref editorComp.AudioLink);
 			},
 			() =>
 			{
@@ -176,14 +176,14 @@ namespace bHapticsOSC.VRChat
 				GUILayout.FlexibleSpace();
 				GUILayout.FlexibleSpace();
 
-				bGUI.DrawHeaderButton("RESET", editorComp.ResetExtras);
+				if (bGUI.DrawHeaderButton("RESET", editorComp.extraSettings, false))
+					editorComp.extraSettings.Reset();
 
 				GUILayout.EndHorizontal();
 				GUILayout.Space(-GUILayoutUtility.GetLastRect().height);
 			});
 
 			bGUI.DrawSeparator();
-			*/
 
 			if (!editorComp.IsReadyToApply())
 			{
