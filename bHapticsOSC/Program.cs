@@ -18,9 +18,13 @@ namespace bHapticsOSC
         static Program()
         {
             string basefolder = Path.GetDirectoryName(typeof(Program).Assembly.Location);
-            Devices = ConfigManager.CreateConfig<DevicesConfig>(basefolder, nameof(Devices));
-            //UdonAudioLink = ConfigManager.CreateConfig<UdonAudioLinkConfig>(basefolder, nameof(UdonAudioLink));
-            VRChat = ConfigManager.CreateConfig<VRChatConfig>(basefolder, nameof(VRChat));
+            string configfolder = Path.Combine(basefolder, "Config");
+            if (!Directory.Exists(configfolder))
+                Directory.CreateDirectory(configfolder);
+
+            Devices = ConfigManager.CreateConfig<DevicesConfig>(configfolder, nameof(Devices));
+            //UdonAudioLink = ConfigManager.CreateConfig<UdonAudioLinkConfig>(configfolder, nameof(UdonAudioLink));
+            VRChat = ConfigManager.CreateConfig<VRChatConfig>(configfolder, nameof(VRChat));
         }
 
         internal static int Main(string[] args)

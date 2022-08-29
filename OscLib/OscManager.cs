@@ -21,7 +21,7 @@ namespace OscLib
         {
             Assembly baseAssembly = typeof(OscManager).Assembly;
 
-            Connection = ConfigManager.CreateConfig<ConnectionConfig>(Path.GetDirectoryName(baseAssembly.Location), nameof(Connection));
+            Connection = ConfigManager.CreateConfig<ConnectionConfig>(Path.Combine(Path.GetDirectoryName(baseAssembly.Location), "Config"), nameof(Connection));
             Connection.OnFileModified = () => { Disconnect(); Connect(); };
         }
 
