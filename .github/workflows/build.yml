@@ -1,0 +1,35 @@
+name: Build bHapticsOSC
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET 5
+        uses: actions/setup-dotnet@v2
+        with:
+            dotnet-version: 5.0.x
+      - name: Setup .NET 6
+        uses: actions/setup-dotnet@v2
+        with:
+            dotnet-version: 6.0.x
+      - name: Restore Dependencies
+        run: dotnet restore
+      - name: Build Debug
+        shell: cmd
+        run: dotnet build -c Debug
+      - name: Upload Debug Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: bHapticsOSC.CI.Debug
+          path: Output/Debug/
+      - name: Build Release
+        shell: cmd
+        run: dotnet build -c Release
+      - name: Upload Release Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: bHapticsOSC.CI.Release
+          path: Output/Release/
