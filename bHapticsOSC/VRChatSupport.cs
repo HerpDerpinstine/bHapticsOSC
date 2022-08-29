@@ -100,6 +100,7 @@ namespace bHapticsOSC
                     string path = nodeAddressesArr[i];
                     int index = i + 1;
                     OscManager.Attach(path, (OscMessage msg) => OnNode(msg, index, device.Item2));
+                    OscManager.Attach($"{path}_int", (OscMessage msg) => OnNodeIntensity(msg, index, device.Item2));
                     OscManager.Attach($"{path.Replace("bHapticsOSC_", "bHaptics_")}_bool", (OscMessage msg) => OnNode(msg, index, device.Item2));
                 }
             }
@@ -187,6 +188,18 @@ namespace bHapticsOSC
                 position = position,
                 node = node,
                 intensity = ((bool)msg[0]) ? Program.Devices.PositionIDToIntensity(position) : 0,
+            });
+        }
+
+        private static void OnNodeIntensity(OscMessage msg, int node, PositionID position)
+        {
+            if ((msg == null) || (!(msg[0] is int)))
+                return;
+            Program.VRCSupport?.PacketQueue.Enqueue(new VRChatPacket_Node
+            {
+                position = position,
+                node = node,
+                intensity = (int)msg[0],
             });
         }
 
