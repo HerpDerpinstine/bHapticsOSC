@@ -1,7 +1,7 @@
 # DISCONTINUED
 This is still available purely as-is.  
   
-If you have issues with the application I would recommend asking [bHaptics](https://www.bhaptics.com) in their Discord or a community member.  
+If you have issues with the application I would recommend asking [bHaptics](https://www.bhaptics.com) in their Discord or ask a community member.  
 
 I was banned from VRChat during the EAC backlash and I haven't played VRChat in a very long time.  
 As such I can no longer offer support for this application and any issues/bugs that may arise from its use.  
